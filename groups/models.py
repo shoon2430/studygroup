@@ -23,7 +23,10 @@ class Group(core_model.TimeStampModel):
         ("day", "Day"),
     )
 
-    user = models.ManyToManyField("users.User", blank=True)
+    leader = models.ForeignKey(
+        "users.User", related_name="leader", on_delete=models.CASCADE
+    )
+    users = models.ManyToManyField("users.User", blank=True)
     category = models.CharField(
         choices=CATEGORY_LIST,
         default=CATEGORY_STUDY,
@@ -45,4 +48,4 @@ class Group(core_model.TimeStampModel):
         return self.title
 
     def get_user_count(self):
-        return self.user.count()
+        return self.users.count()

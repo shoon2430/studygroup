@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    {% block page_name %} {% endblock page_name %}
+
+</head>
+<body>
+    {% include "partials/header.html" %}
+
+    <div>
+    {% block content %} {% endblock content %}
+    </div>
+
+    <div>
+    {% block pagination %}
+    {% endblock pagination %}
+    </div>
+    {% include "partials/footer.html" %}
+</body>
+</html>

@@ -6,8 +6,11 @@ from . import models as group_models
 class GroupAdmin(admin.ModelAdmin):
 
     fieldsets = (
-        ("Basic Info", {"fields": ("title", "category", "notice", "contents",)},),
-        ("Group Setting", {"fields": ("user", "max_group_count", "planning_unit")}),
+        (
+            "Basic Info",
+            {"fields": ("title", "leader", "category", "notice", "contents",)},
+        ),
+        ("Group Setting", {"fields": ("users", "max_group_count", "planning_unit")}),
     )
 
     list_display = (
@@ -22,7 +25,10 @@ class GroupAdmin(admin.ModelAdmin):
         "created",
     )
 
-    raw_id_fields = ("user",)
+    raw_id_fields = (
+        "users",
+        "leader",
+    )
 
     ordering = ("id", "category")
 

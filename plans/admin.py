@@ -49,6 +49,7 @@ class PlanAdmin(admin.ModelAdmin):
 
     list_display = (
         "id",
+        "get_group_id",
         "group",
         "user",
         "title_for_plan",
@@ -61,4 +62,3 @@ class PlanAdmin(admin.ModelAdmin):
     )
 
     raw_id_fields = ("group", "user")
-

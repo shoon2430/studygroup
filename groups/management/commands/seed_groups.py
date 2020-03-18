@@ -28,12 +28,13 @@ class Command(BaseCommand):
         number = options.get("number")
         seeder = Seed.seeder()
 
-        # users = User.objects.all()
+        users = User.objects.all()
 
         seeder.add_entity(
             Group,
             number,
             {
+                "leader": random.choice(users),
                 "category": lambda x: random.choice(["S", "R", "E", "H"]),
                 "max_group_count": lambda x: random.randint(1, 8),
                 "planning_unit": lambda x: random.choice(["week", "day"]),
@@ -58,7 +59,7 @@ class Command(BaseCommand):
                 user = User.objects.filter(pk=pk).first()
 
                 if user:
-                    group.user.add(user)
+                    group.users.add(user)
                     add_count += 1
 
         self.stdout.write(self.style.SUCCESS(f"CREATE {seed_text} count : {number}"))

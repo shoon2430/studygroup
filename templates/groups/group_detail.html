@@ -1,0 +1,51 @@
+{% extends "partials/base.html" %}
+
+
+{% block page_name %}
+    <title>Group Info</title>
+{% endblock page_name %}
+
+{% block content %}
+    <div class="group_detail">
+        <div class="title">
+            <h2>{{group.title}}</h2>
+            <h2>{{group.leader}}</h2>
+        <div>
+
+        <div class="notice">
+            <h2>{{group.notice}}</h2>
+        <div>
+        
+        <div class="contents">
+            <h2>{{group.contents}}</h2>
+        <div>
+    </div>
+    <div class="plan_list">
+    {% for plan in plans %}
+        <li>
+            <a href="#">
+                <div class="plan_{{plan.id}}">
+                    <h3>{{plan.user.username}}</h3>
+                    {% if plan.status != COMPLETE %}
+                        <h3>{{plan.title_for_plan}}</h3>
+                    {% else %}
+                        <h3>{{plan.title_for_result}}</h3>
+                    {% endif %}
+
+                    {% if plan.status == ENROLLMENT %}
+                        <h3>{{plan.created}}</h3>
+                    {% else %}
+                        <h3>{{plan.updated}}</h3>
+                    {% endif %}
+
+                    <h3>{{plan.status}}</h3>
+                </div>
+            </a>
+        </li>
+    {% endfor %}
+    </div>
+
+    
+
+{% endblock content %}
+

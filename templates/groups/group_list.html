@@ -1,0 +1,84 @@
+{% extends "partials/base.html" %}
+
+
+{% block page_name %}
+    <title>Home</title>
+{% endblock page_name %}
+
+{% block content %}
+    <div>
+    {% for group in groups%}
+        <li class="col-item">
+            <a class="list-item" href="{% url 'groups:detail' group.pk%}">
+                <div>
+                    <img src="#" alt="이미지">
+                </div>
+
+                <div class="group_{{group.id}}">
+                    <div>
+                        <h4 class="title">{{group.title}}</h4>
+                        <h4 class="leader">{{group.leader}}</h4> 
+                        <h4 class="created">{{group.created}}</h4> 
+                    </div>
+                    
+                        <div>
+                        <h5 class ="category">
+                            {{group.get_category_display}}
+                        </h5>
+                        <h5 class ="planning_unit">
+                            {{group.planning_unit}}
+                        </h5>
+                        <h5>
+                            {{group.get_user_count}}/{{group.max_group_count}}
+                        </h5>
+                    </div>
+                </div>
+            </a>
+        </li>
+    {%endfor%}
+    
+
+    </div>
+    {% for group in groups%}
+        
+        
+        
+        
+        
+        
+        <div class="group_{{group.id}}">
+
+
+
+
+
+            <h4>{{group}}</h4>
+        </div>
+
+
+    {%endfor%}
+{% endblock content %}
+
+
+
+{% block pagination %}
+
+    {% if is_paginated %}
+    <ul class="pagination">
+        <span>
+        {% if page_obj.has_previous %}
+                <li><a href="/?page={{page_obj.previous_page_number}}">Previous</a></li>
+           
+        {% endif %}
+
+        {% for page in paginator.page_range   %}
+            <li><a href="/?page={{page}}">{{page}}</a></li>
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li><a href="/?page={{page_obj.next_page_number}}">Next</a></li>
+        {% endif %}
+        </span>
+    {%endif%}
+
+{% endblock pagination %}

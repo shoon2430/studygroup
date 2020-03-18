@@ -61,3 +61,5 @@ class Plan(core_model.TimeStampModel):
         plan_id = str(self.id).zfill(8)
         return f"PLAN_{plan_id}"
 
+    def get_group_id(self):
+        return self.group.id
