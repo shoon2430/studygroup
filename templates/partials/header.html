@@ -1,9 +1,15 @@
 <header>
     <a href="/">Home</a>
     <ul>
+        {% if user.is_authenticated %}
         <li>
-            <a href="#">Login</a>
+            <h3>{{user.username}}</h3>
         </li>
+        <li><a href="{% url 'user:logout' %}">Logout</a></li>
+        {% else %}
+        <li><a href="{% url 'users:login' %}">Login</a></li>
+        <li><a href="{% url 'users:signup' %}"">Signup</a></li>
+        {% endif %}
     </ul>
 
 </header>

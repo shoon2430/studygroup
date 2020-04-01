@@ -6,7 +6,7 @@
 {% endblock page_name %}
 
 {% block content %}
-    <div class="group_detail">
+    <div class="group_detail container">
         <div class="title">
             <h2>{{group.title}}</h2>
             <h2>{{group.leader}}</h2>
@@ -20,12 +20,19 @@
             <h2>{{group.contents}}</h2>
         <div>
     </div>
+
+    <div >
+    {% for user in group.users.all  %}
+        <span>{{user.username}}</span>
+    {% endfor %}
+    </div>
+
     <div class="plan_list">
     {% for plan in plans %}
         <li>
             <a href="#">
                 <div class="plan_{{plan.id}}">
-                    <h3>{{plan.user.username}}</h3>
+                    <h1>{{plan.user.username}}</h1>
                     {% if plan.status != COMPLETE %}
                         <h3>{{plan.title_for_plan}}</h3>
                     {% else %}

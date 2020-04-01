@@ -127,6 +127,8 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
 
 # 기본 장고 USER 커스텀
 # https://docs.djangoproject.com/en/3.0/topics/auth/customizing/
