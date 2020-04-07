@@ -2,78 +2,92 @@
 
 
 {% block page_name %}
-    <title>Home</title>
+<title>Home</title>
 {% endblock page_name %}
+
+{% block script %}
+<script>
+
+</script>
+{% endblock script %}
 
 {% block content %}
 
-    <div class="container mx-auto pb-10">
-        <div class="rounded-xl bg-gray-800 h-50vh mt-32 mb-24 bg-cover bg-center -mx-40"
-            style="background-image:url(https://images.unsplash.com/photo-1516466723877-e4ec1d736c8a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1406&q=80)">
-        </div>
-        <div class="grid">
-        {% for group in groups%}
-            <a class="list-item flex my-3" href="{% url 'groups:detail' group.pk%}">
-                <div class="flex-initial rounded w-64 h-32  bg-red-300 float-left bg-cover bg-center"
-                    style="background-image:url(https://images.unsplash.com/photo-1585408871649-f8ce2d371e69?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80)">
-                </div>
+<div class="container mx-auto pb-10">
+    <div class="rounded-lg bg-gray-800 mt-32 mb-8 bg-cover bg-center mx-16"
+        style="height: 25vh; background-image:url(https://images.unsplash.com/photo-1516466723877-e4ec1d736c8a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1406&q=80)">
+    </div>
+    <div class="search mx-16">
+        <a href="{% url 'groups:create-group' %}">등록</a>
+    </div>
 
-                <div class="group_{{group.id}} flex-initial h-32 w-full ml-8">
-                    <div class="flex h-24">
-                        <p class="title flex-initial w-9/12 font-medium text-3xl hover:text-indigo-500">{{group.title}}</p>
-                        <div class="flex-initial w-3/12">
-                            <div class="leader m-1 bg-gray-500 rounded text-center">
-                                <p class="h-8">{{group.leader}}</p>
-                            </div>
-                            <div class="created m-1 bg-blue-500 rounded text-center">
-                                <p class="h-8">{{group.created}}</p> 
-                            </div>
-                            <div class="float-right count m-1 bg-blue-200 rounded w-8 text-center">
-                                <p class="h-8"> {{group.get_user_count}}/{{group.max_group_count}}</p> 
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex h-8">
-                        <div class ="category m-1 text-center bg-blue-300 flex-initial rounded">
-                            <p class="h-8">
-                                {{group.get_category_display}}
-                            </p>
-                        </div>
-                        <div class ="planning_unit m-1 text-center bg-gray-500 flex-initial rounded">
-                            <p class="h-8">
-                                {{group.planning_unit}}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <div class="flex items-center w-full my-5">
-                <div class="h-px w-full bg-gray-400"></div>
-                <div class="h-px w-full bg-gray-400 "></div>
+    <div class="grid mx-16">
+        {% for group in groups%}
+        <a class="list-item flex my-3" href="{% url 'groups:detail' group.pk%}">
+            <div class="flex-initial rounded w-56 h-32  bg-red-300 float-left bg-cover bg-center"
+                style="background-image:url(https://images.unsplash.com/photo-1585408871649-f8ce2d371e69?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80)">
             </div>
 
+            <div class="group_{{group.id}} flex-initial h-32 w-full ml-8">
+                <div class="flex h-24">
+                    <p class="title flex-initial w-9/12 font-medium text-2xl hover:text-indigo-500">{{group.title}}</p>
+                    <div class="flex-initial w-3/12">
+                        <div class="leader m-1 bg-gray-500 rounded text-center">
+                            <p class="h-8">{{group.leader}}</p>
+                        </div>
+                        <div class="created m-1 bg-blue-500 rounded text-center">
+                            <p class="h-8">{{group.created}}</p>
+                        </div>
+                        <div class="float-right count m-1 bg-blue-200 rounded w-8 text-center">
+                            <p class="h-8"> {{group.get_user_count}}/{{group.max_group_count}}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex h-8">
+                    <div class="category m-1 text-center bg-blue-300 flex-initial rounded">
+                        <p class="h-8">
+                            {{group.get_category_display}}
+                        </p>
+                    </div>
+                    <div class="planning_unit m-1 text-center bg-gray-500 flex-initial rounded">
+                        <p class="h-8">
+                            {{group.planning_unit}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <div class="flex items-center w-full my-1">
+            <div class="h-px w-full bg-gray-400"></div>
+            <div class="h-px w-full bg-gray-400 "></div>
+        </div>
+
         {%endfor%}
-    
+
         {% if is_paginated %}
-            <ul class="pagination center">
-            <span>
-            {% if page_obj.has_previous %}
-                <li class="w-16 h-8 float-left"><a href="/?page={{page_obj.previous_page_number}}">Previous</a></li>
-            
-            {% endif %}
+        <div>
+            <ul class="pagination float-right mt-8">
+                <span>
+                    {% if page_obj.has_previous %}
+                    <li class="w-16 h-8 m-2 float-left"><a href="/?page={{page_obj.previous_page_number}}">Previous</a>
+                    </li>
+                    {% endif %}
 
-            {% for page in paginator.page_range   %}
-                <li class="w-8 h-8 float-left"><a href="/?page={{page}}">{{page}}</a></li>
-            {% endfor %}
+                    {% for page in paginator.page_range%}
+                    <li
+                        class="w-4 h-8 m-2 float-left {%if page_obj.number == page %}text-indigo-600 font-bold {%endif%}">
+                        <a href="/?page={{page}}">{{page}}</a></li>
+                    {% endfor %}
 
-            {% if page_obj.has_next %}
-                <li class="w-16 h-8 float-left"><a href="/?page={{page_obj.next_page_number}}">Next</a></li>
-            {% endif %}
-            </span>
-        {%endif%}
+                    {% if page_obj.has_next %}
+                    <li class="w-16 h-8 m-2 float-left"><a href="/?page={{page_obj.next_page_number}}">Next</a></li>
+                    {% endif %}
+                </span>
+                {%endif%}
+            </ul>
         </div>
     </div>
- 
-{% endblock content %}
+</div>
 
+{% endblock content %}

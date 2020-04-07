@@ -9,6 +9,8 @@
     @apply text-center py-3 rounded-lg font-light text-lg w-full text-white bg-red-500;
 }
 
+
+
 input,
 textarea,
 select {
@@ -22,9 +24,16 @@ select {
     height: 80px;
   }
 
+
+.title{
+    input{
+        height: 100px;
+    }
+}
+
 textarea{
     resize: none;
-    height: 100px;
+    height: 220px;
 }
 
 form{

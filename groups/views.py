@@ -1,7 +1,11 @@
-from django.http import Http404
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.http import Http404, HttpResponseRedirect
+from django.views.decorators.csrf import csrf_exempt
+
+from django.shortcuts import render, redirect, reverse
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, FormView
 from . import models as group_model
+from . import forms as group_form
 from plans import models as plan_model
 
 
@@ -21,4 +25,42 @@ class GroupDetail(DetailView):
         context["plans"] = plan_model.Plan.objects.filter(group=self.object).order_by(
             "-created"
         )
+
+        join = False
+
+        for user in self.object.users.all():
+            if user == self.request.user:
+                join = True
+        context["join"] = join
+
         return context
+
+
+class createGroup(FormView):
+    template_name = "groups/group_create.html"
+    form_class = group_form.createGroupForm
+    success_url = reverse_lazy("core:home")
+
+    def form_valid(self, form):
+        leader = self.request.user
+        form.save(user=leader)
+
+        category = form.cleaned_data.get("category")
+        title = form.cleaned_data.get("title")
+
+        group = group_model.Group.objects.get(
+            leader=leader, category=category, title=title
+        )
+
+        group.users.add(leader)
+
+        return HttpResponseRedirect(self.get_success_url())
+
+
+@csrf_exempt
+def joinGroup(request, pk):
+
+    if request.method == "POST":
+        print(vars(request))
+
+    return redirect(reverse("groups:detail", args=(pk,)))
