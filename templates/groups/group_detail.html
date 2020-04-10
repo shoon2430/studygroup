@@ -8,18 +8,34 @@
 {% block script %}
 <script>
 
-    const join_group = () => {
-        if (confirm("그룹에 참여하시겠습니까?")) {
-            const urls = "http://localhost:8000/";
-            const opts = {
-                method: 'POST',
-                body: '{longUrl:"' + urls + '"}',
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            };
+    const POST = () => {
+        const urls = "http://localhost:8000/";
+        const opts = {
+            method: 'POST',
+            body: '{longUrl:"' + urls + '"}',
+            cache: 'no-cache',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            redirect: 'follow'
+        };
+        return opts;
+    }
+
+
+
+    const join_or_exit_group = (status) => {
+        const massge = status == "JOIN" ? "그룹에 참여하시겠습니까?" : "그룹을 나가겠습니까?";
+        if (confirm(massge)) {
+            opts = POST();
+
             fetch("{%url 'groups:join-group' group.pk %}", opts)
-            alert("OK")
+                .then(function (response) {
+
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                    }
+                });
         }
     }
 
@@ -46,17 +62,24 @@
     </div>
 
     <div class="mt-4 ">
-
         {% if join %}
+        <button id="joinGroup" class="w-40 text-center float-right p-2 m-1 rounded bg-red-500 text-white text-xl"
+            onclick="join_or_exit_group('EXIT')">
+            그룹 나가기
+        </button>
         <button id="createPlan" class="w-40 text-center float-right p-2 m-1 rounded bg-indigo-500 text-white text-xl"
-            onclick="create_plan()">
+            onclick="location.href='{% url "groups:plan-create" group.pk %}'">
             계획 등록하기
         </button>
         {%else%}
+
+        {%if group.get_user_count != group.max_group_count%}
         <button id="joinGroup" class="w-40 text-center float-right p-2 m-1 rounded bg-red-500 text-white text-xl"
-            onclick="join_group()">
+            onclick="join_or_exit_group('JOIN')">
             그룹 참여하기
         </button>
+        {%endif%}
+
         {% endif %}
     </div>
     <div class="mt-4">
@@ -71,7 +94,7 @@
     <div class="plan_list mt-5">
 
         {% for plan in plans %}
-        <a href="{%url 'groups:plan-detail' plan.pk%}">
+        <a href="{%url 'groups:plan-detail' group.pk plan.pk %}">
             <div class="plan_{{plan.id}} border border-gray400 rounded mt-3 p-3 bg-gray-100">
 
                 <div class="detial max-w-full flex items-center justify-between">

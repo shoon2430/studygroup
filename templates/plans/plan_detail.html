@@ -8,16 +8,57 @@
 {% block content %}
 <div class="group_detail container lg:w-8/12 md:w-1/2 xl:w-2/4 mx-auto my-10 flex flex-col p-6 mt-32">
 
+    <div class="header flex">
+        <span class="group border border-gray-400 text-center w-8/12 p-6 text-xl">
+            {{plan.group}}
+        </span>
+        <span class="user border border-gray-400  w-2/12 p-6  text-center ml-2 text-xl">
+            {{plan.user.first_name}}
+        </span>
+        <span class="user border border-gray-400  w-2/12 p-1  item-center ml-2">
+            <a href="#">
+                <div class="rounded w-full h-full text-center p-3 font-semibold text-white text-l
+            {%if plan.status == 'ENROLLMENT'%}
+            bg-teal-400  
+            {%elif plan.status == 'CONFIRM'%}
+            bg-indigo-400 
+            {%elif plan.status == 'COMPLETE'%}
+            bg-blue-400 
+            {%elif plan.status == 'FAIL'%}
+            bg-red-500 
+            {%elif plan.status == 'SUCCESS'%}
+            bg-green-400 
+            {%endif%}
+            
+            ">
+                    <h2 class="mt-3">
+                        {{plan.status}}
+                    </h2>
+                </div>
+            </a>
+        </span>
+    </div>
 
-    <div>{{plan.group}}</div>
-    <div>{{plan.user}}</div>
-    <div>{{plan.title_for_plan}}</div>
-    <div>{{plan.contents_for_plan}}</div>
-    <div>{{plan.title_for_result}}</div>
-    <div>{{plan.contents_for_result}}</div>
-    <div>{{plan.start_day}}</div>
-    <div>{{plan.end_day}}</div>
-    <div>{{plan.status}}</div>
+    <div class="mt-6 p-3 text-white text-xl bg-indigo-400">
+        <h2 class="ml-3">진행 계획</h2>
+    </div>
+    <div class="title border border-gray-400 mx-auto text-xl w-full p-3 mt-1 bg-gray-100">
+        <h2 class="ml-3">{{plan.title_for_plan}}</h2>
+    </div>
+    <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100" style="height:400px">
+        <h2>{{plan.contents_for_plan}}</h2>
+    </div>
+    {% if plan.status == 'COMPLETE' or plan.status == 'FAIL' or plan.status == 'SUCCESS' %}
+    <div class="mt-6 p-3 text-white text-xl bg-purple-500">
+        <h2 class="ml-3">계획 결과 보고</h2>
+    </div>
+    <div class="title border border-gray-400 mx-auto  text-xl w-full p-3 mt-1 bg-gray-100">
+        <h2 class="ml-3">{{plan.title_for_result}}</h2>
+    </div>
+    <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100" style="height:400px">
+        <h2>{{plan.contents_for_result}}</h2>
+    </div>
+    {% endif %}
 
 
 </div>

@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, FormView
+from django.views.generic import ListView, DetailView, FormView, UpdateView
 from . import models as group_model
 from . import forms as group_form
 from plans import models as plan_model
@@ -58,9 +58,16 @@ class createGroup(FormView):
 
 
 @csrf_exempt
-def joinGroup(request, pk):
+def join_or_exit_Group(request, pk):
 
     if request.method == "POST":
-        print(vars(request))
 
-    return redirect(reverse("groups:detail", args=(pk,)))
+        group = group_model.Group.objects.get(pk=pk)
+
+        for user in group.users.all():
+            if user == request.user:
+                group.users.remove(request.user)
+                return HttpResponseRedirect(reverse("core:home"))
+
+        group.users.add(request.user)
+        return HttpResponseRedirect(reverse("groups:detail", args=(pk,)))
