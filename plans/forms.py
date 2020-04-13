@@ -8,25 +8,48 @@ class createPlanForm(forms.ModelForm):
         fields = [
             "title_for_plan",
             "contents_for_plan",
-            # "start_day",
-            # "end_day",
         ]
 
         widgets = {
             "title_for_plan": forms.TextInput(attrs={"placeholder": "title"}),
             "contents_for_plan": forms.Textarea(attrs={"placeholder": "contents"}),
-            # "start_day": forms.DateTimeInput(),
-            # "end_day": forms.DateTimeInput(),
         }
 
     def save(self, *args, **kwargs):
-        print("HHIHIHIHIIs")
         plan = super().save(commit=False)
 
         user = kwargs["user"]
         group = kwargs["group"]
-        print("=====sf=sdf=sf===")
-        print(user, group)
+
+        plan.user = user
+        plan.group = group
+        plan.save()
+
+
+class updatePlanForm(forms.ModelForm):
+    class Meta:
+        model = plan_models.Plan
+        fields = [
+            "title_for_plan",
+            "contents_for_plan",
+            "title_for_result",
+            "contents_for_result",
+        ]
+
+        widgets = {
+            "title_for_plan": forms.TextInput(attrs={"placeholder": "title"}),
+            "contents_for_plan": forms.Textarea(attrs={"placeholder": "contents"}),
+            "title_for_result": forms.TextInput(attrs={"placeholder": "result title"}),
+            "contents_for_result": forms.Textarea(
+                attrs={"placeholder": "result contents"}
+            ),
+        }
+
+    def save(self, *args, **kwargs):
+        plan = super().save(commit=False)
+
+        user = kwargs["user"]
+        group = kwargs["group"]
 
         plan.user = user
         plan.group = group

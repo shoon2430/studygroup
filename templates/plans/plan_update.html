@@ -1,8 +1,9 @@
 {% extends "partials/base.html" %}
 
 {% block page_title %}
-Plan | Create
+Plan | Update
 {% endblock page_title %}
+
 
 
 {% block content %}
@@ -12,6 +13,7 @@ Plan | Create
 
     <form class="lg:w-11/12 md:w-1/2 xl:w-11/12" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
+
         <div class="{{form.title_for_plan.name}} ">
             <span class="bg-blue-500 rounded-t-lg p-2 text-gray-100">제목</span>
             <span>{{form.title_for_plan}}</span>
@@ -20,12 +22,17 @@ Plan | Create
             <span class="bg-blue-500 rounded-t-lg p-2 text-gray-100">계획 내용</span>
             <span>{{form.contents_for_plan}}</span>
         </div>
-        <!-- <div class="{{form.start_day.name}} mt-5">
-            <span class="bg-blue-500 rounded-t-lg p-2 text-gray-100">시작날짜</span>
-            <span class="h-full">{{form.start_day}}</span>
-        </div> -->
 
-        <button class="btn bg-indigo-500 mt-8 text-white">계획 등록하기</button>
+        <div class="{{form.title_for_result.name}} mt-5">
+            <span class="bg-blue-500 rounded-t-lg p-2 text-gray-100">결과 보고 제목</span>
+            <span>{{form.title_for_result}}</span>
+        </div>
+        <div class="{{form.contents_for_result.name}} mt-5">
+            <span class="bg-blue-500 rounded-t-lg p-2 text-gray-100">결과 보고 내용</span>
+            <span>{{form.contents_for_result}}</span>
+        </div>
+
+        <button class="btn bg-indigo-500 mt-8 text-white">계획 수정하기</button>
     </form>
 
 

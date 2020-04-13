@@ -2,8 +2,27 @@
 
 
 {% block page_name %}
-<title>Plan Detail</title>
+Plan | Detail
 {% endblock page_name %}
+
+
+{% block script %}
+<script>
+
+    const plan_delete = (func) => {
+        url = "{%url 'groups:plan-delete' plan.group.pk plan.pk %}";
+        massage = "계획을 삭제하시겠습니까?";
+        func(url, massage);
+    }
+
+    const plan_confirm = (func) => {
+        url = "{%url 'groups:plan-confirm' plan.group.pk plan.pk %}";
+        massage = "계획을 승인하시겠습니까?";
+        func(url, massage);
+    }
+
+</script>
+{% endblock script %}
 
 {% block content %}
 <div class="group_detail container lg:w-8/12 md:w-1/2 xl:w-2/4 mx-auto my-10 flex flex-col p-6 mt-32">
@@ -16,8 +35,8 @@
             {{plan.user.first_name}}
         </span>
         <span class="user border border-gray-400  w-2/12 p-1  item-center ml-2">
-            <a href="#">
-                <div class="rounded w-full h-full text-center p-3 font-semibold text-white text-l
+
+            <div class="rounded w-full h-full text-center p-3 font-semibold text-white text-l
             {%if plan.status == 'ENROLLMENT'%}
             bg-teal-400  
             {%elif plan.status == 'CONFIRM'%}
@@ -31,11 +50,11 @@
             {%endif%}
             
             ">
-                    <h2 class="mt-3">
-                        {{plan.status}}
-                    </h2>
-                </div>
-            </a>
+                <h2 class="mt-3">
+                    {{plan.status}}
+                </h2>
+            </div>
+
         </span>
     </div>
 
@@ -46,7 +65,7 @@
         <h2 class="ml-3">{{plan.title_for_plan}}</h2>
     </div>
     <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100" style="height:400px">
-        <h2>{{plan.contents_for_plan}}</h2>
+        <h2>{{plan.contents_for_plan|linebreaks }}</h2>
     </div>
     {% if plan.status == 'COMPLETE' or plan.status == 'FAIL' or plan.status == 'SUCCESS' %}
     <div class="mt-6 p-3 text-white text-xl bg-purple-500">
@@ -57,6 +76,51 @@
     </div>
     <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100" style="height:400px">
         <h2>{{plan.contents_for_result}}</h2>
+    </div>
+    {% endif %}
+
+
+    {% if plan.user == request.user %}
+    <div>
+        <button class="float-right w-32 p-2 m-2 rounded bg-red-500 text-white text-center text-xl"
+            onclick='plan_delete(request_POST)'>
+            계획 삭제
+        </button>
+
+        {% if plan.status == 'CONFIRM' %}
+        <a href="{%url 'groups:plan-update' plan.group.pk plan.pk %}"
+            class="float-right w-32 p-2 m-2 w-48 rounded bg-teal-500 text-white text-center text-xl">
+            결과 보고 작성
+        </a>
+        {% elif plan.status == 'COMPLETE' or plan.status == 'FAIL' %}
+        <a href="{%url 'groups:plan-update' plan.group.pk plan.pk %}"
+            class="float-right w-32 p-2 m-2 rounded bg-indigo-500 text-white text-center text-xl">
+            결과 보고 수정
+        </a>
+        {%else%}
+
+        <a href="{%url 'groups:plan-update' plan.group.pk plan.pk %}"
+            class="float-right w-32 p-2 m-2 rounded bg-blue-500 text-white text-center text-xl">
+            계획 수정
+        </a>
+        {% endif %}
+    </div>
+    {% else%}
+
+    <div>
+        {% if plan.status != 'FAIL' and plan.status != 'SUCCESS' and plan.status != 'CONFIRM'%}
+        <button onclick='plan_confirm(request_POST)'
+            class="float-right w-32 p-2 m-2 rounded bg-blue-500 text-white text-center text-xl">
+            계획 승인
+        </button>
+        {% endif %}
+
+        {% if plan.status == 'COMPLETE' %}
+        <a href="#" class="float-right w-32 p-2 m-2 rounded bg-red-500 text-white text-center text-xl">
+            계획 반려
+        </a>
+        {% endif %}
+
     </div>
     {% endif %}
 

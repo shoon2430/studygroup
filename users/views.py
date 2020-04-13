@@ -44,15 +44,11 @@ class signupView(FormView):
     def form_valid(self, form):
 
         form.save()
-
         email = form.cleaned_data.get("email")
         password = form.cleaned_data.get("password1")
-        print(email, password)
 
         user = authenticate(self.request, username=email, password=password)
-        print(user)
         if user is not None:
-            print("succcess")
             login(self.request, user)
 
         return HttpResponseRedirect(self.get_success_url())

@@ -2,41 +2,25 @@
 
 
 {% block page_name %}
-<title>Group Detail</title>
+Group | Detail
 {% endblock page_name %}
 
 {% block script %}
 <script>
 
-    const POST = () => {
-        const urls = "http://localhost:8000/";
-        const opts = {
-            method: 'POST',
-            body: '{longUrl:"' + urls + '"}',
-            cache: 'no-cache',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            redirect: 'follow'
-        };
-        return opts;
-    }
+    const join_or_exit_group = (func,status) => {
 
+        {% if request.user.is_authenticated  %}
+            const url = "{%url 'groups:join-group' group.pk %}";
+            const massge = status == "JOIN" ? "그룹에 참여하시겠습니까?" : "그룹을 나가겠습니까?";
+            
+        {% else %}
+            const url = "{%url 'groups:join-group' group.pk %}";
+            const massge = "로그인후 가능합니다.";
 
+        {% endif %}
 
-    const join_or_exit_group = (status) => {
-        const massge = status == "JOIN" ? "그룹에 참여하시겠습니까?" : "그룹을 나가겠습니까?";
-        if (confirm(massge)) {
-            opts = POST();
-
-            fetch("{%url 'groups:join-group' group.pk %}", opts)
-                .then(function (response) {
-
-                    if (response.redirected) {
-                        window.location.href = response.url;
-                    }
-                });
-        }
+        func(url,massge);
     }
 
 </script>
@@ -46,27 +30,40 @@
 {% block content %}
 <div class="group_detail container lg:w-8/12 md:w-1/2 xl:w-2/4 mx-auto my-10 flex flex-col p-6 mt-32">
     <div class="header flex">
-        <span class="title border border-gray-400 w-10/12 p-6">
+        <span class="title border border-gray-400 w-10/12 p-6 text-2xl">
             {{group.title}}
         </span>
-        <span class="leader border border-gray-400  w-2/12 p-6  text-center ml-2">
-            {{group.leader}}
+        <span class="user border border-gray-400  w-2/12 p-1  item-center ml-2 ">
+            <div class="rounded w-full h-full text-center p-6 font-semibold text-white text-l bg-teal-400  ">
+                <h2 class="mt-1">
+                    {{group.leader}}
+                </h2>
+            </div>
+
         </span>
     </div>
-    <div class="notice border border-gray-400 mx-auto  w-full p-6 mt-3 h-56">
-        <h2>{{group.notice}}</h2>
+    <div class="notice border border-gray-400 mx-auto  w-full p-6 mt-3 h-56 text-lg ">
+        <h2>{{group.notice|linebreaks}}</h2>
     </div>
     <div class="contents border border-gray-400 mx-auto w-full p-6 mt-3" style="height:400px">
-        <h2>{{group.contents}}</h2>
+        <h2>{{group.contents|linebreaks}}</h2>
 
     </div>
 
     <div class="mt-4 ">
         {% if join %}
+        {% if group.leader == request.user %}
+        <button id="joinGroup" class="w-40 text-center float-right p-2 m-1 rounded bg-teal-500 text-white text-xl"
+            onclick="location.href='{% url "groups:update-group" group.pk %}'">
+            그룹 수정하기
+        </button>
+        {% else %}
         <button id="joinGroup" class="w-40 text-center float-right p-2 m-1 rounded bg-red-500 text-white text-xl"
-            onclick="join_or_exit_group('EXIT')">
+            onclick="join_or_exit_group(request_POST,'EXIT')">
             그룹 나가기
         </button>
+        {% endif %}
+        
         <button id="createPlan" class="w-40 text-center float-right p-2 m-1 rounded bg-indigo-500 text-white text-xl"
             onclick="location.href='{% url "groups:plan-create" group.pk %}'">
             계획 등록하기
@@ -75,7 +72,7 @@
 
         {%if group.get_user_count != group.max_group_count%}
         <button id="joinGroup" class="w-40 text-center float-right p-2 m-1 rounded bg-red-500 text-white text-xl"
-            onclick="join_or_exit_group('JOIN')">
+            onclick="join_or_exit_group(request_POST,'JOIN')">
             그룹 참여하기
         </button>
         {%endif%}
@@ -100,7 +97,7 @@
                 <div class="detial max-w-full flex items-center justify-between">
                     <div class="p-2 bg-gray-100 font-bold text-lg">{{plan.user.username}}</div>
                     <div class="flex">
-                        {% if plan.status == ENROLLMENT %}
+                        {% if plan.status == 'ENROLLMENT' %}
                         <div
                             class="border border-gray400 p-1 bg-blue-400 rounded-lg text-gray-100 text-center h-8 w-16 text-sm">
                             등록</div>

@@ -14,7 +14,7 @@ class GroupList(ListView):
     context_object_name = "groups"
     paginate_by = "10"
     paginate_orphans = "5"
-    ordering = "created"
+    ordering = "-created"
 
 
 class GroupDetail(DetailView):
@@ -57,17 +57,49 @@ class createGroup(FormView):
         return HttpResponseRedirect(self.get_success_url())
 
 
+class updateGroup(UpdateView):
+    model = group_model.Group
+    template_name = "groups/group_update.html"
+    form_class = group_form.updateGroupForm
+    success_url = reverse_lazy("core:home")
+
+
 @csrf_exempt
 def join_or_exit_Group(request, pk):
 
     if request.method == "POST":
+        if request.user.is_authenticated:
+            group = group_model.Group.objects.get(pk=pk)
 
-        group = group_model.Group.objects.get(pk=pk)
+            for user in group.users.all():
+                if user == request.user:
 
-        for user in group.users.all():
-            if user == request.user:
-                group.users.remove(request.user)
-                return HttpResponseRedirect(reverse("core:home"))
+                    plan_model.Plan.objects.filter(group=group, user=user).delete()
+                    group.users.remove(request.user)
+                    return HttpResponseRedirect(reverse("core:home"))
 
-        group.users.add(request.user)
-        return HttpResponseRedirect(reverse("groups:detail", args=(pk,)))
+            group.users.add(request.user)
+            return HttpResponseRedirect(reverse("groups:detail", args=(pk,)))
+        else:
+            next_url = reverse("groups:detail", args=(pk,))
+            return HttpResponseRedirect(reverse("user:login") + "?next=" + next_url)
+
+
+class MyGroupList(ListView):
+    model = group_model.Group
+    template_name = "groups/mygroup_list.html"
+    context_object_name = "groups"
+    paginate_by = "10"
+    paginate_orphans = "5"
+    ordering = "-created"
+
+    def get_queryset(self):
+        qs_groups = super(MyGroupList, self).get_queryset()
+        my = self.request.user
+        qs_groups = qs_groups.filter(users=my)
+
+        pk = int(self.request.GET.get("leader"))
+
+        if pk and pk == my.pk:
+            qs_groups = qs_groups.filter(leader=my)
+        return qs_groups

@@ -7,7 +7,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static "css/styles.css" %}">
-    {% block page_name %} {% endblock page_name %}
+    <title>
+        {% block page_name %}
+        {% endblock page_name %}
+    </title>
+
+
+    <script>
+        const POST = () => {
+            const urls = "http://localhost:8000/";
+            const opts = {
+                method: 'POST',
+                body: '{longUrl:"' + urls + '"}',
+                cache: 'no-cache',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                redirect: 'follow'
+            };
+            return opts;
+        }
+
+        const request_POST = (url, massage) => {
+            if (confirm(massage)) {
+                opts = POST();
+
+                fetch(url, opts)
+                    .then(function (response) {
+                        if (response.redirected) {
+                            window.location.href = response.url;
+                        }
+                    });
+            }
+        }
+    </script>
 
     {% block script %}
 
