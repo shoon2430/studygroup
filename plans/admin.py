@@ -13,6 +13,7 @@ class FeedbackAdmin(admin.ModelAdmin):
         "user",
         "title",
         "contents_for_plan",
+        "rating",
     )
 
 

@@ -4,7 +4,20 @@
 Plan | Update
 {% endblock page_title %}
 
+{% block script %}
+<script>
 
+    const confirm_complete = (func) => {
+        const massge = "결과보고를 제출 하시겠습니까? \n제출 후 수정은 불가능 합니다.";
+        const url = "{%url 'groups:plan-change-status' plan.group.pk plan.pk%}";
+        const data = {
+            "next_status": "COMPLETE"
+        };
+        func(url, massge, data);
+    }
+
+</script>
+{% endblock script %}
 
 {% block content %}
 
@@ -14,25 +27,40 @@ Plan | Update
     <form class="lg:w-11/12 md:w-1/2 xl:w-11/12" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
-        <div class="{{form.title_for_plan.name}} ">
-            <span class="bg-blue-500 rounded-t-lg p-2 text-gray-100">제목</span>
-            <span>{{form.title_for_plan}}</span>
+        <div class="{{form.title_for_plan.name}}">
+            <div class="bg-blue-400 rounded-t-lg p-2 text-gray-100">제목</div>
+            <div>{{form.title_for_plan}}</div>
         </div>
         <div class="{{form.contents_for_plan.name}} mt-5">
-            <span class="bg-blue-500 rounded-t-lg p-2 text-gray-100">계획 내용</span>
-            <span>{{form.contents_for_plan}}</span>
+            <div class="bg-blue-400 rounded-t-lg p-2 text-gray-100">계획 내용</div>
+            <div>{{form.contents_for_plan}}</div>
         </div>
 
         <div class="{{form.title_for_result.name}} mt-5">
-            <span class="bg-blue-500 rounded-t-lg p-2 text-gray-100">결과 보고 제목</span>
-            <span>{{form.title_for_result}}</span>
+            <div class="bg-indigo-500 rounded-t-lg p-2 text-gray-100">결과 보고 제목</div>
+            <div>{{form.title_for_result}}</div>
         </div>
         <div class="{{form.contents_for_result.name}} mt-5">
-            <span class="bg-blue-500 rounded-t-lg p-2 text-gray-100">결과 보고 내용</span>
-            <span>{{form.contents_for_result}}</span>
+            <div class="bg-indigo-500 rounded-t-lg p-2 text-gray-100">결과 보고 내용</div>
+            <div>{{form.contents_for_result}}</div>
         </div>
 
-        <button class="btn bg-indigo-500 mt-8 text-white">계획 수정하기</button>
+        <div class="flex -mt-4">
+            {% if plan.status == 'CONFIRM' %}
+            <span class="flex-1 m-1 p-1 rounded">
+                <button class="btn bg-green-500 mt-8 text-white text-xl">임시 저장</button>
+            </span>
+            <span class="flex-1 m-1 p-1 rounded">
+                <button onclick="confirm_submit(request_POST)" class="btn bg-indigo-500 mt-8 text-white text-xl">
+                    결과보고 제출
+                </button>
+            </span>
+            {% else%}
+            <span>
+                <button class="btn bg-indigo-500 mt-8 text-white text-xl">계획 수정하기</button>
+            </span>
+            {% endif %}
+        </div>
     </form>
 
 

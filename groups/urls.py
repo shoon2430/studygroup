@@ -28,7 +28,12 @@ urlpatterns = [
     ),
     path(
         "<int:group_pk>/plan/<int:plan_pk>/confirm/",
-        plan_views.confirmPlan,
-        name="plan-confirm",
+        plan_views.change_plan_status,
+        name="plan-change-status",
+    ),
+    path(
+        "<int:group_pk>/plan/<int:plan_pk>/feedback/",
+        plan_views.createFeedback.as_view(),
+        name="plan-feedback",
     ),
 ]

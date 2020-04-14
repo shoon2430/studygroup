@@ -1,13 +1,15 @@
 
+import json
+
 from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render ,reverse, redirect, get_object_or_404
-from . import models as plan_models
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, FormView, CreateView, DeleteView, UpdateView
+from django.utils.decorators import method_decorator
 
-from .forms import createPlanForm, updatePlanForm
 
+from .forms import createPlanForm, updatePlanForm, creatFeedbackForm
 from groups import models as group_models
 from . import models as plan_models
 
@@ -67,20 +69,25 @@ def deletePlan(request,group_pk, plan_pk):
 
 
 @csrf_exempt
-def confirmPlan(request,group_pk, plan_pk):
+def change_plan_status(request,group_pk, plan_pk):
 
     if request.method == "POST":
         try:
             myplan = plan_models.Plan.objects.get(pk=plan_pk)
-            status = myplan.status
-            
-            if status == "ENROLLMENT":
-                myplan.status = "CONFIRM"
-            elif status == "COMPLETE":
-                myplan.status = "SUCCESS"
-            
-            myplan.save()
+
+            next_status = json.loads(request.body.decode("utf-8")).get("next_status")
+            myplan.set_status_change(next_status)
+
+            # if next_status == "CONFIRM":
             return HttpResponseRedirect(reverse("groups:plan-detail", args=(group_pk,plan_pk,))) 
+            # else :
+            #     return redirect(reverse('groups:plan-update', args=(group_pk,plan_pk,)))
 
         except plan_models.Plan.DoesNotExist:
             return redirect(reverse('core:home'))
+
+
+class createFeedback(FormView):
+    template_name = "feedbacks/feedback_create.html"
+    form_class = creatFeedbackForm
+    

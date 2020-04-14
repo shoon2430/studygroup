@@ -98,8 +98,8 @@ class MyGroupList(ListView):
         my = self.request.user
         qs_groups = qs_groups.filter(users=my)
 
-        pk = int(self.request.GET.get("leader"))
+        pk = self.request.GET.get("leader")
 
-        if pk and pk == my.pk:
+        if pk and pk == str(my.pk):
             qs_groups = qs_groups.filter(leader=my)
         return qs_groups

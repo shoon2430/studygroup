@@ -27,6 +27,14 @@ class createPlanForm(forms.ModelForm):
 
 
 class updatePlanForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(updatePlanForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, "instance", None)
+
+        if instance.status == "CONFIRM":
+            self.fields["title_for_plan"].widget.attrs["readonly"] = True
+            self.fields["contents_for_plan"].widget.attrs["readonly"] = True
+
     class Meta:
         model = plan_models.Plan
         fields = [
@@ -54,3 +62,21 @@ class updatePlanForm(forms.ModelForm):
         plan.user = user
         plan.group = group
         plan.save()
+
+
+class creatFeedbackForm(forms.ModelForm):
+    class Meta:
+        model = plan_models.Feedback
+        fields = [
+            "title",
+            "contents_for_plan",
+            "rating",
+        ]
+
+        widgets = {
+            "title": forms.TextInput(attrs={"placeholder": "title"}),
+            "contents_for_plan": forms.Textarea(attrs={"placeholder": "contents"}),
+            "rating": forms.TextInput(attrs={"placeholder": "result title"}),
+            "contents_for_result": forms.Select(),
+        }
+

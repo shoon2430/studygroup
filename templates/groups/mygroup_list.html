@@ -15,6 +15,7 @@ My Groups
 
 <div class="container mx-auto pb-10">
 
+    {% if groups %}
     <div class="grid mx-16 mt-40">
         {% for group in groups%}
         <a class="list-item flex my-3" href="{% url 'groups:detail' group.pk%}">
@@ -106,6 +107,9 @@ My Groups
             </ul>
         </div>
     </div>
+    {%else%}
+    {% include 'partials/no_list_page.html' with text="현재 참여중인 그룹이 없습니다." %}
+    {% endif %}
 </div>
 
 {% endblock content %}
