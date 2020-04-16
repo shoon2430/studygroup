@@ -6,15 +6,15 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render ,reverse, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, FormView, CreateView, DeleteView, UpdateView
-from django.utils.decorators import method_decorator
-
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 from .forms import createPlanForm, updatePlanForm, creatFeedbackForm
 from groups import models as group_models
 from . import models as plan_models
 
 
-class PlanDetail(DetailView):
+class PlanDetail(LoginRequiredMixin, DetailView):
     model = plan_models.Plan
 
     def get_object(self, queryset=None):
@@ -22,11 +22,13 @@ class PlanDetail(DetailView):
         return plan
 
 
-class createPlan(FormView):
+class createPlan(LoginRequiredMixin, FormView):
+    '''
+    Create Plan 
+    '''
     template_name = "plans/plan_create.html"
     form_class = createPlanForm
     success_url = reverse_lazy("core:home")
-
 
     def form_valid(self, form):
         
@@ -38,7 +40,8 @@ class createPlan(FormView):
 
         return HttpResponseRedirect(reverse("groups:detail", args=(pk,)))
 
-class updatePlan(UpdateView):
+
+class updatePlan(LoginRequiredMixin, UpdateView):
     template_name = "plans/plan_update.html"
     form_class = updatePlanForm
 
@@ -56,8 +59,10 @@ class updatePlan(UpdateView):
 
         return HttpResponseRedirect(reverse("groups:detail", args=(pk,)))
 
+
 @csrf_exempt
-def deletePlan(request,group_pk, plan_pk):
+@login_required
+def deletePlan(request, group_pk, plan_pk):
     
     if request.method == "POST":
         try:
@@ -69,7 +74,8 @@ def deletePlan(request,group_pk, plan_pk):
 
 
 @csrf_exempt
-def change_plan_status(request,group_pk, plan_pk):
+@login_required
+def change_plan_status(request, group_pk, plan_pk):
 
     if request.method == "POST":
         try:
@@ -87,7 +93,21 @@ def change_plan_status(request,group_pk, plan_pk):
             return redirect(reverse('core:home'))
 
 
-class createFeedback(FormView):
+class createFeedback(LoginRequiredMixin, FormView):
     template_name = "feedbacks/feedback_create.html"
     form_class = creatFeedbackForm
     
+    def form_valid(self, form):
+        
+        user = self.request.user
+
+        group_pk = self.kwargs['group_pk']
+        plan_pk = self.kwargs['plan_pk']
+
+        plan = plan_models.Plan.objects.get(pk=plan_pk)
+        plan.set_status_change("SUCCESS")
+        plan.save()
+        form.save(user=user, plan=plan)
+
+        return HttpResponseRedirect(reverse("groups:plan-detail", args=(group_pk,plan_pk,))) 
+        

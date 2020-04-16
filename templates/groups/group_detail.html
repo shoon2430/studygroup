@@ -8,19 +8,19 @@ Group | Detail
 {% block script %}
 <script>
 
-    const join_or_exit_group = (func,status) => {
+    const join_or_exit_group = (func, status) => {
 
-        {% if request.user.is_authenticated  %}
-            const url = "{%url 'groups:join-group' group.pk %}";
-            const massge = status == "JOIN" ? "그룹에 참여하시겠습니까?" : "그룹을 나가겠습니까?";
-            
+        {% if request.user.is_authenticated %}
+        const url = "{%url 'groups:join-group' group.pk %}";
+        const massge = status == "JOIN" ? "그룹에 참여하시겠습니까?" : "그룹을 나가겠습니까?";
+
         {% else %}
-            const url = "{%url 'groups:join-group' group.pk %}";
-            const massge = "로그인후 가능합니다.";
+        const url = "{%url 'groups:join-group' group.pk %}";
+        const massge = "로그인후 가능합니다.";
 
         {% endif %}
 
-        func(url,massge);
+        func(url, massge);
     }
 
 </script>
@@ -63,7 +63,7 @@ Group | Detail
             그룹 나가기
         </button>
         {% endif %}
-        
+
         <button id="createPlan" class="w-40 text-center float-right p-2 m-1 rounded bg-indigo-500 text-white text-xl"
             onclick="location.href='{% url "groups:plan-create" group.pk %}'">
             계획 등록하기
@@ -137,8 +137,6 @@ Group | Detail
                         bg-indigo-400 
                         {%elif plan.status == 'COMPLETE'%}
                         bg-blue-400 
-                        {%elif plan.status == 'FAIL'%}
-                        bg-red-500 
                         {%elif plan.status == 'SUCCESS'%}
                         bg-green-400 
                         {%endif%}

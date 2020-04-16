@@ -2,13 +2,15 @@ from django.db import models
 from core import models as core_model
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+
 class Feedback(core_model.TimeStampModel):
+
     plan = models.ForeignKey("Plan", on_delete=models.CASCADE)
     user = models.ForeignKey("users.User", on_delete=models.CASCADE)
     title = models.CharField(blank=False, max_length=150)
     contents_for_plan = models.TextField(blank=False,)
     rating = models.IntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(5)]
+        default=1, validators=[MinValueValidator(1), MaxValueValidator(5)]
     )
 
 
@@ -29,14 +31,12 @@ class Plan(core_model.TimeStampModel):
     STATUS_ENROLLMENT = "ENROLLMENT"
     STATUS_CONFIRM = "CONFIRM"
     STATUS_COMPLETE = "COMPLETE"
-    STATUS_FAIL = "FAIL"
     STATUS_SUCCESS = "SUCCESS"
 
     STATUS_LIST = (
         (STATUS_ENROLLMENT, "Enrollment"),
         (STATUS_CONFIRM, "Confirm"),
         (STATUS_COMPLETE, "Complete"),
-        (STATUS_FAIL, "Fail"),
         (STATUS_SUCCESS, "Success"),
     )
 
@@ -72,8 +72,6 @@ class Plan(core_model.TimeStampModel):
             self.status = "CONFIRM"
         elif next_status == "COMPLETE":
             self.status = "COMPLETE"
-        elif next_status == "FAIL":
-            self.status = "FAIL"
         elif next_status == "SUCCESS":
             self.status = "SUCCESS"
 

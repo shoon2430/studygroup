@@ -45,7 +45,7 @@ class Command(BaseCommand):
                 "end_day": lambda x: datetime.now()
                 + timedelta(days=random.randint(3, 25)),
                 "status": lambda x: random.choice(
-                    ["ENROLLMENT", "CONFIRM", "COMPLETE", "FAIL", "SUCCESS"]
+                    ["ENROLLMENT", "CONFIRM", "COMPLETE", "SUCCESS"]
                 ),
             },
         )

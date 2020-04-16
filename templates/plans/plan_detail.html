@@ -1,5 +1,5 @@
 {% extends "partials/base.html" %}
-
+{% load static %}
 
 {% block page_name %}
 Plan | Detail
@@ -7,43 +7,7 @@ Plan | Detail
 
 
 {% block script %}
-<script>
-
-    const plan_delete = (func) => {
-        url = "{%url 'groups:plan-delete' plan.group.pk plan.pk %}";
-        massage = "계획을 삭제하시겠습니까?";
-        func(url, massage);
-    }
-
-    const plan_confirm = (func) => {
-        url = "{%url 'groups:plan-change-status' plan.group.pk plan.pk %}";
-        massage = "계획을 승인하시겠습니까?";
-        data = {
-            "next_status": "CONFIRM"
-        };
-        func(url, massage, data);
-    }
-
-    const confirm_fail = (func) => {
-        const massge = "결과를 반려 하시겠습니까?";
-        const url = "{%url 'groups:plan-change-status' plan.group.pk plan.pk%}";
-        const data = {
-            "next_status": "FAIL"
-        };
-        func(url, massge, data);
-    }
-
-    const confirm_success = (func) => {
-        const massge = "결과를 최종 승인하시겠습니까?";
-        const url = "{%url 'groups:plan-feedback' plan.group.pk plan.pk%}";
-        const data = {
-            "next_status": "SUCCESS"
-        };
-        func(url, massge, data);
-    }
-
-
-</script>
+<script src="{% static "js/feedback.js" %}"></script>
 {% endblock script %}
 
 {% block content %}
@@ -65,8 +29,6 @@ Plan | Detail
             bg-indigo-400 
             {%elif plan.status == 'COMPLETE'%}
             bg-blue-400 
-            {%elif plan.status == 'FAIL'%}
-            bg-red-500 
             {%elif plan.status == 'SUCCESS'%}
             bg-green-400 
             {%endif%}
@@ -89,7 +51,7 @@ Plan | Detail
     <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100" style="height:400px">
         <h2>{{plan.contents_for_plan|linebreaks }}</h2>
     </div>
-    {% if plan.status == 'COMPLETE' or plan.status == 'FAIL' or plan.status == 'SUCCESS'%}
+    {% if plan.status == 'COMPLETE' or plan.status == 'SUCCESS'%}
     <div class="mt-6 p-3 text-white text-xl bg-purple-500">
         <h2 class="ml-3">계획 결과 보고</h2>
     </div>
@@ -114,11 +76,6 @@ Plan | Detail
             class="float-right w-32 p-2 m-2 w-48 rounded bg-teal-500 text-white text-center text-xl">
             결과 보고 작성
         </a>
-        {% elif plan.status == 'FAIL' %}
-        <a href="{%url 'groups:plan-update' plan.group.pk plan.pk %}"
-            class="float-right w-32 p-2 m-2 w-48 rounded bg-indigo-500 text-white text-center text-xl">
-            결과 보고 수정
-        </a>
         {%elif plan.status == 'ENROLLMENT' %}
 
         <a href="{%url 'groups:plan-update' plan.group.pk plan.pk %}"
@@ -130,21 +87,10 @@ Plan | Detail
     {% else%}
 
     <div>
-        {% if plan.status != 'FAIL' and plan.status != 'SUCCESS' and plan.status != 'CONFIRM'%}
+        {% if plan.status != 'SUCCESS' and plan.status != 'CONFIRM'%}
         <button onclick='confirm_success(request_GET)'
             class="float-right w-32 p-2 m-2 rounded bg-blue-500 text-white text-center text-xl">
             계획 승인
-        </button>
-        <a href="{% url 'groups:plan-feedback' plan.group.pk plan.pk%}"
-            class="float-right w-32 p-2 m-2 rounded bg-blue-500 text-white text-center text-xl">
-            TEST
-        </a>
-        {% endif %}
-
-        {% if plan.status == 'COMPLETE' %}
-        <button onclick="confirm_fail(request_GET)"
-            class="float-right w-32 p-2 m-2 rounded bg-red-500 text-white text-center text-xl">
-            계획 반려
         </button>
         {% endif %}
 

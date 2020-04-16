@@ -74,9 +74,20 @@ class creatFeedbackForm(forms.ModelForm):
         ]
 
         widgets = {
-            "title": forms.TextInput(attrs={"placeholder": "title"}),
-            "contents_for_plan": forms.Textarea(attrs={"placeholder": "contents"}),
-            "rating": forms.TextInput(attrs={"placeholder": "result title"}),
+            "title": forms.TextInput(attrs={"placeholder": "feedback title"}),
+            "contents_for_plan": forms.Textarea(
+                attrs={"placeholder": "feedback contents"}
+            ),
+            "rating": forms.TextInput(attrs={"hidden": "true"}),
             "contents_for_result": forms.Select(),
         }
 
+    def save(self, *args, **kwargs):
+        feedback = super().save(commit=False)
+
+        user = kwargs["user"]
+        plan = kwargs["plan"]
+
+        feedback.user = user
+        feedback.plan = plan
+        feedback.save()

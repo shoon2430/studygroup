@@ -1,1 +1,55 @@
-123131
+{% extends "partials/base.html" %}
+{% load static %}
+
+{% block page_title %}
+Plan | Create
+{% endblock page_title %}
+
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static "css/custom.css" %}">
+{% endblock custom_css %}
+
+{% block script %}
+<script src="{% static "js/feedback.js" %}"></script>
+{% endblock script %}
+
+
+{% block content %}
+<div
+    class="container lg:w-8/12 md:w-1/2 xl:w-5/12 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400 mt-32">
+
+    <form class="lg:w-11/12 md:w-1/2 xl:w-11/12" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="bg-blue-500 p-4 text-gray-100 text-center">
+            <p>계획 최종 승인전 계획에 대한 피드백을 작성하여 주세요.</p>
+        </div>
+        <div class="{{form.title_for_plan.name}} mt-2 ">
+            <span>{{form.title}}</span>
+        </div>
+        <div class="{{form.contents_for_plan.name}} mt-2">
+            <span>{{form.contents_for_plan}}</span>
+        </div>
+
+        <div class="starRev text-center mt-2">
+            <span class="starR m-1">별1</span>
+            <span class="starR m-1">별2</span>
+            <span class="starR m-1">별3</span>
+            <span class="starR m-1">별4</span>
+            <span class="starR m-1">별5</span>
+        </div>
+
+        <div class="{{form.contents_for_plan.name}}">
+            <span>{{form.rating}}</span>
+        </div>
+        <div class="{{form.status.name}}">
+            <span>{{form.status}}</span>
+        </div>
+
+        <button class="btn bg-indigo-500 mt-5 text-white">계획 최종 승인하기</button>
+    </form>
+
+
+</div>
+
+{% endblock content %}

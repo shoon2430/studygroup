@@ -7,6 +7,8 @@ from django.views.generic import ListView, DetailView, FormView, UpdateView
 from . import models as group_model
 from . import forms as group_form
 from plans import models as plan_model
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 
 class GroupList(ListView):
@@ -17,7 +19,7 @@ class GroupList(ListView):
     ordering = "-created"
 
 
-class GroupDetail(DetailView):
+class GroupDetail(LoginRequiredMixin, DetailView):
     model = group_model.Group
 
     def get_context_data(self, **kwargs):
@@ -36,7 +38,7 @@ class GroupDetail(DetailView):
         return context
 
 
-class createGroup(FormView):
+class createGroup(LoginRequiredMixin, FormView):
     template_name = "groups/group_create.html"
     form_class = group_form.createGroupForm
     success_url = reverse_lazy("core:home")
@@ -57,7 +59,7 @@ class createGroup(FormView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class updateGroup(UpdateView):
+class updateGroup(LoginRequiredMixin, UpdateView):
     model = group_model.Group
     template_name = "groups/group_update.html"
     form_class = group_form.updateGroupForm
@@ -65,6 +67,7 @@ class updateGroup(UpdateView):
 
 
 @csrf_exempt
+@login_required
 def join_or_exit_Group(request, pk):
 
     if request.method == "POST":
@@ -85,7 +88,7 @@ def join_or_exit_Group(request, pk):
             return HttpResponseRedirect(reverse("user:login") + "?next=" + next_url)
 
 
-class MyGroupList(ListView):
+class MyGroupList(LoginRequiredMixin, ListView):
     model = group_model.Group
     template_name = "groups/mygroup_list.html"
     context_object_name = "groups"
