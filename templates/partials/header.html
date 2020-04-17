@@ -1,20 +1,21 @@
-<header class="container max-w-full flex items-center justify-between px-5 h-20 border-b fixed bg-white inset-0">
-    <a class="p-4 text-center text-l font-semibold text-gray-700" href="/">Home</a>
+<header
+    class="container max-w-full flex items-center justify-between px-4 h-12 border-b fixed bg-white inset-0 bg-gray-800">
+    <a class="p-4 -mt-1 text-center text-l font-semibold text-white text-2xl" href="/">Study Group</a>
 
     {% if user.is_authenticated %}
     <div class="float-right">
-        <a href="{% url 'groups:my-groups' %}?leader={{request.user.pk}}">
-            <span class="p-4  bg-blue-100 rounded text-center text-l ml-2 font-semibold text-gray-700">
+        <a href="{% url 'groups:manages' %}">
+            <span class="p-4 rounded text-center text-l ml-2 font-semibold text-gray-400 text-lg hover:text-white">
                 <b class="ml-1"></b>나의 그룹 보기</b>
             </span>
         </a>
         <a href="#">
-            <span class="p-4  bg-blue-100 rounded text-center text-l ml-2 font-semibold text-gray-700">
-                <b class="ml-1"></b>{{user.username}}</b>
+            <span class="p-4 rounded text-center text-l ml-2 font-semibold text-gray-400 text-lg hover:text-white">
+                <b class="ml-1"></b>{{user.username}}(님)</b>
             </span>
         </a>
         <a href="{% url 'user:logout' %}">
-            <span class="p-4  bg-blue-100 rounded text-center text-l ml-2 font-semibold text-gray-700">
+            <span class="p-4 rounded text-center text-l ml-2 font-semibold text-gray-400 text-lg hover:text-white">
                 <b class="ml-1">Logout</b>
             </span>
         </a>
@@ -22,12 +23,12 @@
     {% else %}
     <div>
         <a href="{% url 'users:login' %}">
-            <span class="p-5  bg-blue-100 rounded text-center text-l font-semibold text-gray-700">
+            <span class="p-5 rounded text-center text-l font-semibold text-gray-400 text-lg hover:text-white">
                 <b class="ml-1">Login</b>
             </span>
         </a>
         <a href="{% url 'users:signup' %}">
-            <span class=" p-5 bg-blue-100 rounded text-center text-l ml-2 font-semibold text-gray-700">
+            <span class=" p-5 rounded text-center text-l ml-2 font-semibold text-gray-400 text-lg hover:text-white">
                 <b class="ml-1">Signup</b>
             </span>
         </a>

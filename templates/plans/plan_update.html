@@ -1,22 +1,12 @@
 {% extends "partials/base.html" %}
+{% load static %}
 
 {% block page_title %}
 Plan | Update
 {% endblock page_title %}
 
 {% block script %}
-<script>
-
-    const confirm_complete = (func) => {
-        const massge = "결과보고를 제출 하시겠습니까? \n제출 후 수정은 불가능 합니다.";
-        const url = "{%url 'groups:plan-change-status' plan.group.pk plan.pk%}";
-        const data = {
-            "next_status": "COMPLETE"
-        };
-        func(url, massge, data);
-    }
-
-</script>
+<script src="{% static "js/plan.js" %}"></script>
 {% endblock script %}
 
 {% block content %}
@@ -36,6 +26,7 @@ Plan | Update
             <div>{{form.contents_for_plan}}</div>
         </div>
 
+        {% if plan.status != "ENROLLMENT" %}
         <div class="{{form.title_for_result.name}} mt-5">
             <div class="bg-indigo-500 rounded-t-lg p-2 text-gray-100">결과 보고 제목</div>
             <div>{{form.title_for_result}}</div>
@@ -44,6 +35,8 @@ Plan | Update
             <div class="bg-indigo-500 rounded-t-lg p-2 text-gray-100">결과 보고 내용</div>
             <div>{{form.contents_for_result}}</div>
         </div>
+        {% endif %}
+
 
         <div class="flex -mt-4">
             {% if plan.status == 'CONFIRM' %}
@@ -51,12 +44,14 @@ Plan | Update
                 <button class="btn bg-green-500 mt-8 text-white text-xl">임시 저장</button>
             </span>
             <span class="flex-1 m-1 p-1 rounded">
-                <button onclick="confirm_submit(request_POST)" class="btn bg-indigo-500 mt-8 text-white text-xl">
+                <button onclick='confirm_complete(
+                    request_POST, " {%url 'groups:plan-change-status' plan.group.pk plan.pk %}")'
+                    class="btn bg-indigo-500 mt-8 text-white text-xl">
                     결과보고 제출
                 </button>
             </span>
             {% else%}
-            <span>
+            <span class="flex-1">
                 <button class="btn bg-indigo-500 mt-8 text-white text-xl">계획 수정하기</button>
             </span>
             {% endif %}

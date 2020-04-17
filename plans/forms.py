@@ -79,7 +79,6 @@ class creatFeedbackForm(forms.ModelForm):
                 attrs={"placeholder": "feedback contents"}
             ),
             "rating": forms.TextInput(attrs={"hidden": "true"}),
-            "contents_for_result": forms.Select(),
         }
 
     def save(self, *args, **kwargs):

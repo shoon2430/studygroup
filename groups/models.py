@@ -44,8 +44,25 @@ class Group(core_model.TimeStampModel):
         choices=PLANNING_UNIT, default="week", max_length=10, blank=False, null=False,
     )
 
+    photo = models.ImageField(blank=True, upload_to="group/group_photo")
+
     def __str__(self):
         return self.title
 
     def get_user_count(self):
         return self.users.count()
+
+    def get_photo(self):
+        return self.photo.url
+
+    def get_plan_count(self):
+        return self.plans.filter(user=self.leader).count()
+
+    def get_all_feedback_count(self):
+
+        plans = self.plans.filter(user=self.leader)
+        feedback_count = 0
+        for plan in plans:
+            feedback_count += plan.get_feedbacks()
+
+        return feedback_count

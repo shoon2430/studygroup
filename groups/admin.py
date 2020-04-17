@@ -8,7 +8,7 @@ class GroupAdmin(admin.ModelAdmin):
     fieldsets = (
         (
             "Basic Info",
-            {"fields": ("title", "leader", "category", "notice", "contents",)},
+            {"fields": ("photo", "title", "leader", "category", "notice", "contents",)},
         ),
         ("Group Setting", {"fields": ("users", "max_group_count", "planning_unit")}),
     )

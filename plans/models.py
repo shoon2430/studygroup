@@ -5,7 +5,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Feedback(core_model.TimeStampModel):
 
-    plan = models.ForeignKey("Plan", on_delete=models.CASCADE)
+    plan = models.ForeignKey("Plan", related_name="feedbacks", on_delete=models.CASCADE)
     user = models.ForeignKey("users.User", on_delete=models.CASCADE)
     title = models.CharField(blank=False, max_length=150)
     contents_for_plan = models.TextField(blank=False,)
@@ -40,7 +40,9 @@ class Plan(core_model.TimeStampModel):
         (STATUS_SUCCESS, "Success"),
     )
 
-    group = models.ForeignKey("groups.Group", on_delete=models.CASCADE)
+    group = models.ForeignKey(
+        "groups.Group", related_name="plans", on_delete=models.CASCADE
+    )
     user = models.ForeignKey("users.User", on_delete=models.CASCADE)
 
     title_for_plan = models.CharField(blank=True, max_length=150)
@@ -68,11 +70,7 @@ class Plan(core_model.TimeStampModel):
         return self.group.id
 
     def set_status_change(self, next_status):
-        if next_status == "CONFIRM":
-            self.status = "CONFIRM"
-        elif next_status == "COMPLETE":
-            self.status = "COMPLETE"
-        elif next_status == "SUCCESS":
-            self.status = "SUCCESS"
+        self.status = next_status
 
-        self.save()
+    def get_feedbacks(self):
+        return self.feedbacks.count()

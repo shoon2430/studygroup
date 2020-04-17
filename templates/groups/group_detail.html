@@ -8,6 +8,11 @@ Group | Detail
 {% block script %}
 <script>
 
+    const delete_group = (func, url) => {
+        const massge = "그룹을 삭제하시겠습니까?";
+        func(url, massge);
+    }
+
     const join_or_exit_group = (func, status) => {
 
         {% if request.user.is_authenticated %}
@@ -53,7 +58,9 @@ Group | Detail
     <div class="mt-4 ">
         {% if join %}
         {% if group.leader == request.user %}
-        <button id="joinGroup" class="w-40 text-center float-right p-2 m-1 rounded bg-teal-500 text-white text-xl"
+        <button id="deleteGroup" class="w-40 text-center float-right p-2 m-1 rounded bg-red-500 text-white text-xl"
+            onclick="delete_group(request_POST, " {% url 'groups:delete-group' group.pk %}")">그룹 삭제하기 </button>
+        <button id="updateGroup" class="w-40 text-center float-right p-2 m-1 rounded bg-teal-500 text-white text-xl"
             onclick="location.href='{% url "groups:update-group" group.pk %}'">
             그룹 수정하기
         </button>
@@ -108,6 +115,14 @@ Group | Detail
                             class="border border-gray400 p-1 bg-indigo-400 rounded-lg text-gray-100 text-center h-8 w-16 text-sm">
                             수정</div>
                         <div class="p-1 ml-1"> {{plan.updated}}</div>
+
+                        {% if plan.get_feedbacks > 0 %}
+                        <div class="p-1 ml-1 bg-red-500 rounded-full w-8 text-center text-white">
+                            {{plan.get_feedbacks}}
+                        </div>
+                        {% endif %}
+
+
                         {% endif %}
                     </div>
                 </div>

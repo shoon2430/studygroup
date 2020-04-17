@@ -134,6 +134,11 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 
+MEDIA_URL = "/media/"
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
+
+
 # 기본 장고 USER 커스텀
 # https://docs.djangoproject.com/en/3.0/topics/auth/customizing/
 AUTH_USER_MODEL = "users.User"

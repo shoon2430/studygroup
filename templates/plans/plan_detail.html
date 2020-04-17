@@ -7,16 +7,20 @@ Plan | Detail
 
 
 {% block script %}
-<script src="{% static "js/feedback.js" %}"></script>
+<script src="{% static "js/plan.js" %}"></script>
 {% endblock script %}
 
 {% block content %}
 <div class="group_detail container lg:w-8/12 md:w-1/2 xl:w-2/4 mx-auto my-10 flex flex-col p-6 mt-32">
 
     <div class="header flex">
-        <span class="group border border-gray-400 text-center w-8/12 p-6 text-xl">
+
+        <a href="{% url 'groups:detail' plan.group.pk%}"
+            class="group border border-gray-400 text-center w-8/12 p-6 text-xl">
             {{plan.group}}
-        </span>
+        </a>
+
+
         <span class="user border border-gray-400  w-2/12 p-6  text-center ml-2 text-xl">
             {{plan.user.first_name}}
         </span>
@@ -67,7 +71,7 @@ Plan | Detail
     {% if plan.user == request.user %}
     <div>
         <button class="float-right w-32 p-2 m-2 rounded bg-red-500 text-white text-center text-xl"
-            onclick='plan_delete(request_POST)'>
+            onclick='plan_delete(request_POST,"{%url 'groups:plan-delete' plan.group.pk plan.pk %}")'>
             계획 삭제
         </button>
 
@@ -85,12 +89,16 @@ Plan | Detail
         {% endif %}
     </div>
     {% else%}
-
     <div>
-        {% if plan.status != 'SUCCESS' and plan.status != 'CONFIRM'%}
-        <button onclick='confirm_success(request_GET)'
+        {% if plan.status == "ENROLLMENT" %}
+        <button onclick=' plan_confirm(request_POST, "{%url 'groups:plan-change-status' plan.group.pk plan.pk %}")'
             class="float-right w-32 p-2 m-2 rounded bg-blue-500 text-white text-center text-xl">
             계획 승인
+        </button>
+        {% elif plan.status == 'COMPLETE'%}
+        <button onclick=' plan_confirm(request_GET, "{%url 'groups:plan-feedback' plan.group.pk plan.pk%}")'
+            class="float-right w-48 p-2 m-2 rounded bg-blue-500 text-white text-center text-xl">
+            최종 계획 승인
         </button>
         {% endif %}
 

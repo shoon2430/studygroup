@@ -5,28 +5,24 @@
 Home
 {% endblock page_name %}
 
-{% block script %}
-<script>
 
-</script>
-{% endblock script %}
 
 {% block content %}
 
 <div class="container mx-auto pb-10">
     <div class="rounded-lg bg-gray-800 mt-32 mb-8 bg-cover bg-center mx-16"
-        style="height: 25vh; background-image:url(https://images.unsplash.com/photo-1516466723877-e4ec1d736c8a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1406&q=80)">
+        style="height: 40vh; background-image:url('static/image/main_2.jpg')">
     </div>
-    <div class="search w-auto mx-16">
+    <div class="search w-auto mx-16 -mt-5">
 
         {% if request.user.is_authenticated %}
         <a href="{% url 'groups:create-group' %}">
-            <div class="w-2/12  bg-indigo-400 text-center rounded text-white p-2 m-2 text-xl float-right">
+            <div class="w-2/12  bg-green-500 text-center rounded text-white p-2 m-2 text-xl float-right">
                 그룹 등록 하기
             </div>
         </a>
         <a href="{% url 'groups:my-groups'%}">
-            <div class="w-2/12  bg-red-400 text-center rounded text-white p-2 m-2 text-xl float-right ">
+            <div class="w-2/12  bg-blue-500 text-center rounded text-white p-2 m-2 text-xl float-right ">
                 참여중인 그룹보기
             </div>
         </a>
@@ -36,9 +32,13 @@ Home
 
     <div class="grid mx-16 mt-32">
         {% for group in groups%}
+
         <a class="list-item flex my-3" href="{% url 'groups:detail' group.pk%}">
-            <div class="flex-initial rounded w-56 h-32  bg-red-300 float-left bg-cover bg-center"
-                style="background-image:url(https://images.unsplash.com/photo-1585408871649-f8ce2d371e69?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80)">
+            <div class="flex-initial rounded w-56 h-32  bg-red-300 float-left bg-cover bg-center" {% if group.photo %}
+                style="background-image:url({{group.get_photo}})">
+                {%else%}
+                style="background-image:url('static/image/normal_image.jpg')">
+                {% endif %}
             </div>
 
             <div class="group_{{group.id}} flex-initial h-32 w-full ml-8">

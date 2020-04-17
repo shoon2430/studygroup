@@ -6,6 +6,7 @@ class createGroupForm(forms.ModelForm):
     class Meta:
         model = models.Group
         fields = [
+            "photo",
             "category",
             "title",
             "notice",
@@ -32,11 +33,11 @@ class createGroupForm(forms.ModelForm):
         group.save()
 
 
-
 class updateGroupForm(forms.ModelForm):
     class Meta:
         model = models.Group
         fields = [
+            "photo",
             "category",
             "title",
             "notice",

@@ -66,6 +66,7 @@ def deletePlan(request, group_pk, plan_pk):
     
     if request.method == "POST":
         try:
+            print("WERWER")
             plan_models.Plan.objects.get(pk=plan_pk).delete()
             return HttpResponseRedirect(reverse("groups:detail", args=(group_pk,)))
 
@@ -79,15 +80,12 @@ def change_plan_status(request, group_pk, plan_pk):
 
     if request.method == "POST":
         try:
-            myplan = plan_models.Plan.objects.get(pk=plan_pk)
+            plan = plan_models.Plan.objects.get(pk=plan_pk)
 
             next_status = json.loads(request.body.decode("utf-8")).get("next_status")
-            myplan.set_status_change(next_status)
-
-            # if next_status == "CONFIRM":
-            return HttpResponseRedirect(reverse("groups:plan-detail", args=(group_pk,plan_pk,))) 
-            # else :
-            #     return redirect(reverse('groups:plan-update', args=(group_pk,plan_pk,)))
+            plan.set_status_change(next_status)
+            plan.save()
+            return redirect(reverse("groups:plan-detail", args=(group_pk, plan_pk,))) 
 
         except plan_models.Plan.DoesNotExist:
             return redirect(reverse('core:home'))
@@ -103,11 +101,12 @@ class createFeedback(LoginRequiredMixin, FormView):
 
         group_pk = self.kwargs['group_pk']
         plan_pk = self.kwargs['plan_pk']
-
+        print(group_pk,plan_pk)
+        
         plan = plan_models.Plan.objects.get(pk=plan_pk)
         plan.set_status_change("SUCCESS")
         plan.save()
         form.save(user=user, plan=plan)
 
-        return HttpResponseRedirect(reverse("groups:plan-detail", args=(group_pk,plan_pk,))) 
+        return HttpResponseRedirect(reverse("groups:plan-detail", args=(group_pk, plan_pk,))) 
         

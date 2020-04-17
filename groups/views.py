@@ -59,6 +59,17 @@ class createGroup(LoginRequiredMixin, FormView):
         return HttpResponseRedirect(self.get_success_url())
 
 
+@csrf_exempt
+@login_required
+def deleteGroup(request, pk):
+    if request.method == "POST":
+
+        group_model.Group.objects.get(pk=pk).delete()
+        return HttpResponseRedirect(reverse("core:home"))
+
+    return HttpResponseRedirect(reverse("core:home"))
+
+
 class updateGroup(LoginRequiredMixin, UpdateView):
     model = group_model.Group
     template_name = "groups/group_update.html"
@@ -71,21 +82,17 @@ class updateGroup(LoginRequiredMixin, UpdateView):
 def join_or_exit_Group(request, pk):
 
     if request.method == "POST":
-        if request.user.is_authenticated:
-            group = group_model.Group.objects.get(pk=pk)
+        group = group_model.Group.objects.get(pk=pk)
 
-            for user in group.users.all():
-                if user == request.user:
+        for user in group.users.all():
+            if user == request.user:
 
-                    plan_model.Plan.objects.filter(group=group, user=user).delete()
-                    group.users.remove(request.user)
-                    return HttpResponseRedirect(reverse("core:home"))
+                plan_model.Plan.objects.filter(group=group, user=user).delete()
+                group.users.remove(request.user)
+                return HttpResponseRedirect(reverse("core:home"))
 
-            group.users.add(request.user)
-            return HttpResponseRedirect(reverse("groups:detail", args=(pk,)))
-        else:
-            next_url = reverse("groups:detail", args=(pk,))
-            return HttpResponseRedirect(reverse("user:login") + "?next=" + next_url)
+        group.users.add(request.user)
+        return HttpResponseRedirect(reverse("groups:detail", args=(pk,)))
 
 
 class MyGroupList(LoginRequiredMixin, ListView):
@@ -100,9 +107,19 @@ class MyGroupList(LoginRequiredMixin, ListView):
         qs_groups = super(MyGroupList, self).get_queryset()
         my = self.request.user
         qs_groups = qs_groups.filter(users=my)
+        return qs_groups
 
-        pk = self.request.GET.get("leader")
 
-        if pk and pk == str(my.pk):
-            qs_groups = qs_groups.filter(leader=my)
+class ManageGroupList(LoginRequiredMixin, ListView):
+    model = group_model.Group
+    template_name = "groups/my_group_manage.html"
+    context_object_name = "groups"
+    paginate_by = "10"
+    paginate_orphans = "5"
+    ordering = "-created"
+
+    def get_queryset(self):
+        qs_groups = super(ManageGroupList, self).get_queryset()
+        my = self.request.user
+        qs_groups = qs_groups.filter(users=my, leader=my)
         return qs_groups

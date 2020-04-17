@@ -7,7 +7,9 @@ app_name = "groups"
 urlpatterns = [
     path("create/", group_views.createGroup.as_view(), name="create-group"),
     path("mygroups/", group_views.MyGroupList.as_view(), name="my-groups"),
+    path("manages/", group_views.ManageGroupList.as_view(), name="manages"),
     path("<int:pk>/", group_views.GroupDetail.as_view(), name="detail"),
+    path("<int:pk>/delete/", group_views.deleteGroup, name="delete-group"),
     path("<int:pk>/update/", group_views.updateGroup.as_view(), name="update-group"),
     path("<int:pk>/join/", group_views.join_or_exit_Group, name="join-group"),
     path(

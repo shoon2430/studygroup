@@ -1,14 +1,13 @@
 {% extends "partials/base.html" %}
 
-{% block page_title %}
-Login
-{% endblock page_title %}
-
+{% block page_name %}
+Signup
+{% endblock page_name %}
 
 {% block content %}
 
 <div
-    class="container lg:w-5/12 md:w-1/2 xl:w-1/4 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400 mt-64">
+    class="container lg:w-5/12 md:w-1/2 xl:w-1/4 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400 mt-32">
 
     {% csrf_token %}
     {% include "mixins/auth/auth_form.html" with form=form cta="Signup" %}
