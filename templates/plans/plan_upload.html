@@ -1,0 +1,29 @@
+{% extends "partials/base.html" %}
+
+{% block page_title %}
+Plan | planUpload
+{% endblock page_title %}
+
+
+{% block content %}
+
+<div
+    class="container lg:w-8/12 md:w-1/2 xl:w-5/12 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400 mt-32">
+
+    <form class="lg:w-11/12 md:w-1/2 xl:w-11/12" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class>
+            <div class="bg-blue-500 p-4 text-gray-200 text-center">
+                <b class="text-white text-lg">계획 작성</b>
+                <b>에 필요한 파일을 올려주세요.</b>
+            </div>
+            <div class="mt-1">{{form.file}}</div>
+        </div>
+
+        <button class="btn bg-indigo-500 mt-8 text-white">계획 파일 첨부하기</button>
+    </form>
+
+
+</div>
+
+{% endblock content %}

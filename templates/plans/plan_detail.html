@@ -55,6 +55,30 @@ Plan | Detail
     <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100" style="height:400px">
         <h2>{{plan.contents_for_plan|linebreaks }}</h2>
     </div>
+    <div class="mt-6 p-3 text-white text-xl bg-indigo-500">
+        <h2 class="ml-3">첨부파일</h2>
+    </div>
+
+    {% if plan.get_planFiles %}
+    <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100">
+        {% for planFile in plan.get_planFiles %}
+
+        <a href='{{planFile.file.url}}' download>
+            <div class="flex">
+                <div class="bg-gray-300 p-3 m-2 rounded w-full hover:bg-gray-500">
+                    {{planFile.caption}}
+                </div>
+            </div>
+        </a>
+
+        {% endfor %}
+    </div>
+    {% else%}
+    <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100">
+        <span class="p-2 m-2">첨부된 파일이 없습니다.</span>
+    </div>
+    {% endif %}
+
     {% if plan.status == 'COMPLETE' or plan.status == 'SUCCESS'%}
     <div class="mt-6 p-3 text-white text-xl bg-purple-500">
         <h2 class="ml-3">계획 결과 보고</h2>
@@ -65,6 +89,28 @@ Plan | Detail
     <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100" style="height:400px">
         <h2>{{plan.contents_for_result}}</h2>
     </div>
+    <div class="mt-6 p-3 text-white text-xl bg-purple-600">
+        <h2 class="ml-3">첨부파일</h2>
+    </div>
+    {% if plan.get_resultfiles %}
+    <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100">
+        {% for resultFile in plan.get_resultfiles %}
+
+        <a href='{{resultFile.file.url}}' download>
+            <div class="flex">
+                <div class="bg-gray-300 p-3 m-2 rounded w-full hover:bg-gray-500">
+                    {{resultFile.caption}}
+                </div>
+            </div>
+        </a>
+
+        {% endfor %}
+    </div>
+    {% else%}
+    <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100">
+        <span class="p-2 m-2">첨부된 파일이 없습니다.</span>
+    </div>
+    {% endif %}
     {% endif %}
 
 
@@ -81,10 +127,13 @@ Plan | Detail
             결과 보고 작성
         </a>
         {%elif plan.status == 'ENROLLMENT' %}
-
         <a href="{%url 'groups:plan-update' plan.group.pk plan.pk %}"
             class="float-right w-32 p-2 m-2 rounded bg-blue-500 text-white text-center text-xl">
             계획 수정
+        </a>
+        <a href="{%url 'groups:plan-upload' plan.group.pk plan.pk %}"
+            class="float-right w-32 p-2 m-2 rounded bg-green-500 text-white text-center text-xl">
+            파일 첨부
         </a>
         {% endif %}
     </div>

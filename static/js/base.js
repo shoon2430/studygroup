@@ -12,7 +12,19 @@ const set_POST = (data = {}) => {
 }
 
 const request_POST = (url, massage, data) => {
-    if (confirm(massage)) {
+    if (massage) {
+        if (confirm(massage)) {
+            opts = set_POST(data);
+
+            fetch(url, opts)
+                .then(function (response) {
+
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                    }
+                });
+        }
+    } else {
         opts = set_POST(data);
 
         fetch(url, opts)
@@ -21,6 +33,10 @@ const request_POST = (url, massage, data) => {
                 if (response.redirected) {
                     window.location.href = response.url;
                 }
+                console.log(response)
+                console.log(response.write)
+                response.write
+
             });
     }
 }

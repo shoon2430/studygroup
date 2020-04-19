@@ -12,7 +12,7 @@ Plan | Update
 {% block content %}
 
 <div
-    class="container lg:w-8/12 md:w-1/2 xl:w-5/12 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400 mt-32">
+    class="container lg:w-8/12 md:w-1/2 xl:w-6/12 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400 mt-32">
 
     <form class="lg:w-11/12 md:w-1/2 xl:w-11/12" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
@@ -35,24 +35,55 @@ Plan | Update
             <div class="bg-indigo-500 rounded-t-lg p-2 text-gray-100">결과 보고 내용</div>
             <div>{{form.contents_for_result}}</div>
         </div>
+        <div class="mt-6 p-3 text-white text-xl bg-indigo-500">
+            <h2 class="ml-3">첨부파일</h2>
+        </div>
+        {% if plan.get_resultfiles %}
+        <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100">
+            {% for resultFile in plan.get_resultfiles %}
+
+            <a href='{{resultFile.file.url}}' download>
+                <div class="flex">
+                    <div class="bg-gray-300 p-3 m-2 rounded w-10/12 hover:bg-gray-500">
+                        {{resultFile.caption}}
+                    </div>
+                    <div class="p-3 m-2 rounded text-gray-100 text-lg w-32 text-center bg-red-400 hover:bg-red-600">
+                        삭제
+                    </div>
+                </div>
+            </a>
+
+            {% endfor %}
+        </div>
+        {% else%}
+        <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100">
+            <span class="p-2 m-2">첨부된 파일이 없습니다.</span>
+        </div>
+        {% endif %}
         {% endif %}
 
+        <div>
+            <a href="{%url 'groups:result-upload' plan.group.pk plan.pk %}"
+                class="float-right w-32 p-2 m-2 rounded bg-green-500 text-white text-center text-xl">
+                파일 첨부
+            </a>
+        </div>
 
-        <div class="flex -mt-4">
+        <div class="flex mt-16">
             {% if plan.status == 'CONFIRM' %}
             <span class="flex-1 m-1 p-1 rounded">
-                <button class="btn bg-green-500 mt-8 text-white text-xl">임시 저장</button>
+                <button class="btn bg-teal-500 text-white text-lg">임시 저장</button>
             </span>
             <span class="flex-1 m-1 p-1 rounded">
                 <button onclick='confirm_complete(
                     request_POST, " {%url 'groups:plan-change-status' plan.group.pk plan.pk %}")'
-                    class="btn bg-indigo-500 mt-8 text-white text-xl">
+                    class="btn bg-indigo-500 text-white text-lg">
                     결과보고 제출
                 </button>
             </span>
             {% else%}
             <span class="flex-1">
-                <button class="btn bg-indigo-500 mt-8 text-white text-xl">계획 수정하기</button>
+                <button class="btn bg-indigo-500 text-white text-lg">계획 수정하기</button>
             </span>
             {% endif %}
         </div>

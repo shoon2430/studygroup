@@ -64,6 +64,34 @@ class updatePlanForm(forms.ModelForm):
         plan.save()
 
 
+class planUploadForm(forms.ModelForm):
+    class Meta:
+        model = plan_models.PlanFile
+        fields = [
+            "file",
+        ]
+
+    def save(self, *args, **kwargs):
+        planFile = super().save(commit=False)
+        plan = kwargs["plan"]
+        planFile.plan = plan
+        return planFile
+
+
+class resultUploadForm(forms.ModelForm):
+    class Meta:
+        model = plan_models.ResultFile
+        fields = [
+            "file",
+        ]
+
+    def save(self, *args, **kwargs):
+        resultFile = super().save(commit=False)
+        plan = kwargs["plan"]
+        resultFile.plan = plan
+        return resultFile
+
+
 class creatFeedbackForm(forms.ModelForm):
     class Meta:
         model = plan_models.Feedback

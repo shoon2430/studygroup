@@ -24,3 +24,7 @@ const confirm_success = (func, url) => {
     const massge = "결과를 최종 승인하시겠습니까?";
     func(url, massge);
 }
+
+const plan_file_download = (func, url) => {
+    func(url);
+}

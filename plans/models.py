@@ -15,15 +15,17 @@ class Feedback(core_model.TimeStampModel):
 
 
 class PlanFile(core_model.TimeStampModel):
-    plan = models.ForeignKey("Plan", on_delete=models.CASCADE)
+    plan = models.ForeignKey("Plan", related_name="planfiles", on_delete=models.CASCADE)
     caption = models.CharField(max_length=150)
-    file = models.FileField(null=True, upload_to="uploads/plan/file_for_plan")
+    file = models.FileField(null=True, upload_to="plan/file_for_plan")
 
 
 class ResultFile(core_model.TimeStampModel):
-    plan = models.ForeignKey("Plan", on_delete=models.CASCADE)
+    plan = models.ForeignKey(
+        "Plan", related_name="resultfiles", on_delete=models.CASCADE
+    )
     caption = models.CharField(max_length=150)
-    file = models.FileField(null=True, upload_to="uploads/plan/file_for_result")
+    file = models.FileField(null=True, upload_to="plan/file_for_result")
 
 
 class Plan(core_model.TimeStampModel):
@@ -74,3 +76,11 @@ class Plan(core_model.TimeStampModel):
 
     def get_feedbacks(self):
         return self.feedbacks.count()
+
+    def get_planFiles(self):
+        planfiles = self.planfiles.all()
+        return planfiles
+
+    def get_resultfiles(self):
+        resultfiles = self.resultfiles.all()
+        return resultfiles

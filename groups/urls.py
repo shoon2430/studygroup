@@ -29,6 +29,16 @@ urlpatterns = [
         name="plan-delete",
     ),
     path(
+        "<int:group_pk>/plan/<int:plan_pk>/plan_upload/",
+        plan_views.plan_upload.as_view(),
+        name="plan-upload",
+    ),
+    path(
+        "<int:group_pk>/plan/<int:plan_pk>/result_upload/",
+        plan_views.result_upload.as_view(),
+        name="result-upload",
+    ),
+    path(
         "<int:group_pk>/plan/<int:plan_pk>/confirm/",
         plan_views.change_plan_status,
         name="plan-change-status",
