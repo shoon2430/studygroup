@@ -45,7 +45,7 @@ class PlanAdmin(admin.ModelAdmin):
         ("Basic Info", {"fields": ("group", "user",)}),
         ("Plan Info", {"fields": ("title_for_plan", "contents_for_plan",)},),
         ("Result Info", {"fields": ("title_for_result", "contents_for_result",)},),
-        ("Plan Setting", {"fields": ("start_day", "end_day", "status",)}),
+        ("Plan Setting", {"fields": ("deadline", "status",)}),
     )
 
     list_display = (
@@ -57,8 +57,7 @@ class PlanAdmin(admin.ModelAdmin):
         "contents_for_plan",
         "title_for_result",
         "contents_for_result",
-        "start_day",
-        "end_day",
+        "deadline",
         "status",
     )
 

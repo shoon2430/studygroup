@@ -43,6 +43,7 @@ class Group(core_model.TimeStampModel):
     planning_unit = models.CharField(
         choices=PLANNING_UNIT, default="week", max_length=10, blank=False, null=False,
     )
+    planning_deadline = models.CharField(null=False, blank=False)
 
     photo = models.ImageField(blank=True, upload_to="group/group_photo")
 

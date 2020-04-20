@@ -31,6 +31,10 @@ class Command(BaseCommand):
         users = User.objects.all()
         groups = Group.objects.all()
 
+        now = datetime.now()
+        now_year, now_month, now_day = now.year, now.month, now.day
+        deadline = datetime(now_year, now_month, now_day, 0, 0, 0)
+
         seeder.add_entity(
             Plan,
             number,
@@ -41,9 +45,7 @@ class Command(BaseCommand):
                 "contents_for_plan": lambda x: seeder.faker.text(),
                 "title_for_result": lambda x: seeder.faker.name(),
                 "contents_for_result": lambda x: seeder.faker.text(),
-                "start_day": lambda x: datetime.now(),
-                "end_day": lambda x: datetime.now()
-                + timedelta(days=random.randint(3, 25)),
+                "deadline": deadline,
                 "status": lambda x: random.choice(
                     ["ENROLLMENT", "CONFIRM", "COMPLETE", "SUCCESS"]
                 ),
@@ -52,4 +54,3 @@ class Command(BaseCommand):
         seeder.execute()
 
         self.stdout.write(self.style.SUCCESS(f"CREATE {seed_text} count : {number}"))
-

@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 from core import models as core_model
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -53,8 +54,7 @@ class Plan(core_model.TimeStampModel):
     title_for_result = models.CharField(blank=True, max_length=150)
     contents_for_result = models.TextField(blank=True,)
 
-    start_day = models.DateField(null=True, blank=True)
-    end_day = models.DateField(null=True, blank=True)
+    deadline = models.DateField(null=True, blank=True)
 
     status = models.CharField(
         choices=STATUS_LIST,
