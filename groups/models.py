@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -43,7 +44,21 @@ class Group(core_model.TimeStampModel):
     planning_unit = models.CharField(
         choices=PLANNING_UNIT, default="week", max_length=10, blank=False, null=False,
     )
-    planning_deadline = models.CharField(null=False, blank=False)
+
+    WEEK_LIST = (
+        ("MON", "월요일"),
+        ("TUE", "화요일"),
+        ("WHE", "수요일"),
+        ("THU", "목요일"),
+        ("FRI", "금요일"),
+        ("SAT", "토요일"),
+        ("SUN", "일요일"),
+    )
+
+    DAY_LIST = [(str(n), "{} 시".format(n)) for n in range(0, 24)]
+
+    deadline_week = models.CharField(choices=WEEK_LIST, default="MON", max_length=5)
+    deadline_day = models.CharField(choices=DAY_LIST, default=0, max_length=2)
 
     photo = models.ImageField(blank=True, upload_to="group/group_photo")
 
@@ -67,3 +82,8 @@ class Group(core_model.TimeStampModel):
             feedback_count += plan.get_feedbacks()
 
         return feedback_count
+
+    def cal_deadline(self, day):
+
+        week_list = ("MON", "TUE", "WHE", "THU", "FRI", "SAT", "SUN")
+        week = datetime.today().weekday()

@@ -1,15 +1,15 @@
 <form method="POST" class="w-full" enctype="multipart/form-data">
-    {% csrf_token %} 
+    {% csrf_token %}
 
     {% if form.non_filed_errors %}
-        {% for error in form.non_filed_errors  %}
-            <span class="text-red-700 font-medium text-sm">{{error}}</span>
-        {% endfor %}
+    {% for error in form.non_filed_errors  %}
+    <span class="text-red-700 font-medium text-sm">{{error}}</span>
+    {% endfor %}
     {% endif %}
 
     {% for field in form %}
-        {% include "mixins/auth/form_input.html" with fielf=field  %}
+    {% include "mixins/auth/form_input.html" with field=field  %}
     {% endfor %}
-    
+
     <button class="btn bg-red-500 text-white">{{cta}}</button>
 </form>

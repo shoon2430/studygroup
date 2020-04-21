@@ -59,7 +59,7 @@ Group | Detail
         {% if join %}
         {% if group.leader == request.user %}
         <button id="deleteGroup" class="w-40 text-center float-right p-2 m-1 rounded bg-red-500 text-white text-xl"
-            onclick="delete_group(request_POST, " {% url 'groups:delete-group' group.pk %}")">그룹 삭제하기 </button>
+            onclick="delete_group(request_POST, '{% url "groups:delete-group" group.pk %}')">그룹 삭제하기 </button>
         <button id="updateGroup" class="w-40 text-center float-right p-2 m-1 rounded bg-teal-500 text-white text-xl"
             onclick="location.href='{% url "groups:update-group" group.pk %}'">
             그룹 수정하기

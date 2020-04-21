@@ -10,7 +10,18 @@ class GroupAdmin(admin.ModelAdmin):
             "Basic Info",
             {"fields": ("photo", "title", "leader", "category", "notice", "contents",)},
         ),
-        ("Group Setting", {"fields": ("users", "max_group_count", "planning_unit")}),
+        (
+            "Group Setting",
+            {
+                "fields": (
+                    "users",
+                    "max_group_count",
+                    "planning_unit",
+                    "deadline_week",
+                    "deadline_day",
+                )
+            },
+        ),
     )
 
     list_display = (

@@ -1,4 +1,5 @@
 {% extends "partials/base.html" %}
+{% load static %}
 
 {% block page_title %}
 Gruop | Update
@@ -12,33 +13,42 @@ Gruop | Update
 
     <form class="lg:w-11/12 md:w-1/2 xl:w-11/12" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="{{form.photo.name}} flex ">
-            <span class="w-3/12 p-5 text-center text-2xl bg-indigo-400 text-gray-100">그룹 사진</span>
-            <span class="w-9/12">{{form.photo}}</span>
+        <div class="{{form.photo.name}} ">
+            <div class="p-2 text-gray-800 text-lg"><b>그룹 사진</b></div>
+            {% include "mixins/auth/form_input.html" with field=form.photo  %}
         </div>
-        <div class="{{form.category.name}} mt-5">
-            <span class="bg-blue-500 rounded-t-lg p-2 text-gray-100">카테고리</span>
-            <span>{{form.category}}</span>
+        <div class="{{form.category.name}} mt-2">
+            <div class="p-2 text-gray-800 text-lg"><b>카테고리</b>
+            </div>
+            {% include "mixins/auth/form_input.html" with field=form.category  %}
         </div>
-        <div class="{{form.title.name}} mt-5">
-            <span class="bg-blue-500 rounded-t-lg p-2 text-gray-100">제목</span>
-            <span>{{form.title}}</span>
+        <div class="group_title mt-2">
+            <div class="p-2 text-gray-800 text-lg"><b>제목</b></div>
+            {% include "mixins/auth/form_input.html" with field=form.title  %}
         </div>
-        <div class="{{form.notice.name}} mt-5">
-            <span class="bg-blue-500 rounded-t-lg p-2 text-gray-100">공지사항</span>
-            <span class="h-full">{{form.notice}}</span>
+        <div class="{{form.notice.name}} mt-2">
+            <div class="p-2 text-gray-800 text-lg"><b>공지사항</b></div>
+            {% include "mixins/auth/form_input.html" with field=form.notice  %}
         </div>
-        <div class="{{form.contents.name}} mt-5">
-            <span class="bg-blue-500 rounded-t-lg p-2 text-gray-100">설명글</span>
-            <span>{{form.contents}}</span>
+        <div class="{{form.contents.name}} mt-2">
+            <div class="p-2 text-gray-800 text-lg"><b>설명 글</b></div>
+            {% include "mixins/auth/form_input.html" with field=form.contents  %}
         </div>
-        <div class="{{form.max_group_count.name}} mt-5">
-            <span class="bg-blue-500 rounded-t-lg p-2 text-gray-100">최대그룹인원</span>
-            <span>{{form.max_group_count}}</span>
+        <div class="{{form.max_group_count.name}} mt-2">
+            <div class="p-2 text-gray-800 text-lg"><b>최대그룹인원</b></div>
+            {% include "mixins/auth/form_input.html" with field=form.max_group_count  %}
         </div>
-        <div class="{{form.planning_unit.name}} mt-5">
-            <span class="bg-blue-500 rounded-t-lg p-2 text-gray-100">계획 단위</span>
-            <span>{{form.planning_unit}}</span>
+        <div class="{{form.planning_unit.name}} mt-2">
+            <div class="p-2 text-gray-800 text-lg"><b>계획 단위</b></div>
+            {% include "mixins/auth/form_input.html" with field=form.planning_unit %}
+        </div>
+        <div id={{form.deadline_week.name}} class="{{form.deadline_week.name}} mt-2">
+            <div class="p-2 text-gray-800 text-lg"><b>마감 요일</b></div>
+            {% include "mixins/auth/form_input.html" with field=form.deadline_week  %}
+        </div>
+        <div id={{form.deadline_day.name}} class="{{form.deadline_day.name}} mt-2" hidden>
+            <div class="p-2 text-gray-800 text-lg"><b>마감 시간</b></div>
+            {% include "mixins/auth/form_input.html" with field=form.deadline_day  %}
         </div>
         <button class="btn bg-red-500 mt-8 text-white">그룹 정보 수정</button>
     </form>

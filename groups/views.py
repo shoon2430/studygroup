@@ -44,6 +44,7 @@ class createGroup(LoginRequiredMixin, FormView):
     success_url = reverse_lazy("core:home")
 
     def form_valid(self, form):
+
         leader = self.request.user
         form.save(user=leader)
 

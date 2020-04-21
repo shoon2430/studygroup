@@ -1,6 +1,5 @@
 {% extends "partials/base.html" %}
 
-
 {% block page_name %}
 My Groups
 {% endblock page_name %}
@@ -17,6 +16,7 @@ My Groups
             <div class="flex-initial rounded w-56 h-32  bg-red-300 float-left bg-cover bg-center" {% if group.photo %}
                 style="background-image:url({{group.get_photo}})">
                 {%else%}
+
                 style="background-image:url('static/image/normal_image.jpg')">
                 {% endif %}
             </div>
