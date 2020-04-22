@@ -123,7 +123,8 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+# DateTimeField 한국시간으로 저장
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

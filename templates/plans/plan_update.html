@@ -18,21 +18,21 @@ Plan | Update
         {% csrf_token %}
 
         <div class="{{form.title_for_plan.name}}">
-            <div class="bg-blue-400 rounded-t-lg p-2 text-gray-100">제목</div>
+            <div class="p-2 text-gray-800 text-lg"><b>제목</b></div>
             <div>{{form.title_for_plan}}</div>
         </div>
         <div class="{{form.contents_for_plan.name}} mt-5">
-            <div class="bg-blue-400 rounded-t-lg p-2 text-gray-100">계획 내용</div>
+            <div class="p-2 text-gray-800 text-lg"><b>계획 내용</b></div>
             <div>{{form.contents_for_plan}}</div>
         </div>
 
         {% if plan.status != "ENROLLMENT" %}
         <div class="{{form.title_for_result.name}} mt-5">
-            <div class="bg-indigo-500 rounded-t-lg p-2 text-gray-100">결과 보고 제목</div>
+            <div class="p-2 text-gray-800 text-lg"><b>결과 보고 제목</b></div>
             <div>{{form.title_for_result}}</div>
         </div>
         <div class="{{form.contents_for_result.name}} mt-5">
-            <div class="bg-indigo-500 rounded-t-lg p-2 text-gray-100">결과 보고 내용</div>
+            <div class="p-2 text-gray-800 text-lg"><b>결과 보고 내용</b></div>
             <div>{{form.contents_for_result}}</div>
         </div>
         <div class="mt-6 p-3 text-white text-xl bg-indigo-500">
@@ -62,12 +62,15 @@ Plan | Update
         {% endif %}
         {% endif %}
 
+
+        {% if plan.status != 'ENROLLMENT' %}
         <div>
             <a href="{%url 'groups:result-upload' plan.group.pk plan.pk %}"
                 class="float-right w-32 p-2 m-2 rounded bg-green-500 text-white text-center text-xl">
                 파일 첨부
             </a>
         </div>
+        {% endif %}
 
         <div class="flex mt-16">
             {% if plan.status == 'CONFIRM' %}

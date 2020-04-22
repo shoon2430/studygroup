@@ -16,6 +16,8 @@ from django.views.generic import (
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
+
+
 from .forms import (
     createPlanForm,
     updatePlanForm,
@@ -25,9 +27,10 @@ from .forms import (
 )
 from groups import models as group_models
 from . import models as plan_models
+from .mixins import GroupRequiredMixin
 
 
-class PlanDetail(LoginRequiredMixin, DetailView):
+class PlanDetail(GroupRequiredMixin, DetailView):
     model = plan_models.Plan
 
     def get_object(self, queryset=None):
@@ -102,6 +105,7 @@ def change_plan_status(request, group_pk, plan_pk):
             next_status = json.loads(request.body.decode("utf-8")).get("next_status")
             plan.set_status_change(next_status)
             plan.save()
+
             return redirect(reverse("groups:plan-detail", args=(group_pk, plan_pk,)))
 
         except plan_models.Plan.DoesNotExist:

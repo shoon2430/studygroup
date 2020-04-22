@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -83,7 +83,6 @@ class Group(core_model.TimeStampModel):
 
         return feedback_count
 
-    def cal_deadline(self, day):
-
+    def get_weekday_idx(self):
         week_list = ("MON", "TUE", "WHE", "THU", "FRI", "SAT", "SUN")
-        week = datetime.today().weekday()
+        return week_list.index(self.deadline_week)

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.db import models
 from core import models as core_model
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -54,7 +54,7 @@ class Plan(core_model.TimeStampModel):
     title_for_result = models.CharField(blank=True, max_length=150)
     contents_for_result = models.TextField(blank=True,)
 
-    deadline = models.DateField(null=True, blank=True)
+    deadline = models.DateTimeField(null=True, blank=True)
 
     status = models.CharField(
         choices=STATUS_LIST,
@@ -72,7 +72,55 @@ class Plan(core_model.TimeStampModel):
         return self.group.id
 
     def set_status_change(self, next_status):
+        """
+        계획 CONFIRM시 마감일자 계산
+        week 일 경우와 day 일 경우를 나누어 계산한다.
+        """
+        if next_status == "CONFIRM":
+            enrollment_date = self.created
+
+            if self.group.planning_unit == "week":
+                deadline = self.cal_week_deadline(
+                    enrollment_date, self.group.get_weekday_idx()
+                )
+                self.deadline = deadline
+
+            elif self.group.planning_unit == "day":
+                hour = self.group.deadline_day
+                deadline = self.cal_day_deadline(enrollment_date, hour)
+                self.deadline = deadline
+
         self.status = next_status
+
+    def cal_week_deadline(self, enrollment_date, std_weekday):
+        """
+        주간 계획 마감일자 계산
+        """
+        weekday = enrollment_date.weekday()
+        if std_weekday > weekday:
+            between_day = std_weekday - weekday
+            add_day = timedelta(days=(between_day + 7))
+
+        else:
+            between_day = std_weekday - weekday
+            add_day = timedelta(days=(7 - between_day))
+
+        deadline = enrollment_date + add_day
+        deadline = deadline.replace(hour=0, minute=0, second=0)
+        return deadline
+
+    def cal_day_deadline(self, today, hour):
+        """
+        일간 계획 마감일자 계산
+        """
+        if today.hour < int(hour):
+            add_day = timedelta(days=(2))
+        else:
+            add_day = timedelta(days=(1))
+
+        deadline = today + add_day
+        deadline = deadline.replace(hour=int(hour), minute=0, second=0)
+        return deadline
 
     def get_feedbacks(self):
         return self.feedbacks.count()
@@ -84,3 +132,11 @@ class Plan(core_model.TimeStampModel):
     def get_resultfiles(self):
         resultfiles = self.resultfiles.all()
         return resultfiles
+
+    def get_deadline(self):
+        if self.deadline:
+            print(type(self.deadline))
+            print(self.deadline)
+            return self.deadline.strftime("%Y %m %d %H %M %p")
+        else:
+            return ""

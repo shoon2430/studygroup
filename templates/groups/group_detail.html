@@ -104,17 +104,15 @@ Group | Detail
                 <div class="detial max-w-full flex items-center justify-between">
                     <div class="p-2 bg-gray-100 font-bold text-lg">{{plan.user.username}}</div>
                     <div class="flex">
-                        {% if plan.status == 'ENROLLMENT' %}
+
                         <div
-                            class="border border-gray400 p-1 bg-blue-400 rounded-lg text-gray-100 text-center h-8 w-16 text-sm">
-                            등록</div>
-                        <div class="p-1 ml-1">{{plan.created}}
+                            class="border border-gray400 p-1 bg-blue-400 rounded-lg text-gray-100 text-center h-8 text-sm">
+                            등록일 : {{plan.get_created}}
                         </div>
-                        {% else %}
                         <div
-                            class="border border-gray400 p-1 bg-indigo-400 rounded-lg text-gray-100 text-center h-8 w-16 text-sm">
-                            수정</div>
-                        <div class="p-1 ml-1"> {{plan.updated}}</div>
+                            class="border border-gray400 p-1 bg-red-400 rounded-lg text-gray-100 text-center h-8 text-sm ml-2">
+                            마감일 : {{plan.get_deadline}}
+                        </div>
 
                         {% if plan.get_feedbacks > 0 %}
                         <div class="p-1 ml-1 bg-red-500 rounded-full w-8 text-center text-white">
@@ -122,8 +120,6 @@ Group | Detail
                         </div>
                         {% endif %}
 
-
-                        {% endif %}
                     </div>
                 </div>
                 <div class="confirm max-w-full flex items-center justify-between mt-1">
