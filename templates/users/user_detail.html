@@ -1,0 +1,30 @@
+{% extends "partials/base.html" %}
+{% load static %}
+
+{% block page_name %}
+User | Detail
+{% endblock page_name %}
+
+
+{% block script %}
+
+{% endblock script %}
+
+{% block content %}
+<div class="group_detail container lg:w-8/12 md:w-1/2 xl:w-1/4 mx-auto my-10 flex flex-col p-6 mt-32">
+    <div>
+        First name
+    </div>
+    <div class="border border-gray-400 mx-auto text-xl w-full p-3 mt-1 bg-gray-100 text-center">
+        {{user.first_name}}
+    </div>
+    <div>
+        Last name
+    </div>
+    <div class="border border-gray-400 mx-auto text-xl w-full p-3 mt-1 bg-gray-100 text-center">
+        {{user.last_name}}
+    </div>
+
+
+</div>
+{% endblock content %}

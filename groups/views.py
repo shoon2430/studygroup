@@ -18,6 +18,11 @@ class GroupList(ListView):
     paginate_orphans = "5"
     ordering = "-created"
 
+    def get_queryset(self):
+        queryset = super(GroupList, self).get_queryset()
+        print(queryset)
+        return queryset
+
 
 class GroupDetail(LoginRequiredMixin, DetailView):
     model = group_model.Group
@@ -25,7 +30,7 @@ class GroupDetail(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(GroupDetail, self).get_context_data(**kwargs)
         context["plans"] = plan_model.Plan.objects.filter(group=self.object).order_by(
-            "-created"
+            "-deadline", "-created"
         )
 
         join = False

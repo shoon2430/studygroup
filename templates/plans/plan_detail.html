@@ -15,13 +15,19 @@ Plan | Detail
 
     <div class="header flex">
 
-        <a href="{% url 'groups:detail' plan.group.pk%}"
-            class="group border border-gray-400 text-center w-8/12 p-6 text-xl">
-            {{plan.group}}
+        <a href="{% url 'groups:detail' plan.group.pk%}" id="group_title"
+            class="group_title border border-gray-400 text-center w-8/12 p-5 text-2xl bg-gray-100 ">
+
+            {% if plan.check_deadline %}
+            <b class="text-red-600">{{plan.group}} (마감)</b>
+            {%else%}
+            <b class="">{{plan.group}}</b>
+            {% endif %}
+
         </a>
 
 
-        <span class="user border border-gray-400  w-2/12 p-6  text-center ml-2 text-xl">
+        <span class="user border border-gray-400  w-2/12 p-6  text-center ml-2 text-xl bg-gray-100">
             {{plan.user.first_name}}
         </span>
         <span class="user border border-gray-400  w-2/12 p-1  item-center ml-2">
@@ -113,7 +119,14 @@ Plan | Detail
     {% endif %}
     {% endif %}
 
-
+    {% if plan.check_deadline %}
+    <div>
+        <a href="{% url 'groups:detail' plan.group.pk%}"
+            class="float-right w-32 p-2 m-2 w-48 rounded bg-red-500 text-white text-center text-xl">
+            마감되었습니다.
+        </a>
+    </div>
+    {%else%}
     {% if plan.user == request.user %}
     <div>
         <button class="float-right w-32 p-2 m-2 rounded bg-red-500 text-white text-center text-xl"
@@ -153,7 +166,7 @@ Plan | Detail
 
     </div>
     {% endif %}
-
+    {% endif %}
 
 </div>
 {% endblock content %}

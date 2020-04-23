@@ -8,6 +8,7 @@ Home
 
 
 {% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <div class="container mx-auto pb-10">
     <div class="rounded-lg bg-gray-800 mt-32 mb-8 bg-cover bg-center mx-16"
@@ -29,6 +30,12 @@ Home
 
         {% endif %}
     </div>
+
+
+    <form class="example" action="#">
+        <input type="text" placeholder="Search.." name="search" class="w-64">
+        <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
 
     <div class="grid mx-16 mt-32">
         {% for group in groups%}

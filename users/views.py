@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import FormView
+from django.views.generic import FormView, DetailView
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
@@ -16,7 +16,6 @@ class LoginView(FormView):
     def form_valid(self, form):
         email = form.cleaned_data.get("email")
         password = form.cleaned_data.get("password")
-        print(email, password)
         user = authenticate(self.request, username=email, password=password)
         if user is not None:
             login(self.request, user)
@@ -45,7 +44,7 @@ class signupView(FormView):
 
         form.save()
         email = form.cleaned_data.get("email")
-        password = form.cleaned_data.get("password1")
+        password = form.cleaned_data.get("password2")
 
         user = authenticate(self.request, username=email, password=password)
         if user is not None:
@@ -54,15 +53,5 @@ class signupView(FormView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-# def emailLogin(request):
-
-#     if request.method == "POST":
-#         form = loginForm(request.POST)
-#         username = request.POST["username"]
-#         password = request.POST["password"]
-#         user = authenticate(username=username, password=password)
-#         print(user)
-
-#     else:
-#         form = loginForm()
-#         return render(request, "users/user_login.html", {"form": form})
+class userInfromationView(DetailView):
+    model = User

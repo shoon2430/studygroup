@@ -6,12 +6,12 @@
     <div class="float-right">
         <a href="{% url 'groups:manages' %}">
             <span class="p-4 rounded text-center text-l ml-2 font-semibold text-gray-400 text-lg hover:text-white">
-                <b class="ml-1"></b>나의 그룹 보기</b>
+                <b class="ml-1">나의 그룹 보기</b>
             </span>
         </a>
-        <a href="#">
+        <a href="{% url 'user:info' user.pk%}">
             <span class="p-4 rounded text-center text-l ml-2 font-semibold text-gray-400 text-lg hover:text-white">
-                <b class="ml-1"></b>{{user.username}}(님)</b>
+                <b class="ml-1">{{user.username}}(님)</b>
             </span>
         </a>
         <a href="{% url 'user:logout' %}">

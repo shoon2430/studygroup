@@ -135,8 +135,15 @@ class Plan(core_model.TimeStampModel):
 
     def get_deadline(self):
         if self.deadline:
-            print(type(self.deadline))
-            print(self.deadline)
             return self.deadline.strftime("%Y %m %d %H %M %p")
         else:
             return ""
+
+    def check_deadline(self):
+        """
+        마감일보다 이후면 마감 
+        """
+        now = datetime.now()
+        deadline = self.deadline
+
+        return now > deadline

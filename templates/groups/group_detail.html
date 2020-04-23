@@ -86,23 +86,32 @@ Group | Detail
 
         {% endif %}
     </div>
-    <div class="mt-4">
-
-        <div class="float-right ">
+    <div class="mt-10">
+        <div class="mb-3">
+            <b>참여인원</b>
+        </div>
+        <div class="float-left ">
             {% for user in group.users.all  %}
             <span class="p-2 rounded bg-gray-600  text-white ">{{user.username}}</span>
             {% endfor %}
         </div>
     </div>
 
-    <div class="plan_list mt-5">
-
+    <div class="plan_list mt-4">
         {% for plan in plans %}
-        <a href="{%url 'groups:plan-detail' group.pk plan.pk %}">
-            <div class="plan_{{plan.id}} border border-gray400 rounded mt-3 p-3 bg-gray-100">
+        <a href="{%url 'groups:plan-detail' group.pk plan.pk %} ">
+            <div class="plan_{{plan.id}} border 
+                {% if plan.check_deadline %}
+                    bg-gray-400 
+                {%else%}
+                    bg-gray-100  
+                {% endif %}
+
+                rounded mt-3 p-3 border-gray-400 
+            ">
 
                 <div class="detial max-w-full flex items-center justify-between">
-                    <div class="p-2 bg-gray-100 font-bold text-lg">{{plan.user.username}}</div>
+                    <div class="p-2 font-bold text-lg">{{plan.user.username}}</div>
                     <div class="flex">
 
                         <div
@@ -124,23 +133,32 @@ Group | Detail
                 </div>
                 <div class="confirm max-w-full flex items-center justify-between mt-1">
                     <div class="flex">
-                        {% if plan.status != COMPLETE %}
+                        {% if plan.status != 'COMPLETE' %}
                         <div
-                            class="border border-gray400 p-1 bg-teal-400 rounded-lg text-gray-100 text-center h-8 w-16 text-sm">
-                            계획
+                            class="border border-gray400 p-1 bg-teal-500 rounded-lg text-gray-100 text-center h-8 w-16 text-sm">
+                            <b>계획</b>
                         </div>
                         <div class="p-1 ml-1">
                             {{plan.title_for_plan}}
                         </div>
                         {% else %}
                         <div
-                            class="border border-gray400 p-1 bg-teal-400 rounded-lg text-gray-100 text-center h-8 w-16 text-sm">
-                            결과</div>
+                            class="border border-gray400 p-1 bg-blue-500 rounded-lg text-gray-100 text-center h-8 w-16 text-sm">
+                            <b>결과</b>
+                        </div>
                         <div class="p-1 ml-1">
                             {{plan.title_for_result}}
                         </div>
                         {% endif %}
                     </div>
+
+                    {% if plan.check_deadline %}
+                    <div
+                        class="border border-gray400 p-1 rounded-lg text-gray-100 w-32 text-center h-8 text-sm bg-red-600  ">
+                        마감
+                    </div>
+                    {%else%}
+
                     <div class="border border-gray400 p-1 rounded-lg text-gray-100 w-32 text-center h-8 text-sm
                         {%if plan.status == 'ENROLLMENT'%}
                         bg-teal-400  
@@ -154,6 +172,7 @@ Group | Detail
                     ">
                         {{plan.status}}
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </a>
