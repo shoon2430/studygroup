@@ -17,7 +17,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
 
-
 from .forms import (
     createPlanForm,
     updatePlanForm,
@@ -168,3 +167,7 @@ class createFeedback(LoginRequiredMixin, FormView):
         return HttpResponseRedirect(
             reverse("groups:plan-detail", args=(group_pk, plan_pk,))
         )
+
+
+class FeedbackDetail(LoginRequiredMixin, DeleteView):
+    model = plan_models.Feedback

@@ -20,7 +20,11 @@ class GroupList(ListView):
 
     def get_queryset(self):
         queryset = super(GroupList, self).get_queryset()
-        print(queryset)
+        search_data = self.request.GET.get("search")
+        if search_data:
+            search_queryset = queryset.filter(title__contains=str(search_data))
+            return search_queryset
+
         return queryset
 
 
