@@ -1,0 +1,57 @@
+{% extends "partials/base.html" %}
+{% load static %}
+
+{% block page_title %}
+Plan | Create
+{% endblock page_title %}
+
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static "css/custom.css" %}">
+{% endblock custom_css %}
+
+{% block script %}
+
+{% endblock script %}
+
+
+{% block content %}
+<div
+    class="container lg:w-8/12 md:w-1/2 xl:w-5/12 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400 mt-32">
+
+    <div class="lg:w-11/12 md:w-1/2 xl:w-11/12">
+
+        <div class="bg-blue-500 p-4 text-gray-100 text-center">
+            <p>{{feedback.user}}(님)이 작성하신 피드백 입니다.</p>
+        </div>
+        <div class="mt-2 p-2 border border-gray-400 text-lg" style="height: 100px;">
+            {{feedback.title}}
+        </div>
+        <div class=" mt-2 p-2 border border-gray-400 text-lg" style="height: 220px;">
+            {{feedback.contents_for_plan}}
+        </div>
+
+        <div class="starRev text-center mt-2">
+
+            {% for _ in feedback.star_count  %}
+            <span class="starR m-1 on">별</span>
+            {% endfor %}
+
+            {% for _ in feedback.none_star_count %}
+            <span class="starR m-1">별</span>
+            {% endfor %}
+        </div>
+
+        <a href="javascript:history.back()">
+            <div class="btn bg-indigo-500 mt-5 text-white text-lg">
+                돌아가기
+            </div>
+        </a>
+
+
+    </div>
+
+
+</div>
+
+{% endblock content %}

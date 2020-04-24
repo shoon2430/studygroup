@@ -14,6 +14,12 @@ class Feedback(core_model.TimeStampModel):
         default=1, validators=[MinValueValidator(1), MaxValueValidator(5)]
     )
 
+    def star_count(self):
+        return range(0, self.rating)
+
+    def none_star_count(self):
+        return range(0, 5 - self.rating)
+
 
 class PlanFile(core_model.TimeStampModel):
     plan = models.ForeignKey("Plan", related_name="planfiles", on_delete=models.CASCADE)

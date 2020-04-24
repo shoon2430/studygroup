@@ -1,0 +1,82 @@
+{% extends "partials/base.html" %}
+{% load static %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static "css/custom.css" %}">
+{% endblock custom_css %}
+
+{% block page_name %}
+My Feedbacks
+{% endblock page_name %}
+
+
+
+{% block content %}
+{% if feedbacks %}
+<div class="container mx-auto pb-10 lg:w-8/12 md:w-1/2 xl:w-2/4">
+    <div class="grid mx-16 mt-32">
+        <div class="p-2 font-bold max-w-full justify-between items-center flex">
+            <b class="text-3xl">
+                GROUP : {{group.title}}
+            </b>
+            <a href="javascript:history.back()" class="text-lg mt-8 hover:text-indigo-600">
+                뒤로가기
+            </a>
+        </div>
+        {% for feedback in feedbacks%}
+        <a href="{% url 'plans:feedback-detail' feedback.pk %}" class="mt-5">
+            <div class="plan_{{plan.id}} -mt-1 border rounded mt-3 p-3 border-gray-400  ">
+                <div class="max-w-full justify-between items-center flex">
+                    <div class="p-2 font-bold text-xl">TITLE : {{feedback.title}}</div>
+                    <div class="border border-gray400 p-1 rounded-lg text-gray-800 text-center h-8">
+                        <b class="p-2">작성자 : {{feedback.user}}</b>
+                    </div>
+                </div>
+                <div class="max-w-full justify-between items-center flex">
+                    <div></div>
+                    <div class="mt-2">
+                        <div class="starRev text-center">
+
+                            {% for _ in feedback.star_count  %}
+                            <span class="sm_starR m-1 on">별</span>
+                            {% endfor %}
+
+                            {% for _ in feedback.none_star_count %}
+                            <span class="sm_starR m-1">별</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {%endfor%}
+
+        {% if is_paginated %}
+        <div>
+            <ul class="pagination float-right mt-8">
+                <span>
+                    {% if page_obj.has_previous %}
+                    <li class="w-16 h-8 m-2 float-left"><a href="/?page={{page_obj.previous_page_number}}">Previous</a>
+                    </li>
+                    {% endif %}
+
+                    {% for page in paginator.page_range%}
+                    <li
+                        class="w-4 h-8 m-2 float-left {%if page_obj.number == page %}text-indigo-600 font-bold {%endif%}">
+                        <a href="/?page={{page}}">{{page}}</a></li>
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li class="w-16 h-8 m-2 float-left"><a href="/?page={{page_obj.next_page_number}}">Next</a></li>
+                    {% endif %}
+                </span>
+                {%endif%}
+            </ul>
+        </div>
+    </div>
+</div>
+{% else %}
+{% include 'partials/no_list_page.html' with text='해당 그룹의 피드백이 존재하지 않습니다.' %}
+{% endif %}
+
+{% endblock content %}

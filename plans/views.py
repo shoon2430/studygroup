@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, reverse, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import (
+    ListView,
     DetailView,
     FormView,
     CreateView,
@@ -15,7 +16,7 @@ from django.views.generic import (
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-
+from django.contrib import messages
 
 from .forms import (
     createPlanForm,
@@ -169,5 +170,50 @@ class createFeedback(LoginRequiredMixin, FormView):
         )
 
 
-class FeedbackDetail(LoginRequiredMixin, DeleteView):
+class PlanList(LoginRequiredMixin, ListView):
+    model = plan_models.Plan
+    context_object_name = "plans"
+    paginate_by = "10"
+    paginate_orphans = "5"
+    ordering = ["-created"]
+    template_name = "plans/plan_list.html"
+
+    def get_queryset(self):
+        queryset = super(PlanList, self).get_queryset()
+        group_pk = self.request.GET.get("group")
+        group = group_models.Group.objects.get(pk=group_pk)
+        user = self.request.user
+        queryset = queryset.filter(user=user, group=group)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(PlanList, self).get_context_data(**kwargs)
+        group = group_models.Group.objects.get(pk=self.request.GET.get("group"))
+        context["group"] = group
+        return context
+
+
+class FeedbackList(LoginRequiredMixin, ListView):
     model = plan_models.Feedback
+    context_object_name = "feedbacks"
+    paginate_by = "10"
+    paginate_orphans = "5"
+    ordering = ["-plan__created", "-created"]
+    template_name = "feedbacks/feedback_list.html"
+
+    def get_queryset(self):
+        queryset = super(FeedbackList, self).get_queryset()
+        group_pk = self.request.GET.get("group")
+        queryset = queryset.filter(plan__group=group_pk)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(FeedbackList, self).get_context_data(**kwargs)
+        group = group_models.Group.objects.get(pk=self.request.GET.get("group"))
+        context["group"] = group
+        return context
+
+
+class FeedbackDetail(LoginRequiredMixin, DetailView):
+    model = plan_models.Feedback
+    template_name = "feedbacks/feedback_detail.html"

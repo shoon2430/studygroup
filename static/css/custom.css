@@ -10,6 +10,20 @@
     cursor: pointer;
 }
 
+.sm_starR {
+    background: url('http://miuu227.godohosting.com/images/icon/ico_review.png') no-repeat right 0;
+    background-size: auto 100%;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    text-indent: -9999px;
+    cursor: pointer;
+}
+
 .starR.on {
+    background-position: 0 0;
+}
+
+.sm_starR.on {
     background-position: 0 0;
 }
