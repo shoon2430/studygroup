@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 from django.urls import reverse_lazy
 
+# 에러 확인용
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
 LOGIN_URL = reverse_lazy("users:login")
 
 
@@ -27,8 +31,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = bool(os.environ.get("DEBUG"))
-DEBUG = True
+DEBUG = bool(os.environ.get("DEBUG"))
+
 
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = [".elasticbeanstalk.com"]
@@ -93,7 +97,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # 배포하기위해 변경
 
-if DEBUG is False:
+if DEBUG:
 
     DATABASES = {
         "default": {
@@ -166,3 +170,14 @@ WEBPACK_LOADER = {
         "STATS_FILE": os.path.join(BASE_DIR, "webpack-stats.dev.json"),
     }
 }
+
+
+# Sentry
+if not DEBUG:
+    sentry_sdk.init(
+        dsn=os.environ.get("SENTRY_URL"),
+        integrations=[DjangoIntegration()],
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True,
+    )
