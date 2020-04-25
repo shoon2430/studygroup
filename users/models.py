@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from core import managers as core_managers
 
 
 class User(AbstractUser):
@@ -43,6 +44,8 @@ class User(AbstractUser):
     )
 
     rating = models.IntegerField(default=10)
+
+    objects = core_managers.CustomUserManager()
 
     def __str__(self):
         return self.first_name
