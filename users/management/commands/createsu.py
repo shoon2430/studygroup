@@ -12,7 +12,7 @@ class Command(BaseCommand):
     help = f"This command creates {seed_text}"
 
     def handle(self, *args, **options):
-        admin = User.objects.get_or_none(username="ebadmin")
+        admin = User.objects.get_or_none(username="sgadmin@naver.com")
         if not admin:
             User.objects.create_superuser(
                 "sgadmin@naver.com", "shoon2430@change1940!!", "ghksxk12"
