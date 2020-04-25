@@ -149,7 +149,9 @@ class Plan(core_model.TimeStampModel):
         """
         마감일보다 이후면 마감 
         """
-        now = datetime.now()
-        deadline = self.deadline
-
-        return now > deadline
+        if self.deadline:
+            now = datetime.now()
+            deadline = self.deadline
+            return now > deadline
+        else:
+            return False
