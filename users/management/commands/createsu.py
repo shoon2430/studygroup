@@ -5,6 +5,9 @@ seed_text = "superuser"
 
 
 class Command(BaseCommand):
+    """
+    aws 배포시 superuser생성 커멘드
+    """
 
     help = f"This command creates {seed_text}"
 
