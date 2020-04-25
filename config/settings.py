@@ -52,7 +52,6 @@ PROJECT_APPS = [
 
 THIRD_PARTY_APPS = [
     "django_seed",
-    "webpack_loader",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
@@ -90,6 +89,8 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+
+# 배포하기위해 변경
 
 DATABASES = {
     "default": {

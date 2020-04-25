@@ -37,7 +37,8 @@ Home
         <form action="{% url 'core:home'%}" method="GET">
             <div class="float-right w-4/12 flex">
                 <input type="text" placeholder="Search Group Title.." name="search">
-                <button class="bg-gray-400 w-32 rounded-r" type="submit"><i class="fa fa-search"></i></button>
+                <button class="bg-gray-400 w-32 rounded-r hover:bg-gray-500" type="submit"><i
+                        class="fa fa-search"></i></button>
             </div>
         </form>
     </div>
@@ -49,7 +50,7 @@ Home
             <div class="flex-initial rounded w-56 h-32  bg-red-300 float-left bg-cover bg-center" {% if group.photo %}
                 style="background-image:url({{group.get_photo}})">
                 {%else%}
-                style="background-image:url('static/image/normal_image.jpg')">
+                style="background-image:url('/static/image/normal_image.jpg')">
                 {% endif %}
             </div>
 

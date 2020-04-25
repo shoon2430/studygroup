@@ -1,5 +1,6 @@
 {% extends "partials/base.html" %}
 
+
 {% block page_name %}
 My Groups Manage
 {% endblock page_name %}
@@ -13,12 +14,15 @@ My Groups Manage
     {% if groups %}
     <div class="grid mx-16 mt-40 ">
         {% for group in groups%}
+
         <div class="flex ">
 
             <a class="list-item flex my-3 w-10/12" href="{% url 'groups:detail' group.pk%}">
                 <div class="flex-initial rounded w-56 h-32  bg-red-300 float-left bg-cover bg-center"
-                    {% if group.photo %} style="background-image:url({{group.get_photo}})" {%else%}
-                    style="background-image:url('static/image/normal_image.jpg')" {% endif %}>
+                    {% if group.photo %} style="background-image:url({{group.get_photo}})">
+                    {%else%}
+                    style="background-image:url('/static/image/normal_image.jpg')">
+                    {% endif %}
                 </div>
 
                 <div class="group_{{group.id}} flex-initial h-32 w-full ml-8">
