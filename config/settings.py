@@ -34,8 +34,8 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 DEBUG = bool(os.environ.get("DEBUG"))
 
 
-# ALLOWED_HOSTS = []
-ALLOWED_HOSTS = [".elasticbeanstalk.com"]
+ALLOWED_HOSTS = []
+
 
 # Application definition
 
@@ -109,6 +109,9 @@ if DEBUG:
         }
     }
 else:
+
+    ALLOWED_HOSTS = [".elasticbeanstalk.com"]
+
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
@@ -186,9 +189,9 @@ if not DEBUG:
     AWS_STORAGE_BUCKET_NAME = "studygroup-shoon2430"
     AWS_AUTO_CREATE_BUCKET = True
     AWS_BUCKET_ACL = "public-read"
+    AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
 
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-
     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
 
     sentry_sdk.init(
