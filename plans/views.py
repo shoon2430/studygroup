@@ -75,8 +75,14 @@ class updatePlan(LoginRequiredMixin, UpdateView):
         group = group_models.Group.objects.get(pk=group_pk)
         form.save(user=user, group=group)
 
+        next_status = self.request.POST.get("next_status")
+        if next_status:
+            plan = get_object_or_404(plan_models.Plan, pk=plan_pk)
+            plan.set_status_change(next_status)
+            plan.save()
+
         return HttpResponseRedirect(
-            reverse("groups:plan-update", args=(group_pk, plan_pk,))
+            reverse("groups:plan-detail", args=(group_pk, plan_pk,))
         )
 
 
@@ -99,16 +105,18 @@ def deletePlan(request, group_pk, plan_pk):
 def change_plan_status(request, group_pk, plan_pk):
 
     if request.method == "POST":
+        print("TEST1")
         try:
             plan = plan_models.Plan.objects.get(pk=plan_pk)
-
             next_status = json.loads(request.body.decode("utf-8")).get("next_status")
+
             plan.set_status_change(next_status)
             plan.save()
 
             return redirect(reverse("groups:plan-detail", args=(group_pk, plan_pk,)))
 
         except plan_models.Plan.DoesNotExist:
+            print("TEST2")
             return redirect(reverse("core:home"))
 
 
@@ -127,7 +135,7 @@ class plan_upload(FormView):
         planFile.save()
 
         return HttpResponseRedirect(
-            reverse("groups:plan-detail", args=(group_pk, plan_pk,))
+            reverse("groups:plan-update", args=(group_pk, plan_pk,))
         )
 
 
@@ -147,7 +155,7 @@ class result_upload(FormView):
         resultFile.save()
 
         return HttpResponseRedirect(
-            reverse("groups:plan-detail", args=(group_pk, plan_pk,))
+            reverse("groups:plan-update", args=(group_pk, plan_pk,))
         )
 
 

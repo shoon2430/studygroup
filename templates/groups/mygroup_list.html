@@ -1,8 +1,10 @@
 {% extends "partials/base.html" %}
 
+
 {% block page_name %}
-My Groups
+My Groups List
 {% endblock page_name %}
+
 
 
 {% block content %}
@@ -10,43 +12,46 @@ My Groups
 <div class="container mx-auto pb-10">
 
     {% if groups %}
-    <div class="grid mx-16 mt-40">
+    <div class="grid mx-16 mt-40 ">
         {% for group in groups%}
-        <a class="list-item flex my-3" href="{% url 'groups:detail' group.pk%}">
-            <div class="flex-initial rounded w-56 h-32  bg-red-300 float-left bg-cover bg-center" {% if group.photo %}
-                style="background-image:url({{group.get_photo}})">
-                {%else%}
 
-                style="background-image:url('/static/image/normal_image.jpg')">
-                {% endif %}
-            </div>
+        <div class="flex ">
 
-            <div class="group_{{group.id}} flex-initial h-32 w-full ml-8">
-                <div class="flex h-24">
-                    <p class="title flex-initial w-9/12 font-medium text-2xl hover:text-indigo-500">{{group.title}}</p>
-                    <div class="flex-initial w-3/12">
-                        <div class="leader m-1 bg-blue-700 rounded text-center h-8">
-                            <p class="p-1 ml-1 mx-1 font-semibold text-white">{{group.leader}}</p>
-                        </div>
-                        <div class="created m-1 bg-blue-500 rounded text-center h-8">
-                            <p class="p-1 ml-1 mx-1  text-white">{{group.created}}</p>
-                        </div>
-                        <div class="float-right count m-1 bg-gray-200 rounded w-16 text-center h-8 
+            <a class="list-item flex my-3 w-10/12" href="{% url 'groups:detail' group.pk%}">
+                <div class="flex-initial rounded w-56 h-32  bg-red-300 float-left bg-cover bg-center"
+                    {% if group.photo %} style="background-image:url({{group.get_photo}})">
+                    {%else%}
+                    style="background-image:url('/static/image/normal_image.jpg')">
+                    {% endif %}
+                </div>
+
+                <div class="group_{{group.id}} flex-initial h-32 w-full ml-8">
+                    <div class="flex h-24">
+                        <p class="title flex-initial w-9/12 font-medium text-2xl hover:text-indigo-500">{{group.title}}
+                        </p>
+                        <div class="flex-initial w-4/12">
+                            <div class="leader m-1 bg-blue-700 rounded text-center h-8">
+                                <p class="p-1 ml-1 mx-1 font-semibold text-white">{{group.leader}}</p>
+                            </div>
+                            <div class="created m-1 bg-blue-500 rounded text-center h-8">
+                                <p class="p-1 ml-1 mx-1  text-white">{{group.created}}</p>
+                            </div>
+                            <div class="float-right count m-1 bg-gray-200 rounded w-16 text-center h-8 
                         {%if group.get_user_count == group.max_group_count%}
                         text-red-400
                         {%else%}
                         text-blue-400
                         {%endif%}
                         ">
-                            <p class="p-1 ml-1 mx-1 font-semibold "> {{group.get_user_count}} /
-                                {{group.max_group_count}}
-                            </p>
+                                <p class="p-1 ml-1 mx-1 font-semibold "> {{group.get_user_count}} /
+                                    {{group.max_group_count}}
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="flex h-8">
-                    <div class="category m-1 text-center flex-initial rounded h-8
+                    <div class="flex h-8">
+                        <div class="category m-1 text-center flex-initial rounded h-8
                         {%if group.get_category_display == 'Study'%}
                         bg-teal-400  
                         {%elif group.get_category_display == 'Hobby'%}
@@ -57,24 +62,38 @@ My Groups
                         bg-green-500 
                         {%endif%}
                     ">
-                        <p class="p-1 ml-1 mx-1  text-base text-white">
-                            {{group.get_category_display}}
-                        </p>
-                    </div>
-                    <div class="planning_unit m-1 text-center  flex-initial rounded h-8
+                            <p class="p-1 ml-1 mx-1  text-base text-white">
+                                {{group.get_category_display}}
+                            </p>
+                        </div>
+                        <div class="planning_unit m-1 text-center  flex-initial rounded h-8
                         {%if group.planning_unit == 'week'%}
                             bg-gray-500  
                             {%elif group.planning_unit == 'day'%}
                             bg-gray-600 
                             {%endif%}
                         ">
-                        <p class="p-1 ml-1 mx-1 text-base text-white">
-                            {{group.planning_unit}}
-                        </p>
+                            <p class="p-1 ml-1 mx-1 text-base text-white">
+                                {{group.planning_unit}}
+                            </p>
+                        </div>
                     </div>
                 </div>
+            </a>
+            <div class="w-3/12 ">
+                <a href="{%url 'plans:plan-list'%}?group={{group.pk}}">
+                    <div class="bg-green-500 p-3 text-right text-gray-100 m-4 rounded text-lg">
+                        Plan Count : {{group.get_plan_count}}
+                    </div>
+                </a>
+                <a href="{%url 'plans:feedback-list'%}?group={{group.pk}}">
+                    <div class="bg-blue-500 p-3 text-right text-gray-100 m-4 rounded text-lg">
+                        Feedback Count : {{group.get_all_feedback_count}}
+                    </div>
+                </a>
             </div>
-        </a>
+        </div>
+
         <div class="flex items-center w-full my-1">
             <div class="h-px w-full bg-gray-400"></div>
             <div class="h-px w-full bg-gray-400 "></div>
@@ -84,7 +103,7 @@ My Groups
 
         {% if is_paginated %}
         <div>
-            <ul class="pagination float-right mt-8">
+            <ul class=" pagination float-right mt-8">
                 <span>
                     {% if page_obj.has_previous %}
                     <li class="w-16 h-8 m-2 float-left"><a href="/?page={{page_obj.previous_page_number}}">Previous</a>
@@ -106,7 +125,8 @@ My Groups
         </div>
     </div>
     {%else%}
-    {% include 'partials/no_list_page.html' with text="현재 참여중인 그룹이 없습니다." %}
+
+    {% include 'partials/no_list_page.html' with text="생성 하신 그룹이 없습니다." %}
     {% endif %}
 </div>
 

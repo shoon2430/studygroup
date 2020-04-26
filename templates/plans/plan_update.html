@@ -27,11 +27,11 @@ Plan | Update
         </div>
 
         {% if plan.status != "ENROLLMENT" %}
-        <div class="{{form.title_for_result.name}} mt-5">
+        <div id="title_for_result" class="{{form.title_for_result.name}} mt-5">
             <div class="p-2 text-gray-800 text-lg"><b>결과 보고 제목</b></div>
             <div>{{form.title_for_result}}</div>
         </div>
-        <div class="{{form.contents_for_result.name}} mt-5">
+        <div id="contents_for_result" class="{{form.contents_for_result.name}} mt-5">
             <div class="p-2 text-gray-800 text-lg"><b>결과 보고 내용</b></div>
             <div>{{form.contents_for_result}}</div>
         </div>
@@ -78,11 +78,10 @@ Plan | Update
                 <button class="btn bg-teal-500 text-white text-lg">임시 저장</button>
             </span>
             <span class="flex-1 m-1 p-1 rounded">
-                <button onclick='confirm_complete(
-                    request_POST, " {%url 'groups:plan-change-status' plan.group.pk plan.pk %}")'
-                    class="btn bg-indigo-500 text-white text-lg">
+                <div type="button" onclick='confirm_complete()'
+                    class="btn bg-indigo-500 text-white text-lg cursor-pointer">
                     결과보고 제출
-                </button>
+                </div>
             </span>
             {% else%}
             <span class="flex-1">
