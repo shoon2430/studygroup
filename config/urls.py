@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import os
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -24,7 +25,7 @@ def trigger_error(request):
 
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path(f"{os.environ.get('ADMIN_URL')}/", admin.site.urls),
     path("", include("core.urls", namespace="core")),
     path("plans/", include("plans.urls", namespace="plans")),
     path("groups/", include("groups.urls", namespace="groups")),
