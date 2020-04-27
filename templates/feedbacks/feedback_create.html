@@ -22,8 +22,12 @@ Plan | Create
 
     <form class="lg:w-11/12 md:w-1/2 xl:w-11/12" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="bg-blue-500 p-4 text-gray-100 text-center">
-            <p>계획 최종 승인전 계획에 대한 피드백을 작성하여 주세요.</p>
+        <div class="bg-blue-500 p-4 text-gray-100 text-center flex">
+            <div class="w-8 h-8">
+                <img
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAEBUlEQVRoge3ZXahUVRQH8DN6MywTwtIkJEihEg2SSqmMCguiqJQ+IUh6KSgMrMceLMHsg8IIEyGohyiIiqIH0YIorQws6KmEzD6orIzKq3bT7q+Hs86c7XXmzof3zvHG/cMwM3utvc7/P3vvtdfek2XjGMc4xjGOClCDqkmMBCZUTWCk0Fd8qNVqtSqJdItiRv1vRqQuBHOqJNINjuCsxF4srpBXR8BC7CnIp0Lgb9xeNclWwFLsT4mnQtbH+79YWTXZZsDK4JhyLoWE0wOJ00b0tQrcK2Aing1ug1gV7UcLCcMyHIjmTTilMvYlp5PxVjL970hsjYWEcRF+CdOnmNF7+nUu07AtuOzF5UPszYWEw2x8FeZdOK939Osc5mBncPga5zbwGV5IOE3Dh+HyO64Ydfblsy/Br/HsTzC9iV9rIeF4Il4NtwHcOXr068+8GQfjmW/gpGF82xMSzjWsCtd6xhgNODJzrsOwZVRHQpJOK3A4uryAE0aGfj29FvvCYaxos1/nQqLjTcpddTOmdk+/HnMK3omYB3FrB327ExKdL8bP0fULzOqcfj3WTOyIWL/h0g77dy8kAixIptl3mN9FjPnRt5hOF3QR45hGZJ4yvxcL8w8s6SDGkuiTxtiJeR1yWY+BbtbIbeiPbjtwjjI9/4PlbcRYHr7wSsQoptc+HayRiLewbSHow1Py9AsvYnLYang82gfxKCY2iDERq5MYa1EL22S8lMR40pCiFWfjNflG+Sdex+zC2FIITsd74TqA+5r43YtD4bcNN2B6vG7ER2E7hHuaxLg/Ga2HkvalymI2xR6c1c7OfiG+DbcftcgquAo/NHhgge9xZYsYl2GN2AxDRCFuF2bE6GyJtpdb1Vp3K0uFrZg5HIGk31Q8iI/l66k/RmOlDo8F8n2rEFEkhQ3y6Twrvu9tVsZPwvPJr/gcJnVCYCQgn5oDweER+VmpELUBZ8Tn/kYHqzOVc/kA7uq1gOBxfSJiddKeivkm3jcNPeouxk/RtBsLKhJxnfwkCGsa2JcpN+MBXJRePqxIlG7BaRWJuDYRsbaJT1GJ9ysShyMxKC+dK7l0wDXK5PJ0E59CxH5p9ktE7MMtPWN9NMGrlfvEM018GosIY4G5PWHcAPK6q10R/YZcQBQOqO4/EnmCKWq3daJkGeLTfCQSp8qEyHfwfUFhY9ciwrGX+EtsrCMqogIhb8Yz5yqnUysRjdfE8QA8lojbasi5XycjUSXweRAtSpDtODVsx/9IZFn9smFQvvEtUt4mfoYnxoSILKsfc2FzfD9feXYfGyKyLMuU5/u3Y6HvHosiJsj/GkgxgPfxsAa37e2i18VhLcuyL7Msm5Jl2bvx+qBWq+0/1sD/AWQhwocUBnj7AAAAAElFTkSuQmCC">
+            </div>
+            <p class="ml-2 p-1">결과에 대한 피드백을 작성하여 주세요.</p>
         </div>
         <div class="{{form.title_for_plan.name}} mt-2 ">
             <span>{{form.title}}</span>

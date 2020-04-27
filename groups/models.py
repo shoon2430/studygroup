@@ -77,7 +77,6 @@ class Group(core_model.TimeStampModel):
     def get_all_feedback_count(self):
 
         plans = self.plans.filter(user=self.leader)
-        print(plans)
         feedback_count = 0
         for plan in plans:
             feedback_count += plan.get_feedbacks()

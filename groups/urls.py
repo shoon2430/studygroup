@@ -53,4 +53,13 @@ urlpatterns_Plan = [
     ),
 ]
 
-urlpatterns = urlpatterns_Group + urlpatterns_Plan
+
+urlpatterns_Feedback = [
+    path(
+        "<int:group_pk>/plan/<int:plan_pk>/feedbacks/",
+        plan_views.FeedbackList.as_view(),
+        name="feedback-list",
+    ),
+]
+
+urlpatterns = urlpatterns_Group + urlpatterns_Plan + urlpatterns_Feedback

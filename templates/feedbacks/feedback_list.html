@@ -17,7 +17,12 @@ My Feedbacks
     <div class="grid mx-16 mt-32">
         <div class="p-2 font-bold max-w-full justify-between items-center flex">
             <b class="text-3xl">
-                GROUP : {{group.title}}
+                PLAN :
+                {% if plan.title_for_result %}
+                {{plan.title_for_result}}
+                {% else %}
+                {{plan.title_for_plan}}
+                {% endif %}
             </b>
             <a href="javascript:history.back()" class="text-lg mt-8 hover:text-indigo-600">
                 뒤로가기

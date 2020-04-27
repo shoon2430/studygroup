@@ -162,6 +162,11 @@ Plan | Detail
             class="float-right w-48 p-2 m-2 rounded bg-blue-500 text-white text-center text-xl">
             최종 계획 승인
         </button>
+        {% elif plan.status == 'SUCCESS'%}
+        <a href='{%url 'groups:plan-feedback' plan.group.pk plan.pk%}'
+            class="float-right w-48 p-2 m-2 rounded bg-blue-500 text-white text-center text-xl">
+            피드백 작성
+        </a>
         {% endif %}
 
     </div>

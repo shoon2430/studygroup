@@ -27,7 +27,8 @@ from .forms import (
 )
 from groups import models as group_models
 from . import models as plan_models
-from .mixins import GroupRequiredMixin
+
+from .mixins import GroupRequiredMixin, PlanUserCheckMixin
 
 
 class PlanDetail(GroupRequiredMixin, DetailView):
@@ -201,7 +202,7 @@ class PlanList(LoginRequiredMixin, ListView):
         return context
 
 
-class FeedbackList(LoginRequiredMixin, ListView):
+class FeedbackList(PlanUserCheckMixin, ListView):
     model = plan_models.Feedback
     context_object_name = "feedbacks"
     paginate_by = "10"
@@ -211,14 +212,17 @@ class FeedbackList(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = super(FeedbackList, self).get_queryset()
-        group_pk = self.request.GET.get("group")
-        queryset = queryset.filter(plan__group=group_pk)
+        plan_pk = self.kwargs["plan_pk"]
+        plan = plan_models.Plan.objects.get(pk=plan_pk)
+
+        queryset = queryset.filter(plan=plan)
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super(FeedbackList, self).get_context_data(**kwargs)
-        group = group_models.Group.objects.get(pk=self.request.GET.get("group"))
-        context["group"] = group
+        plan_pk = self.kwargs["plan_pk"]
+        plan = plan_models.Plan.objects.get(pk=plan_pk)
+        context["plan"] = plan
         return context
 
 
