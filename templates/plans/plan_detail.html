@@ -69,13 +69,17 @@ Plan | Detail
     <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100">
         {% for planFile in plan.get_planFiles %}
 
-        <a href='{{planFile.file.url}}' download>
+        <div>
             <div class="flex">
-                <div class="bg-gray-300 p-3 m-2 rounded w-full hover:bg-gray-500">
+                <a href='{{planFile.file.url}}' download class="bg-gray-300 p-3 m-2 rounded w-full hover:bg-gray-500">
                     {{planFile.caption}}
-                </div>
+                </a>
+                <button onclick=""
+                    class="p-3 m-2 rounded text-gray-100 text-lg w-32 text-center bg-red-400 hover:bg-red-600">
+                    삭제
+                </button>
             </div>
-        </a>
+        </div>
 
         {% endfor %}
     </div>

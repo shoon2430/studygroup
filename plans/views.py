@@ -40,9 +40,6 @@ class PlanDetail(GroupRequiredMixin, DetailView):
 
 
 class createPlan(LoginRequiredMixin, FormView):
-    """
-    Create Plan 
-    """
 
     template_name = "plans/plan_create.html"
     form_class = createPlanForm
@@ -104,9 +101,11 @@ def deletePlan(request, group_pk, plan_pk):
 @csrf_exempt
 @login_required
 def change_plan_status(request, group_pk, plan_pk):
-
+    """
+    계획 승인 절차
+    ENROLLMENT -> CONFIRM -> COMPLETE -> SUCCESS
+    """
     if request.method == "POST":
-        print("TEST1")
         try:
             plan = plan_models.Plan.objects.get(pk=plan_pk)
             next_status = json.loads(request.body.decode("utf-8")).get("next_status")
@@ -117,11 +116,14 @@ def change_plan_status(request, group_pk, plan_pk):
             return redirect(reverse("groups:plan-detail", args=(group_pk, plan_pk,)))
 
         except plan_models.Plan.DoesNotExist:
-            print("TEST2")
             return redirect(reverse("core:home"))
 
 
 class plan_upload(FormView):
+    """
+    계획 등록시 파일 업로드
+    """
+
     form_class = planUploadForm
     template_name = "plans/plan_upload.html"
 
@@ -136,11 +138,15 @@ class plan_upload(FormView):
         planFile.save()
 
         return HttpResponseRedirect(
-            reverse("groups:plan-update", args=(group_pk, plan_pk,))
+            reverse("groups:plan-detail", args=(group_pk, plan_pk,))
         )
 
 
 class result_upload(FormView):
+    """
+    계획 완료시 파일 업로드
+    """
+
     form_class = resultUploadForm
     template_name = "plans/result_upload.html"
 
@@ -180,6 +186,11 @@ class createFeedback(LoginRequiredMixin, FormView):
 
 
 class PlanList(LoginRequiredMixin, ListView):
+    """
+    나의 그룹 보기에서 선택 가능한 그룹리스트 보기
+    내가 속한 그룹에서 내가 작성한 계획 전부를 조회한다.
+    """
+
     model = plan_models.Plan
     context_object_name = "plans"
     paginate_by = "10"
@@ -203,6 +214,11 @@ class PlanList(LoginRequiredMixin, ListView):
 
 
 class FeedbackList(PlanUserCheckMixin, ListView):
+    """
+    그룹 정보화면에서 선택 할 수 있는 피드백 리스트
+    내가 작성한 하나의 계획에 대한 모든 피드백을 조회한다.
+    """
+
     model = plan_models.Feedback
     context_object_name = "feedbacks"
     paginate_by = "10"
@@ -227,6 +243,11 @@ class FeedbackList(PlanUserCheckMixin, ListView):
 
 
 class MyFeedbackList(LoginRequiredMixin, ListView):
+    """
+    나의 그룹 보기 에서 선택 할 수 있는 피드백 리스트
+    내가 속한 그룹에서 작성한 모든 계획에 대한 피드백을 조회한다. 
+    """
+
     model = plan_models.Feedback
     context_object_name = "feedbacks"
     paginate_by = "10"

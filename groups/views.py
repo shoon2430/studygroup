@@ -90,7 +90,9 @@ class updateGroup(LoginRequiredMixin, UpdateView):
 @csrf_exempt
 @login_required
 def join_or_exit_Group(request, pk):
-
+    """
+    해당 그룹에 속해있는지 확인한다.
+    """
     if request.method == "POST":
         group = group_model.Group.objects.get(pk=pk)
 
@@ -106,6 +108,10 @@ def join_or_exit_Group(request, pk):
 
 
 class MyGroupList(LoginRequiredMixin, ListView):
+    """
+    나의 그룹 보기
+    """
+
     model = group_model.Group
     template_name = "groups/mygroup_list.html"
     context_object_name = "groups"
@@ -121,15 +127,4 @@ class MyGroupList(LoginRequiredMixin, ListView):
 
 
 class ManageGroupList(LoginRequiredMixin, ListView):
-    model = group_model.Group
-    template_name = "groups/my_group_manage.html"
-    context_object_name = "groups"
-    paginate_by = "10"
-    paginate_orphans = "5"
-    ordering = "-created"
-
-    def get_queryset(self):
-        qs_groups = super(ManageGroupList, self).get_queryset()
-        my = self.request.user
-        qs_groups = qs_groups.filter(users=my, leader=my)
-        return qs_groups
+    pass
