@@ -226,6 +226,39 @@ class FeedbackList(PlanUserCheckMixin, ListView):
         return context
 
 
+class MyFeedbackList(LoginRequiredMixin, ListView):
+    model = plan_models.Feedback
+    context_object_name = "feedbacks"
+    paginate_by = "10"
+    paginate_orphans = "5"
+    ordering = ["-plan__created", "-created"]
+    template_name = "feedbacks/myfeedback_list.html"
+
+    def get_queryset(self):
+        queryset = super(MyFeedbackList, self).get_queryset()
+        user = self.request.user
+        group_pk = self.request.GET.get("group")
+
+        queryset = queryset.filter(plan__group=group_pk, plan__user=user)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(MyFeedbackList, self).get_context_data(**kwargs)
+        user = self.request.user
+        group_pk = self.request.GET.get("group")
+        group = group_models.Group.objects.get(pk=group_pk)
+
+        plans = set()
+        for plan in group.plans.all():
+            if plan.user == user:
+                Feedbacks = plan_models.Feedback.objects.filter(plan=plan)
+                if Feedbacks:
+                    plans.add(plan)
+
+        context["plans"] = plans
+        return context
+
+
 class FeedbackDetail(LoginRequiredMixin, DetailView):
     model = plan_models.Feedback
     template_name = "feedbacks/feedback_detail.html"

@@ -17,24 +17,26 @@ My Feedbacks
     <div class="grid mx-16 mt-32">
         <div class="p-2 font-bold max-w-full justify-between items-center flex">
             <b class="text-3xl">
-
             </b>
             <a href="javascript:history.back()" class="text-lg mt-8 hover:text-indigo-600">
                 뒤로가기
             </a>
         </div>
-        <b class="text-3xl p-2">
-            PLAN :
-            {% if plan.title_for_result %}
-            {{plan.title_for_result}}
-            {% else %}
-            {{plan.title_for_plan}}
-            {% endif %}
-        </b>
-        {% for feedback in feedbacks%}
-        <div class="mt-3">
-            <a href="{% url 'plans:feedback-detail' feedback.pk %}">
-                <div class="plan_{{plan.id}} -mt-1 border rounded  p-3 border-gray-400  ">
+
+        {% for plan in plans  %}
+        <div class="mb-5">
+            <b class="text-3xl p-2">
+                PLAN :
+                {% if plan.title_for_result %}
+                {{plan.title_for_result}}
+                {% else %}
+                {{plan.title_for_plan}}
+                {% endif %}
+            </b>
+            {% for feedback in feedbacks%}
+            {% if feedback.plan == plan %}
+            <a class="mt-5" href="{% url 'plans:feedback-detail' feedback.pk %}">
+                <div class="plan_{{plan.id}} border rounded mt-2 p-3 border-gray-400 ">
                     <div class="max-w-full justify-between items-center flex">
                         <div class="p-2 font-bold text-xl">TITLE : {{feedback.title}}</div>
                         <div class="border border-gray400 p-1 rounded-lg text-gray-800 text-center h-8">
@@ -58,10 +60,13 @@ My Feedbacks
                     </div>
                 </div>
             </a>
+            {% endif %}
+            {%endfor%}
         </div>
-        {%endfor%}
+        {% endfor %}
 
-        {% if is_paginated %}
+
+        <!-- {% if is_paginated %}
         <div>
             <ul class="pagination float-right mt-8">
                 <span>
@@ -82,7 +87,7 @@ My Feedbacks
                 </span>
                 {%endif%}
             </ul>
-        </div>
+        </div> -->
     </div>
 </div>
 {% else %}
