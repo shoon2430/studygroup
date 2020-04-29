@@ -29,7 +29,8 @@ class PlanFile(core_model.TimeStampModel):
     file = models.FileField(null=True, upload_to="plan/file_for_plan")
 
     def delete(self, *args, **kargs):
-        os.remove(os.path.join(settings.MEDIA_ROOT, self.file.path))
+        if self.file:
+            os.remove(os.path.join(settings.MEDIA_ROOT, self.file.path))
         super(PlanFile, self).delete(*args, **kargs)
 
 
@@ -41,7 +42,8 @@ class ResultFile(core_model.TimeStampModel):
     file = models.FileField(null=True, upload_to="plan/file_for_result")
 
     def delete(self, *args, **kargs):
-        os.remove(os.path.join(settings.MEDIA_ROOT, self.file.path))
+        if self.file:
+            os.remove(os.path.join(settings.MEDIA_ROOT, self.file.path))
         super(ResultFile, self).delete(*args, **kargs)
 
 

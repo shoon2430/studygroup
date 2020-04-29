@@ -68,7 +68,8 @@ class Group(core_model.TimeStampModel):
         return self.title
 
     def delete(self, *args, **kargs):
-        os.remove(os.path.join(settings.MEDIA_ROOT, self.photo.path))
+        if self.photo:
+            os.remove(os.path.join(settings.MEDIA_ROOT, self.photo.path))
         super(Group, self).delete(*args, **kargs)  # 원래의 delete 함수를 실행
 
     def get_user_count(self):
