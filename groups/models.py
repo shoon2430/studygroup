@@ -1,3 +1,5 @@
+import os
+from django.conf import settings
 from datetime import datetime, timedelta
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -65,11 +67,18 @@ class Group(core_model.TimeStampModel):
     def __str__(self):
         return self.title
 
+    def delete(self, *args, **kargs):
+        os.remove(os.path.join(settings.MEDIA_ROOT, self.photo.path))
+        super(Group, self).delete(*args, **kargs)  # 원래의 delete 함수를 실행
+
     def get_user_count(self):
         return self.users.count()
 
     def get_photo(self):
-        return self.photo.url
+        if self.photo:
+            return self.photo.url
+        else:
+            None
 
     def get_plan_count(self):
         return self.plans.filter(user=self.leader).count()
@@ -86,3 +95,7 @@ class Group(core_model.TimeStampModel):
     def get_weekday_idx(self):
         week_list = ("MON", "TUE", "WHE", "THU", "FRI", "SAT", "SUN")
         return week_list.index(self.deadline_week)
+
+    # @staticmethod
+    # def get_category_list(cls):
+    #     return cls.CATEGORY_LIST

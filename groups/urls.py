@@ -5,6 +5,7 @@ from plans import views as plan_views
 app_name = "groups"
 
 urlpatterns_Group = [
+    # path("search/", group_views.AjaxJsonGroupList.as_view(), name="ajax"),
     path("create/", group_views.createGroup.as_view(), name="create-group"),
     path("mygroups/", group_views.MyGroupList.as_view(), name="my-groups"),
     # path("manages/", group_views.ManageGroupList.as_view(), name="manages"),

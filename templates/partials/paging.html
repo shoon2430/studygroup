@@ -1,0 +1,19 @@
+{% if is_paginated %}
+<ul class="pagination float-right mt-8">
+    <span>
+        {% if page_obj.has_previous %}
+        <li class="w-16 h-8 m-2 float-left"><a href="/?page={{page_obj.previous_page_number}}">Previous</a>
+        </li>
+        {% endif %}
+
+        {% for page in paginator.page_range%}
+        <li class="w-4 h-8 m-2 float-left {%if page_obj.number == page %}text-indigo-600 font-bold {%endif%}">
+            <a href="/?category={{category}}&title={{title}}&page={{page}}">{{page}}</a></li>
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <li class="w-16 h-8 m-2 float-left"><a href="/?page={{page_obj.next_page_number}}">Next</a></li>
+        {% endif %}
+    </span>
+</ul>
+{%endif%}

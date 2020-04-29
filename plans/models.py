@@ -1,3 +1,5 @@
+import os
+from django.conf import settings
 from datetime import datetime, timedelta
 from django.db import models
 from core import models as core_model
@@ -26,6 +28,10 @@ class PlanFile(core_model.TimeStampModel):
     caption = models.CharField(max_length=150)
     file = models.FileField(null=True, upload_to="plan/file_for_plan")
 
+    def delete(self, *args, **kargs):
+        os.remove(os.path.join(settings.MEDIA_ROOT, self.file.path))
+        super(PlanFile, self).delete(*args, **kargs)
+
 
 class ResultFile(core_model.TimeStampModel):
     plan = models.ForeignKey(
@@ -33,6 +39,10 @@ class ResultFile(core_model.TimeStampModel):
     )
     caption = models.CharField(max_length=150)
     file = models.FileField(null=True, upload_to="plan/file_for_result")
+
+    def delete(self, *args, **kargs):
+        os.remove(os.path.join(settings.MEDIA_ROOT, self.file.path))
+        super(ResultFile, self).delete(*args, **kargs)
 
 
 class Plan(core_model.TimeStampModel):

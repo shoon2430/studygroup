@@ -1,34 +1,12 @@
 {% extends "partials/base.html" %}
-
+{% load static %}
 
 {% block page_name %}
 Group | Detail
 {% endblock page_name %}
 
 {% block script %}
-<script>
-
-    const delete_group = (func, url) => {
-        const massge = "그룹을 삭제하시겠습니까?";
-        func(url, massge);
-    }
-
-    const join_or_exit_group = (func, status) => {
-
-        {% if request.user.is_authenticated %}
-        const url = "{%url 'groups:join-group' group.pk %}";
-        const massge = status == "JOIN" ? "그룹에 참여하시겠습니까?" : "그룹을 나가겠습니까?";
-
-        {% else %}
-        const url = "{%url 'groups:join-group' group.pk %}";
-        const massge = "로그인후 가능합니다.";
-
-        {% endif %}
-
-        func(url, massge);
-    }
-
-</script>
+<script src="{% static "js/group/group_detail.js" %}"></script>
 {% endblock script %}
 
 
@@ -55,139 +33,50 @@ Group | Detail
 
     </div>
 
-    <div class="mt-4 ">
-        {% if join %}
-        {% if group.leader == request.user %}
-        <button id="deleteGroup" class="w-40 text-center float-right p-2 m-1 rounded bg-red-500 text-white text-xl"
-            onclick="delete_group(request_POST, '{% url "groups:delete-group" group.pk %}')">그룹 삭제하기 </button>
-        <button id="updateGroup" class="w-40 text-center float-right p-2 m-1 rounded bg-teal-500 text-white text-xl"
-            onclick="location.href='{% url "groups:update-group" group.pk %}'">
-            그룹 수정하기
-        </button>
-        {% else %}
-        <button id="joinGroup" class="w-40 text-center float-right p-2 m-1 rounded bg-red-500 text-white text-xl"
-            onclick="join_or_exit_group(request_POST,'EXIT')">
-            그룹 나가기
-        </button>
-        {% endif %}
+    <div id="group_btn" class="mt-4 ">
+        <div class="flex justify-end">
+            {% if join %}
+            {% if group.leader == request.user %}
+            <button id="updateGroup" class="w-40 text-center p-2 m-1 rounded bg-teal-500 text-white text-xl"
+                onclick="location.href='{% url "groups:update-group" group.pk %}'">
+                그룹 수정하기
+            </button>
+            {% endif %}
 
-        <button id="createPlan" class="w-40 text-center float-right p-2 m-1 rounded bg-indigo-500 text-white text-xl"
-            onclick="location.href='{% url "groups:plan-create" group.pk %}'">
-            계획 등록하기
-        </button>
-        {%else%}
+            <button id="createPlan" class="w-40 text-center p-2 m-1 rounded bg-indigo-500 text-white text-xl"
+                onclick="location.href='{% url "groups:plan-create" group.pk %}'">
+                계획 등록하기
+            </button>
 
-        {%if group.get_user_count != group.max_group_count%}
-        <button id="joinGroup" class="w-40 text-center float-right p-2 m-1 rounded bg-red-500 text-white text-xl"
-            onclick="join_or_exit_group(request_POST,'JOIN')">
-            그룹 참여하기
-        </button>
-        {%endif%}
+            <button id="joinGroup" class="w-40 text-center p-2 m-1 rounded bg-red-500 text-white text-xl"
+                onclick="join_or_exit_group(request_POST,'{%url "groups:join-group" group.pk %}', 'EXIT' )">
+                그룹 나가기
+            </button>
 
-        {% endif %}
+            {%else%}
+
+            {%if group.get_user_count != group.max_group_count%}
+            <button id="joinGroup" class="w-40 text-center p-2 m-1 rounded bg-red-500 text-white text-xl"
+                onclick="join_or_exit_group(request_POST,'{%url "groups:join-group" group.pk %}', 'JOIN' )">
+                그룹 참여하기
+            </button>
+            {%endif%}
+            {% endif %}
+        </div>
     </div>
-    <div class="mt-10">
+    <div id="group_users" class="mt-10">
         <div class="mb-3">
             <b>참여인원</b>
         </div>
         <div class="float-left ">
             {% for user in group.users.all  %}
-            <span class="p-2 rounded bg-gray-600  text-white ">{{user.username}}</span>
+            <span class="user p-2 rounded bg-gray-600  text-white ">{{user.username}}</span>
             {% endfor %}
         </div>
     </div>
 
     <div class="plan_list mt-4">
-        {% for plan in plans %}
-        <div class="flex">
-            <a class="w-11/12" href="{%url 'groups:plan-detail' group.pk plan.pk %} ">
-                <div class="plan_{{plan.id}} border 
-                {% if plan.check_deadline %}
-                    bg-gray-400 
-                {%else%}
-                    bg-gray-100  
-                {% endif %}
-
-                rounded mt-3 p-3 border-gray-400 mr-2
-            ">
-
-                    <div class="detial max-w-full flex items-center justify-between">
-                        <div class="p-2 font-bold text-lg">{{plan.user.username}}</div>
-                        <div class="flex">
-
-                            <div class="border border-gray700 p-1 rounded-lg text-gray-700 text-center h-8 text-sm">
-                                등록일 : {{plan.get_created}}
-                            </div>
-                            <div
-                                class="border border-gray700 p-1 rounded-lg text-gray-700 text-center h-8 text-sm ml-2">
-                                마감일 : {{plan.get_deadline}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="confirm max-w-full flex items-center justify-between mt-1">
-                        <div class="flex">
-                            {% if plan.status != 'COMPLETE' and plan.status != 'SUCCESS' %}
-                            <div
-                                class="border border-gray400 p-1 bg-teal-500 rounded-lg text-gray-100 text-center h-8 w-24 text-sm">
-                                <b>계획 제목 {{plan.title_for_plan}}</b>
-                            </div>
-                            <div class="p-1 ml-1">
-                                {{plan.title_for_plan}}
-                            </div>
-                            {% else %}
-                            <div
-                                class="border border-gray400 p-1 bg-blue-500 rounded-lg text-gray-100 text-center h-8 w-24 text-sm">
-                                <b>결과 제목</b>
-                            </div>
-                            <div class="p-1 ml-1">
-                                {{plan.title_for_result}}
-                            </div>
-                            {% endif %}
-                        </div>
-
-                        {% if plan.check_deadline %}
-                        <div
-                            class="border border-gray400 p-1 rounded-lg text-gray-100 w-32 text-center h-8 text-sm bg-red-600  ">
-                            마감
-                        </div>
-                        {%else%}
-
-                        <div class="border border-gray400 p-1 rounded-lg text-gray-100 w-32 text-center h-8 text-sm
-                        {%if plan.status == 'ENROLLMENT'%}
-                        bg-teal-400  
-                        {%elif plan.status == 'CONFIRM'%}
-                        bg-indigo-400 
-                        {%elif plan.status == 'COMPLETE'%}
-                        bg-blue-400 
-                        {%elif plan.status == 'SUCCESS'%}
-                        bg-green-400 
-                        {%endif%}
-                    ">
-                            {{plan.status}}
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-            </a>
-            <a href="{%url 'groups:feedback-list' group.pk plan.pk%}" class="w-1/12 rounded mt-3 border
-                border-gray-400">
-                <div class="text-center bg-red-400 h-12">
-                    <p class="p-3 text-white font-semibold">피드백</p>
-                </div>
-                <div class="flex items-center w-full">
-                    <div class="h-px w-full bg-gray-400"></div>
-                </div>
-                <div class="text-center h-12">
-                    <p class="p-2 mt-1 font-semibold">
-                        {{plan.get_feedbacks}}
-                    </p>
-                </div>
-
-            </a>
-        </div>
-
-        {% endfor %}
-
+        {% include 'partials/plan/plan_box.html' with plans=plans %}
     </div>
 
 </div>

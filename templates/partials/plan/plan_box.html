@@ -1,0 +1,88 @@
+{% for plan in plans %}
+<div class="flex">
+    <a class="w-11/12" href="{%url 'groups:plan-detail' group.pk plan.pk %} ">
+        <div class="plan_{{plan.id}} border 
+                    {% if plan.check_deadline %}
+                        bg-gray-400 
+                    {%else%}
+                        bg-gray-100  
+                    {% endif %}
+    
+                    rounded mt-3 p-3 border-gray-400 mr-2
+                ">
+
+            <div class="detial max-w-full flex items-center justify-between">
+                <div class="p-2 font-bold text-lg">{{plan.user.username}}</div>
+                <div class="flex">
+
+                    <div class="border border-gray700 p-1 rounded-lg text-gray-700 text-center h-8 text-sm">
+                        등록일 : {{plan.get_created}}
+                    </div>
+                    <div class="border border-gray700 p-1 rounded-lg text-gray-700 text-center h-8 text-sm ml-2">
+                        마감일 : {{plan.get_deadline}}
+                    </div>
+                </div>
+            </div>
+            <div class="confirm max-w-full flex items-center justify-between mt-1">
+                <div class="flex">
+                    {% if plan.status != 'COMPLETE' and plan.status != 'SUCCESS' %}
+                    <div
+                        class="border border-gray400 p-1 bg-teal-500 rounded-lg text-gray-100 text-center h-8 w-24 text-sm">
+                        <b>계획 제목 {{plan.title_for_plan}}</b>
+                    </div>
+                    <div class="p-1 ml-1">
+                        {{plan.title_for_plan}}
+                    </div>
+                    {% else %}
+                    <div
+                        class="border border-gray400 p-1 bg-blue-500 rounded-lg text-gray-100 text-center h-8 w-24 text-sm">
+                        <b>결과 제목</b>
+                    </div>
+                    <div class="p-1 ml-1">
+                        {{plan.title_for_result}}
+                    </div>
+                    {% endif %}
+                </div>
+
+                {% if plan.check_deadline %}
+                <div
+                    class="border border-gray400 p-1 rounded-lg text-gray-100 w-32 text-center h-8 text-sm bg-red-600  ">
+                    마감
+                </div>
+                {%else%}
+
+                <div class="border border-gray400 p-1 rounded-lg text-gray-100 w-32 text-center h-8 text-sm
+                            {%if plan.status == 'ENROLLMENT'%}
+                            bg-teal-400  
+                            {%elif plan.status == 'CONFIRM'%}
+                            bg-indigo-400 
+                            {%elif plan.status == 'COMPLETE'%}
+                            bg-blue-400 
+                            {%elif plan.status == 'SUCCESS'%}
+                            bg-green-400 
+                            {%endif%}
+                        ">
+                    {{plan.status}}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </a>
+    <a href="{%url 'groups:feedback-list' plan.group.pk plan.pk%}" class="w-1/12 rounded mt-3 border
+                    border-gray-400">
+        <div class="text-center bg-red-400 h-12">
+            <p class="p-3 text-white font-semibold">피드백</p>
+        </div>
+        <div class="flex items-center w-full">
+            <div class="h-px w-full bg-gray-400"></div>
+        </div>
+        <div class="text-center h-12">
+            <p class="p-2 mt-1 font-semibold">
+                {{plan.get_feedbacks}}
+            </p>
+        </div>
+
+    </a>
+</div>
+
+{% endfor %}

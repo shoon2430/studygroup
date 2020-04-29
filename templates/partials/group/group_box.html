@@ -1,0 +1,71 @@
+{% for group in groups%}
+
+<div class="{{group_group.pk}}">
+    <a class="list-item flex my-3" href="{% url 'groups:detail' group.pk%}">
+        <div class="flex-initial rounded w-56 h-32  bg-red-300 float-left bg-cover bg-center" {% if group.photo %}
+            style="background-image:url({{group.get_photo}})">
+            {%else%}
+            style="background-image:url('/static/image/normal_image.jpg')">
+            {% endif %}
+        </div>
+
+        <div class="group_{{group.id}} flex-initial h-32 w-full ml-8">
+            <div class="flex h-24">
+                <p class="title flex-initial w-9/12 font-medium text-2xl hover:text-indigo-500">{{group.title}}</p>
+                <div class="flex-initial w-3/12">
+                    <div class="leader m-1 bg-blue-700 rounded text-center h-8">
+                        <p class="p-1 ml-1 mx-1 font-semibold text-white">{{group.leader}}</p>
+                    </div>
+                    <div class="created m-1 bg-blue-500 rounded text-center h-8">
+                        <p class="p-1 ml-1 mx-1  text-white">{{group.created}}</p>
+                    </div>
+                    <div class="float-right count m-1 bg-gray-200 rounded w-16 text-center h-8 
+                {%if group.get_user_count == group.max_group_count%}
+                text-red-400
+                {%else%}
+                text-blue-400
+                {%endif%}
+                ">
+                        <p class="p-1 ml-1 mx-1 font-semibold "> {{group.get_user_count}} /
+                            {{group.max_group_count}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex h-8">
+                <div class="category m-1 text-center flex-initial rounded h-8
+                {%if group.get_category_display == 'Study'%}
+                bg-teal-400  
+                {%elif group.get_category_display == 'Hobby'%}
+                bg-indigo-400 
+                {%elif group.get_category_display == 'Reading'%}
+                bg-blue-400 
+                {%elif group.get_category_display == 'Exercise'%}
+                bg-green-500 
+                {%endif%}
+            ">
+                    <p class="p-1 ml-1 mx-1  text-base text-white">
+                        {{group.get_category_display}}
+                    </p>
+                </div>
+                <div class="planning_unit m-1 text-center  flex-initial rounded h-8
+                {%if group.planning_unit == 'week'%}
+                    bg-gray-500  
+                    {%elif group.planning_unit == 'day'%}
+                    bg-gray-600 
+                    {%endif%}
+                ">
+                    <p class="p-1 ml-1 mx-1 text-base text-white">
+                        {{group.planning_unit}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </a>
+    <div class="flex items-center w-full my-1">
+        <div class="h-px w-full bg-gray-400"></div>
+        <div class="h-px w-full bg-gray-400 "></div>
+    </div>
+</div>
+{%endfor%}
