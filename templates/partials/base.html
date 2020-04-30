@@ -14,13 +14,16 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
 
+    <link rel="stylesheet" href="{% static "css/common.css" %}">
+
+
     {% block custom_css %}
 
     {% endblock custom_css %}
 
 </head>
 
-<body>
+<body class="bg-write">
     {% include "partials/messages.html" %}
     {% include "partials/header.html" %}
 

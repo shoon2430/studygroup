@@ -12,77 +12,15 @@ My Groups List
 <div class="container mx-auto pb-10">
 
     {% if groups %}
-    <div class="grid mx-16 mt-40 ">
+    <div class="grid mt-40 ">
         {% for group in groups%}
-
         <div class="flex ">
-
-            <a class="list-item flex my-3 w-10/12" href="{% url 'groups:detail' group.pk%}">
-                <div class="flex-initial rounded w-56 h-32  bg-red-300 float-left bg-cover bg-center"
-                    {% if group.photo %} style="background-image:url({{group.get_photo}})">
-                    {%else%}
-                    style="background-image:url('/static/image/normal_image.jpg')">
-                    {% endif %}
-                </div>
-
-                <div class="group_{{group.id}} flex-initial h-32 w-full ml-8">
-                    <div class="flex h-24">
-                        <p class="title flex-initial w-9/12 font-medium text-2xl hover:text-indigo-500">{{group.title}}
-                        </p>
-                        <div class="flex-initial w-4/12">
-                            <div class="leader m-1 bg-blue-700 rounded text-center h-8">
-                                <p class="p-1 ml-1 mx-1 font-semibold text-white">{{group.leader}}</p>
-                            </div>
-                            <div class="created m-1 bg-blue-500 rounded text-center h-8">
-                                <p class="p-1 ml-1 mx-1  text-white">{{group.created}}</p>
-                            </div>
-                            <div class="float-right count m-1 bg-gray-200 rounded w-16 text-center h-8 
-                        {%if group.get_user_count == group.max_group_count%}
-                        text-red-400
-                        {%else%}
-                        text-blue-400
-                        {%endif%}
-                        ">
-                                <p class="p-1 ml-1 mx-1 font-semibold "> {{group.get_user_count}} /
-                                    {{group.max_group_count}}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex h-8">
-                        <div class="category m-1 text-center flex-initial rounded h-8
-                        {%if group.get_category_display == 'Study'%}
-                        bg-teal-400  
-                        {%elif group.get_category_display == 'Hobby'%}
-                        bg-indigo-400 
-                        {%elif group.get_category_display == 'Reading'%}
-                        bg-blue-400 
-                        {%elif group.get_category_display == 'Exercise'%}
-                        bg-green-500 
-                        {%endif%}
-                    ">
-                            <p class="p-1 ml-1 mx-1  text-base text-white">
-                                {{group.get_category_display}}
-                            </p>
-                        </div>
-                        <div class="planning_unit m-1 text-center  flex-initial rounded h-8
-                        {%if group.planning_unit == 'week'%}
-                            bg-gray-500  
-                            {%elif group.planning_unit == 'day'%}
-                            bg-gray-600 
-                            {%endif%}
-                        ">
-                            <p class="p-1 ml-1 mx-1 text-base text-white">
-                                {{group.planning_unit}}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </a>
+            <div class="w-10/12 ">
+                {% include 'partials/group/group_box.html' with group=group my=True %}
+            </div>
             <div class="w-2/12 ">
                 <a href="{%url 'plans:plan-list'%}?group={{group.pk}}">
-                    <div class="bg-green-500 p-3 text-right text-gray-100 m-4 rounded text-lg flex">
+                    <div class="bg-custom-brown-200 p-3 text-right text-gray-100 m-4 mr-0 rounded text-lg flex ">
                         <div class="w-8 h-8">
                             <img
                                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAABvElEQVRoge2YO1LDMBCG/2U4gwvgBmlpqNOkykG4JYRhJgEqhgsk44YzYH4KJFD8SFYeKZYVf00irbQPrVZSAighuSC54z9bkgvt/KH1u4a2bLIdi37XEEmyqz20/otQjgzNXyAklyTLlvQeXJmu8b700F+SXNpx4kwoAVwdi1xExBpQLJQ3nvpLEbnZ69GujHa8L7766/L8akTBDmisxC6gL2H0K1K54P5ZH+NCVOvv9Df0no/NVCOpc1nvGNP2csk3I/ZmTZ36zskmI1MgqdGokS6GOs20NXt+GbG0rZDNVgyZlmwyMgWSGt410oMnAF37/ZCsH9rfyJ6slLZXXQq0/sbeWjRGH0m+kixMuyD5TPIhvEXPFfCcuzFD3knOzCdJroP7EzmQwnG+coIqRhWIGTNzgqhIzo6MTy+QbDJC8sVx3q2RTahAvE8ttnBAZo/fLwBvAOYi8gFgbtqVmdc4fn39in0h2kfhndspIp8AbkMaOsXrdw3gux6MQtbvxo9VIzFkbfJsHo1TIKnhXezH9m1omZbzy0jqf6Vmk5EpkNRwa6QEcB3iBDkhpf3iZuTeFYyAEr8+TyTJD3cxHg4S8U2rAAAAAElFTkSuQmCC">
@@ -93,7 +31,7 @@ My Groups List
                     </div>
                 </a>
                 <a href="{%url 'plans:feedback-list'%}?group={{group.pk}}">
-                    <div class="bg-blue-500 p-3 text-right text-gray-100 m-4 rounded text-lg flex">
+                    <div class="bg-study p-3 text-right text-gray-100 m-4 mr-0 rounded text-lg flex">
                         <div class="w-8 h-8">
                             <img
                                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAERElEQVRoge3ZS6hVVRwG8HtUbmpIaoVkYZkgSZqhNpB8VZNKKXwMJGomQUa3hwMnDQoHWpLQOCqMhKAGQhgRUYkV2UAqowKFMnuLWta1mzf9Ndj/49ln3/PY+5x7zrHog8vdZ63/4/vWc6+1+/o6AMzE0ziIIfyJz/AUrulEzlEHBjCoPgbxUK951gX68UKQPRfPN2Nq/C3Bi1EHz2Fcr3lXAVPwThA8hZUNbFfi97B9E5O6ybUucC2+CGLfY0EOn3k4Gj4HMaMbRN9qMN67hX3NeJZyCDE6TdIeSqVSQ665J1uzQJ1C3oYc02ki3cL/QvIC67Cu03nyENHqhMdanMHfuKfb+dNB5rQaKHpiOLWEDrfSMyn/OUV9ywGW4HgrQmqIaFlMyvc4lhQVsRqn0wwK+JaHE2xPhdgS/wsNs0xDDGF9XscBnA3HZ4sIyfTE1jSReN5atGdSIspczmKgkUMp1YLnsClLpEnCNVkRtfwzYtbkFRLPm1TenrejlDXux64w+Cvd9QWE3Ihj2F6PSKpsC05gUREh8Xut5KAGr2F8uWIy3o2Kk1jRjEiDpFc0I9LINo+QKFsRXAX3yX3YHwXfYm5eInnRKX/MDc6wPz2ZlneTyGj4Y/n5+pSQ37C6m0Ta8cedknk2QgjJirANY5oF6pUQyeq6WWWLGCHk8VTlHky50IRI7gb2RNHZ4FwtJAxvwc9RdASL2iXSLlINPR+H4/k4bq8SWqPrZuJAFA9m63sopMzlAGZm6+ut0xOwUzX6eyCiP8NhJyZkbOoLSRltlOz08AGm5yRwJZ6M1jutcmW6DVfnjDE9cgoOG+vYNRcShovxXZj9iKUNbEt4DH+oj0HJO1PdywwsjVwi9+IGtvmEhPE07A3TM2q8feIS7E4R3o07cLnkynSZ5H2u/NL3ulgZM3EGVI4BezGtCbf8QsJhHHakiL6MiVF3Aw5F+Qnc1SDOKpWN7DDmR/nEiFnGDjnuhgsLSTmuVxk6n+IRlRXlE8zKEWNW2ArfRyOWiJ3v8NSOkHC+TuW+d0QP5YwxHs9nYhzCvIJc2hIyHR+G6xAeKOKfifWgFlbGlH/LQ2sZfgi3oxqsKAViLsI3EfMX3FrAt7gQ3K+yorynyYpSBLgMb0fsYWzO6ZdfCCbh1TA9Jzl3jx0dCVV5xuGZ1JzZpcm8yy0Es/F5mJ3ShetP3I1fI+eXGlzO5RIiOeifCpODmN05+iNyX4+vIvdJrKpjV18IxuIJlV34FVzcHQlVPLJDuurQFza1heBSlc9tw5LTWE8+8gSfEh5WuTN7A1NT9SOFYAG+jqJjuK1XArKQXDT8FNyO4KYorxaCDZLNDT7CVb0mnwVm4OPgOIh7awkp4yWZw8uFBFwkdSddS8gQNvSaaF7gPumjeErIwl6TKwosLJMvlSd6rz4/t4sy///MV93zPfJvx5i+vr73e01iFLDvH2iO5m+2KkWzAAAAAElFTkSuQmCC">
@@ -106,7 +44,7 @@ My Groups List
             </div>
         </div>
 
-        <div class="flex items-center w-full my-1">
+        <div class="flex items-center w-full my-1  mr-10">
             <div class="h-px w-full bg-gray-400"></div>
             <div class="h-px w-full bg-gray-400 "></div>
         </div>

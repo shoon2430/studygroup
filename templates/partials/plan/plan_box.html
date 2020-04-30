@@ -25,23 +25,35 @@
             </div>
             <div class="confirm max-w-full flex items-center justify-between mt-1">
                 <div class="flex">
-                    {% if plan.status != 'COMPLETE' and plan.status != 'SUCCESS' %}
+
+                    {% if plan.status == "ENROLLMENT" %}
                     <div
-                        class="border border-gray400 p-1 bg-teal-500 rounded-lg text-gray-100 text-center h-8 w-24 text-sm">
-                        <b>계획 제목 {{plan.title_for_plan}}</b>
+                        class="border border-gray-400 p-1 bg-custom-brown rounded-lg text-gray-100 text-center h-8 w-20 text-sm">
+                        <b>등 록</b>
                     </div>
-                    <div class="p-1 ml-1">
-                        {{plan.title_for_plan}}
+                    {% elif plan.status == "CONFIRM"%}
+                    <div
+                        class="border border-gray-400 p-1 bg-blue-500 rounded-lg text-gray-100 text-center h-8 w-20 text-sm">
+                        <b>계 획</b>
+                    </div>
+                    {% elif plan.status == "COMPLETE"%}
+                    <div
+                        class="border border-gray-400 p-1 bg-reading rounded-lg text-gray-100 text-center h-8 w-20 text-sm">
+                        <b>계 획</b>
                     </div>
                     {% else %}
                     <div
-                        class="border border-gray400 p-1 bg-blue-500 rounded-lg text-gray-100 text-center h-8 w-24 text-sm">
-                        <b>결과 제목</b>
+                        class="border border-gray400 p-1 bg-success rounded-lg text-gray-100 text-center h-8 w-20 text-sm">
+                        <b>결 과</b>
                     </div>
+                    {% endif %}
                     <div class="p-1 ml-1">
                         {{plan.title_for_result}}
                     </div>
-                    {% endif %}
+
+
+
+
                 </div>
 
                 {% if plan.check_deadline %}
@@ -53,13 +65,13 @@
 
                 <div class="border border-gray400 p-1 rounded-lg text-gray-100 w-32 text-center h-8 text-sm
                             {%if plan.status == 'ENROLLMENT'%}
-                            bg-teal-400  
+                            bg-custom-brown 
                             {%elif plan.status == 'CONFIRM'%}
-                            bg-indigo-400 
+                            bg-blue-500 
                             {%elif plan.status == 'COMPLETE'%}
-                            bg-blue-400 
+                            bg-reading
                             {%elif plan.status == 'SUCCESS'%}
-                            bg-green-400 
+                            bg-success
                             {%endif%}
                         ">
                     {{plan.status}}
@@ -70,8 +82,8 @@
     </a>
     <a href="{%url 'groups:feedback-list' plan.group.pk plan.pk%}" class="w-1/12 rounded mt-3 border
                     border-gray-400">
-        <div class="text-center bg-red-400 h-12">
-            <p class="p-3 text-white font-semibold">피드백</p>
+        <div class="text-center bg-study h-12">
+            <p class="p-3 text-gray-100 font-semibold">피드백</p>
         </div>
         <div class="flex items-center w-full">
             <div class="h-px w-full bg-gray-400"></div>

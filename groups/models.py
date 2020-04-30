@@ -68,9 +68,14 @@ class Group(core_model.TimeStampModel):
         return self.title
 
     def delete(self, *args, **kargs):
+        """
+        테이블에서 데이터 삭제 후 
+        첨부파일이 첨부되어 있었을 경우 
+        첨부되어있는 파일도 서버 내에서 삭제
+        """
         if self.photo:
             os.remove(os.path.join(settings.MEDIA_ROOT, self.photo.path))
-        super(Group, self).delete(*args, **kargs)  # 원래의 delete 함수를 실행
+        super(Group, self).delete(*args, **kargs)
 
     def get_user_count(self):
         return self.users.count()
@@ -84,19 +89,9 @@ class Group(core_model.TimeStampModel):
     def get_plan_count(self):
         return self.plans.filter(user=self.leader).count()
 
-    def get_all_feedback_count(self):
-
-        plans = self.plans.filter(user=self.leader)
-        feedback_count = 0
-        for plan in plans:
-            feedback_count += plan.get_feedbacks()
-
-        return feedback_count
-
     def get_weekday_idx(self):
         week_list = ("MON", "TUE", "WHE", "THU", "FRI", "SAT", "SUN")
         return week_list.index(self.deadline_week)
 
-    # @staticmethod
-    # def get_category_list(cls):
-    #     return cls.CATEGORY_LIST
+    def get_planning_unit_kro_name(self):
+        return self.planning_unit.capitalize()

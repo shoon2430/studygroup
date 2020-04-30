@@ -17,3 +17,6 @@ class TimeStampModel(models.Model):
 
     def get_updated(self):
         return self.updated.strftime("%Y %m %d %H %M %p")
+
+    def get_created_kro(self):
+        return self.created.strftime("%Y-%m-%d")

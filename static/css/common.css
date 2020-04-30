@@ -1,0 +1,80 @@
+
+/* Gray 라인 */
+
+.bg-write {
+    background-color:#f7fbfc;
+}
+
+.bg-custom-gray{
+    background-color:#f0f1f5;
+}
+
+.bg-custom-gray-100{
+    background-color:#eeeeee;
+}
+
+
+
+/* Brown 라인 */
+
+
+.bg-custom-brown-100{
+    background-color:#736d7a;
+}
+
+.bg-custom-brown-200{
+    background-color:#aba7af;
+}
+
+
+
+.bg-custom-brown{
+    background-color:#ad5f0c;
+}
+
+.bg-study{
+    background-color:#78686f;
+}
+
+.bg-hobby{
+    background-color:#ae9c8a;
+}
+
+.bg-reading{
+    background-color:#3c48a2;
+}
+
+.bg-exercise{
+    background-color:#7d4854;
+}
+
+
+
+.ellipsis {
+    width: 300px;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    word-wrap: normal !important;
+    display: block;
+}
+
+
+/* 계획 상태 css */
+
+.bg-enrollment {
+
+}
+
+.bg-confirm {
+    
+}
+
+.bg-complete {
+    
+}
+
+.bg-success {
+    background-color:#2f951e;
+}

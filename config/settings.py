@@ -101,6 +101,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # 배포하기위해 변경
 
 if DEBUG:
+    # 개발 환경에서는 sqlite3사용
 
     DATABASES = {
         "default": {
@@ -109,6 +110,7 @@ if DEBUG:
         }
     }
 else:
+    # 실제 배포된 환경에서는 postgresql사용
 
     ALLOWED_HOSTS = [".elasticbeanstalk.com"]
 
@@ -155,18 +157,18 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+# STATIC파일 경로 설정
 STATIC_URL = "/static/"
-
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 
+# MEDIA파일 경로 설정
 MEDIA_URL = "/media/"
-
 MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
 
 
 # 기본 장고 USER 커스텀
-# https://docs.djangoproject.com/en/3.0/topics/auth/customizing/
+# 장고에서 기본적으로 제공해주는 User를 커스텀
 AUTH_USER_MODEL = "users.User"
 
 

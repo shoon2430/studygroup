@@ -1,7 +1,5 @@
-{% for group in groups%}
-
 <div class="{{group_group.pk}}">
-    <a class="list-item flex my-3" href="{% url 'groups:detail' group.pk%}">
+    <a class="list-item flex my-4" href="{% url 'groups:detail' group.pk%}">
         <div class="flex-initial rounded w-56 h-32  bg-red-300 float-left bg-cover bg-center" {% if group.photo %}
             style="background-image:url({{group.get_photo}})">
             {%else%}
@@ -9,63 +7,81 @@
             {% endif %}
         </div>
 
-        <div class="group_{{group.id}} flex-initial h-32 w-full ml-8">
-            <div class="flex h-24">
-                <p class="title flex-initial w-9/12 font-medium text-2xl hover:text-indigo-500">{{group.title}}</p>
-                <div class="flex-initial w-3/12">
-                    <div class="leader m-1 bg-blue-700 rounded text-center h-8">
-                        <p class="p-1 ml-1 mx-1 font-semibold text-white">{{group.leader}}</p>
-                    </div>
-                    <div class="created m-1 bg-blue-500 rounded text-center h-8">
-                        <p class="p-1 ml-1 mx-1  text-white">{{group.created}}</p>
-                    </div>
-                    <div class="float-right count m-1 bg-gray-200 rounded w-16 text-center h-8 
-                {%if group.get_user_count == group.max_group_count%}
-                text-red-400
-                {%else%}
-                text-blue-400
-                {%endif%}
-                ">
-                        <p class="p-1 ml-1 mx-1 font-semibold "> {{group.get_user_count}} /
-                            {{group.max_group_count}}
-                        </p>
-                    </div>
+        <div class="group_{{group.id}} flex-initial w-full h-32 ml-8">
+            <div class="flex justify-between">
+                <div>
+                    <p class="title font-medium text-2xl hover:text-indigo-500 
+                    {% if my %}
+                    ellipsis" style="width:500px;" {% endif %} ">{{group.title}}</p>
+                </div>
+                <div class=" bg-custom-gray w-32 truncate ... text-left">
+                        <p class=" p-1 ml-1 mx-1 text-lg text-gray-700">{{group.leader}}</p>
+                </div>
+            </div>
+            <div class="flex justify-between">
+                <div class="" style="width:500px">
+                    <p class="text-lg text-gray-500 opacity-75 truncate ...">{{group.notice}}</p>
+                </div>
+                <div class="bg-custom-gray mt-2 p-1 w-32 text-left ">
+                    <p class="text-lg text-gray-700">{{group.get_created_kro}}</p>
                 </div>
             </div>
 
-            <div class="flex h-8">
-                <div class="category m-1 text-center flex-initial rounded h-8
+            <div class="flex h-8 mt-3 justify-between">
+
+                <div class="flex">
+                    <div class="category m-1 text-center flex-initial rounded h-8
                 {%if group.get_category_display == 'Study'%}
-                bg-teal-400  
+                bg-study  
                 {%elif group.get_category_display == 'Hobby'%}
-                bg-indigo-400 
+                bg-hobby
                 {%elif group.get_category_display == 'Reading'%}
-                bg-blue-400 
+                bg-reading
                 {%elif group.get_category_display == 'Exercise'%}
-                bg-green-500 
+                bg-exercise
                 {%endif%}
             ">
-                    <p class="p-1 ml-1 mx-1  text-base text-white">
-                        {{group.get_category_display}}
-                    </p>
+                        <p class="p-1 ml-1 mx-1  text-base text-gray-100">
+                            {{group.get_category_display}}
+                        </p>
+                    </div>
+                    <div class="planning_unit m-1 text-center  flex-initial rounded h-8 bg-gray-500">
+                        <p class="p-1 ml-1 mx-1 text-base text-gray-100">
+                            {{group.get_planning_unit_kro_name}}
+                        </p>
+                    </div>
                 </div>
-                <div class="planning_unit m-1 text-center  flex-initial rounded h-8
-                {%if group.planning_unit == 'week'%}
-                    bg-gray-500  
-                    {%elif group.planning_unit == 'day'%}
-                    bg-gray-600 
-                    {%endif%}
+
+
+                <div class="float-right count m-1 bg-custom-gray rounded w-32 flex text-left h-8 
+                {%if group.get_user_count == group.max_group_count%}
+                text-red-400
+                {%else%}
+                text-gray-700
+                {%endif%}
                 ">
-                    <p class="p-1 ml-1 mx-1 text-base text-white">
-                        {{group.planning_unit}}
+                    <div class="w-6 h-6 m-1">
+                        <img
+                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAABmJLR0QA/wD/AP+gvaeTAAABsUlEQVRIie3VPYsTURTG8f85hhsCFosIYizEFIKyoJX6DWwC9tqkmRiLFAr2Yyt2AyGZRgimChYWNn6DxQgpRAsLmwiLzfgGMlvkWGwQybrmRC8LQp7y8nB+c+/AvbDJEUXWKXe73WpZlreBm8D2Yvm1iIxCCHmWZWV0uNPpnJnP58+BS4dUpqra7Pf7H6LBi53u/AH9iVer1WuenasHXhzvKhTgclmWiWemCzazW54egIi4ui5YRC56YTPbXt1ywsBxL+zteuFva8BfosFm9sarioir64JV9YkXNrNRNDiEkANTR3VaFEUeDc6yrFTV5gp8qqrN8Xi855l5zFMCmEwmXxuNxuNarfZRRE4AW8Ae8Ap4WBTFneFw+Mk7b5Mji+t1StNUZ7PZFVW9AVwFLrD/jwEKEXkL7JjZs3q9/jJN0/k/we12+zRwn/2H/5TnI4FdYFSpVB71er3dteBWq7UVQngAJEDNCS7nOzAA0jzPP6+EkyQ5LyIvgLN/CS7nvYhcHwwG735dPHCBiMjTiCjAOTMbLy/+7uY6GRE9dOYB2MzuAjFvoMLM7kWct8l/kh/2T4EpW9M/bgAAAABJRU5ErkJggg==">
+                    </div>
+                    <p class="p-1 ml-1 mx-1 font-semibold "> {{group.get_user_count}} /
+                        {{group.max_group_count}}
                     </p>
                 </div>
+
             </div>
+
+
         </div>
     </a>
+
+    {% if my %}
+    {% else %}
     <div class="flex items-center w-full my-1">
         <div class="h-px w-full bg-gray-400"></div>
         <div class="h-px w-full bg-gray-400 "></div>
     </div>
+    {% endif %}
+
+
 </div>
-{%endfor%}

@@ -16,47 +16,48 @@ Home
 
 <div class="container mx-auto pb-10">
     <a href="{% url 'core:home' %}">
-        <div class="rounded-lg bg-gray-800 mt-32 mb-8 bg-cover bg-center mx-16"
+        <div class="rounded-lg bg-gray-800 mt-32 mb-8 bg-cover bg-center"
             style="height: 40vh; background-image:url('static/image/main_2.jpg')">
         </div>
     </a>
-    <div class="search w-auto mx-16 -mt-5">
-
-        {% if request.user.is_authenticated %}
-        <a href="{% url 'groups:create-group' %}">
-            <div class="w-2/12  bg-green-500 text-center rounded text-white p-2 m-2 text-xl float-right">
-                그룹 등록 하기
-            </div>
-        </a>
-        <a href="{% url 'groups:my-groups'%}">
-            <div class="w-2/12  bg-blue-500 text-center rounded text-white p-2 m-2 text-xl float-right ">
-                참여중인 그룹보기
-            </div>
-        </a>
-
-        {% endif %}
-    </div>
-
-    <div id="group_filter" class="grid mx-16 mt-40 justify-end">
+    <div class="search w-auto -mt-5 flex justify-between">
         <form class=" flex">
-            <select class="filter" id="group_category" name="category">
-                <option value="">--선택--</option>
+            <select class="filter text-sm" id="group_category" name="category">
+                <option value="" class="">--선택--</option>
                 <option value="S" {% if category == "S" %} selected {% endif %}>Study</option>
                 <option value="R" {% if category == "R" %} selected {% endif %}>Reading</option>
                 <option value="E" {% if category == "E" %} selected {% endif %}>Exercise</option>
                 <option value="H" {% if category == "H" %} selected {% endif %}>Hobby</option>
             </select>
             <input class="filter ml-3" id="group_search" type="text" placeholder="Search Group Title.." name="title">
-            <button id="filter_btn" class="bg-gray-400 w-32 rounded-r hover:bg-gray-500">
+            <button id="filter_btn" class="bg-custom-brown-100 w-32 h-10 rounded-r hover:bg-gray-500">
                 <i class="fa fa-search"></i></button>
         </form>
+
+        <div class="flex ">
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'groups:create-group' %}">
+                <div class="w-48 h-10  text-center rounded bg-custom-brown-100 text-gray-100 p-1 text-xl float-right ">
+                    그룹 등록 하기
+                </div>
+            </a>
+            <!-- <a href="{% url 'groups:my-groups'%}">
+                <div
+                    class="w-48 h-10  text-center rounded bg-custom-brown-100 text-gray-100 p-1 ml-2 text-xl float-right ">
+                    참여중인 그룹보기
+                </div>
+            </a> -->
+            {% endif %}
+        </div>
     </div>
 
-    <div id="group_list" class="mx-16 mt-5">
-        {% include 'partials/group/group_box.html' with groups=groups %}
+    <div id="group_list" class=" mt-16">
+        {% for group in groups%}
+        {% include 'partials/group/group_box.html' with group=group my=False %}
+        {%endfor%}
     </div>
 
-    <div id="group_page" class="mx-16">
+    <div id="group_page" class="">
         {% if is_paginated %}
         <ul class="pagination float-right mt-8">
             <span>

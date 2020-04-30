@@ -163,7 +163,10 @@ class updateGroup(LoginRequiredMixin, UpdateView):
 @login_required
 def join_or_exit_Group(request, pk):
     """
-    해당 그룹에 속해있는지 확인한다.
+    해당 그룹에 속해있는지 확인
+    
+    그룹에 속해 있으면 그룹 나가기
+    그룹에 속해 있지 않으면 그룹 참여
     """
     if request.method == "POST":
         group = group_model.Group.objects.get(pk=pk)
