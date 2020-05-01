@@ -29,7 +29,8 @@ Home
                 <option value="E" {% if category == "E" %} selected {% endif %}>Exercise</option>
                 <option value="H" {% if category == "H" %} selected {% endif %}>Hobby</option>
             </select>
-            <input class="filter ml-3" id="group_search" type="text" placeholder="Search Group Title.." name="title">
+            <input class="filter ml-3" id="group_search" type="text" placeholder="Search Group Title.." name="title"
+                {% if title %} value="{{title}}" {% endif %}>
             <button id="filter_btn" class="bg-custom-brown-100 w-32 h-10 rounded-r hover:bg-gray-500">
                 <i class="fa fa-search"></i></button>
         </form>
@@ -41,12 +42,6 @@ Home
                     그룹 등록 하기
                 </div>
             </a>
-            <!-- <a href="{% url 'groups:my-groups'%}">
-                <div
-                    class="w-48 h-10  text-center rounded bg-custom-brown-100 text-gray-100 p-1 ml-2 text-xl float-right ">
-                    참여중인 그룹보기
-                </div>
-            </a> -->
             {% endif %}
         </div>
     </div>
