@@ -1,10 +1,11 @@
 from django import forms
+from django.contrib import messages
 from . import models
 
 
 class loginForm(forms.Form):
 
-    email = forms.EmailField(widget=forms.EmailInput(attrs={"placeholder": "Email"}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={"placeholder": "ID"}))
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={"placeholder": "Password"})
     )
@@ -15,37 +16,36 @@ class loginForm(forms.Form):
             user = models.User.objects.get(username=email)
             return email
         except models.User.DoesNotExist:
-            self.add_error("email", forms.ValidationError("Email does not exist"))
+            self.add_error("email", forms.ValidationError("ID가 존재하지 않습니다."))
 
     def clean_password(self):
         email = self.cleaned_data.get("email")
         password = self.cleaned_data.get("password")
-        print(email,password)
         try:
             user = models.User.objects.get(username=email)
             if user.check_password(password):
                 return password
             else:
-                self.add_error(None, forms.ValidationError("Password is wrong"))
+                self.add_error("password", forms.ValidationError("비밀번호가 틀렸습니다."))
         except models.User.DoesNotExist:
-            self.add_error("email", forms.ValidationError("User does not exist"))
+            if self._errors.get("email") is None:
+                self.add_error("email", forms.ValidationError("ID가 존재하지 않습니다."))
 
 
 class signupForm(forms.ModelForm):
     class Meta:
         model = models.User
-        fields = ["first_name", "last_name", "email"]
+        fields = ["email", "first_name"]
         widgets = {
-            "first_name": forms.TextInput(attrs={"placeholder": "First_name"}),
-            "last_name": forms.TextInput(attrs={"placeholder": "Last_name"}),
-            "email": forms.EmailInput(attrs={"placeholder": "Email"}),
+            "first_name": forms.TextInput(attrs={"placeholder": "닉네임"}),
+            "email": forms.EmailInput(attrs={"placeholder": "아이디"}),
         }
 
     password1 = forms.CharField(
-        widget=forms.PasswordInput(attrs={"placeholder": "Password1"})
+        widget=forms.PasswordInput(attrs={"placeholder": "비밀번호"})
     )
     password2 = forms.CharField(
-        widget=forms.PasswordInput(attrs={"placeholder": "Password2"})
+        widget=forms.PasswordInput(attrs={"placeholder": "비밀번호 확인"})
     )
 
     def clean_email(self):

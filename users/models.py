@@ -1,6 +1,9 @@
+import math
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from core import managers as core_managers
+from plans import models as plan_model
+from groups import models as group_model
 
 
 class User(AbstractUser):
@@ -49,3 +52,19 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.first_name
+
+    def get_rating(self):
+
+        rating = 0
+        feedback_count = 0
+        plans = plan_model.Plan.objects.filter(user=self.pk)
+
+        for plan in plans:
+            feedbacks = plan_model.Feedback.objects.filter(plan=plan)
+
+            for feedback in feedbacks:
+                rating += feedback.rating
+
+            feedback_count += feedbacks.count()
+
+        return round(rating / feedback_count, 1)
