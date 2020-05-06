@@ -16,3 +16,4 @@ const plan_file_delete = (func, url) => {
     massage = "첨부파일을 삭제 하시겠습니까?";
     func(url, massage);
 }
+

@@ -18,21 +18,21 @@ Plan | Update
         {% csrf_token %}
 
         <div class="{{form.title_for_plan.name}}">
-            <div class="p-2 text-gray-800 text-lg"><b>제목</b></div>
+            <div class="explanation"><b>제목</b></div>
             <div>{{form.title_for_plan}}</div>
         </div>
         <div class="{{form.contents_for_plan.name}} mt-5">
-            <div class="p-2 text-gray-800 text-lg"><b>계획 내용</b></div>
+            <div class="explanation"><b>계획 내용</b></div>
             <div>{{form.contents_for_plan}}</div>
         </div>
 
         {% if plan.status != "ENROLLMENT" %}
         <div id="title_for_result" class="{{form.title_for_result.name}} mt-5">
-            <div class="p-2 text-gray-800 text-lg"><b>결과 보고 제목</b></div>
+            <div class="explanation"><b>결과 보고 제목</b></div>
             <div>{{form.title_for_result}}</div>
         </div>
         <div id="contents_for_result" class="{{form.contents_for_result.name}} mt-5">
-            <div class="p-2 text-gray-800 text-lg"><b>결과 보고 내용</b></div>
+            <div class="explanation"><b>결과 보고 내용</b></div>
             <div>{{form.contents_for_result}}</div>
         </div>
         <div class="mt-6 p-3 text-white text-xl bg-indigo-500">
@@ -42,16 +42,19 @@ Plan | Update
         <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100">
             {% for resultFile in plan.get_resultfiles %}
 
-            <a href='{{resultFile.file.url}}' download>
-                <div class="flex">
-                    <div class="bg-gray-300 p-3 m-2 rounded w-10/12 hover:bg-gray-500">
-                        {{resultFile.caption}}
-                    </div>
-                    <div class="p-3 m-2 rounded text-gray-100 text-lg w-32 text-center bg-red-400 hover:bg-red-600">
-                        삭제
-                    </div>
-                </div>
-            </a>
+            <div class="flex">
+                <a href='{{resultFile.file.url}}' download class="bg-gray-300 p-3 m-2 rounded w-full hover:bg-gray-500">
+                    {{resultFile.caption}}
+                </a>
+                {% if request.user == plan.user %}
+                <button
+                    onclick="result_file_delete(request_POST, '{%url "groups:resultfile-delete" plan.group.pk plan.pk resultFile.pk %}')"
+                    class=" p-3 m-2 rounded text-gray-100 text-lg w-32 text-center bg-red-400 hover:bg-red-600">
+                    삭제
+                </button>
+                {% endif %}
+            </div>
+
 
             {% endfor %}
         </div>

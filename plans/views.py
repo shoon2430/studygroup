@@ -166,6 +166,31 @@ class result_upload(FormView):
         )
 
 
+@csrf_exempt
+@login_required
+def plan_file_delete(request, group_pk, plan_pk, file_pk):
+    """
+    계획 등록시 첨부한 파일 삭제
+    """
+    if request.method == "POST":
+        plan_models.PlanFile.objects.get(pk=file_pk).delete()
+
+        return redirect(reverse_lazy("groups:plan-detail", args=(group_pk, plan_pk,)))
+
+
+@csrf_exempt
+@login_required
+def result_file_delete(request, group_pk, plan_pk, file_pk):
+    """
+    결과보고시 첨부한 파일 삭제
+    """
+    if request.method == "POST":
+        plan_models.ResultFile.objects.get(pk=file_pk).delete()
+
+        print(group_pk, plan_pk)
+        return HttpResponse(reverse("groups:plan-detail", args=(group_pk, plan_pk,)))
+
+
 class createFeedback(LoginRequiredMixin, FormView):
     template_name = "feedbacks/feedback_create.html"
     form_class = creatFeedbackForm

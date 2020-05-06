@@ -75,3 +75,14 @@ class signupForm(forms.ModelForm):
         user.username = email
         user.set_password(password)
         user.save()
+
+
+
+class updateUserForm(forms.ModelForm):
+
+    class Meta:
+        model = models.User
+        fields = ["first_name"]
+        widgets = {
+            "first_name": forms.TextInput(attrs={"placeholder": "닉네임"}),
+        }

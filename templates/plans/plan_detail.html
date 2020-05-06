@@ -34,13 +34,13 @@ Plan | Detail
 
             <div class="rounded w-full h-full text-center p-3 font-semibold text-white text-l
             {%if plan.status == 'ENROLLMENT'%}
-            bg-teal-400  
+            bg-enrollment
             {%elif plan.status == 'CONFIRM'%}
-            bg-indigo-400 
+            bg-blue-500 
             {%elif plan.status == 'COMPLETE'%}
-            bg-blue-400 
+            bg-complete
             {%elif plan.status == 'SUCCESS'%}
-            bg-green-400 
+            bg-success
             {%endif%}
             
             ">
@@ -68,16 +68,19 @@ Plan | Detail
     {% if plan.get_planFiles %}
     <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100">
         {% for planFile in plan.get_planFiles %}
-
         <div>
             <div class="flex">
                 <a href='{{planFile.file.url}}' download class="bg-gray-300 p-3 m-2 rounded w-full hover:bg-gray-500">
                     {{planFile.caption}}
                 </a>
-                <button onclick=""
-                    class="p-3 m-2 rounded text-gray-100 text-lg w-32 text-center bg-red-400 hover:bg-red-600">
+
+                {% if request.user == plan.user %}
+                <button
+                    onclick="plan_file_delete(request_POST, '{%url "groups:planfile-delete" plan.group.pk plan.pk planFile.pk %}')"
+                    class=" p-3 m-2 rounded text-gray-100 text-lg w-32 text-center bg-red-400 hover:bg-red-600">
                     삭제
                 </button>
+                {% endif %}
             </div>
         </div>
 
@@ -93,7 +96,7 @@ Plan | Detail
     <div class="mt-6 p-3 text-white text-xl bg-purple-500">
         <h2 class="ml-3">계획 결과 보고</h2>
     </div>
-    <div class="title border border-gray-400 mx-auto  text-xl w-full p-3 mt-1 bg-gray-100">
+    <div class="title border border-gray-400 mx-auto text-xl w-full p-3 mt-1 bg-gray-100">
         <h2 class="ml-3">{{plan.title_for_result}}</h2>
     </div>
     <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100" style="height:400px">

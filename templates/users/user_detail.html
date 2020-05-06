@@ -12,26 +12,25 @@ User | Detail
 
 {% block content %}
 <div class="group_detail container lg:w-8/12 md:w-1/2 xl:w-1/4 mx-auto my-10 flex flex-col p-6 mt-32">
-    <div>
-        ID
-    </div>
+
+    <div class="explanation"><b>ID</b></div>
     <div class="border border-gray-400 mx-auto text-xl w-full p-3 mt-1 bg-gray-100 text-center">
         {{user.email}}
     </div>
-    <div>
-        닉네임
-    </div>
+
+    <div class="explanation"><b>닉네임</b></div>
     <div class="border border-gray-400 mx-auto text-xl w-full p-3 mt-1 bg-gray-100 text-center">
         {{user.first_name}}
     </div>
-    <div>
-        점수( 피드백 점수의 평균 값 입니다. )
+
+    <div class="explanation"><b>점수( 피드백 점수의 평균 값 입니다. )</b>
     </div>
     <div class="border border-gray-400 mx-auto text-xl w-full p-3 mt-1 bg-gray-100 text-center">
         {{user.get_rating}}
     </div>
-    <div class="mt-5">
-        <button class="btn btn-link">정보 수정</button>
-    </div>
+
+    <a href="{% url 'user:update' user.id %}" class="mt-5 btn btn-link">
+        정보 수정
+    </a>
 </div>
 {% endblock content %}

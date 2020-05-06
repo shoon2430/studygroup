@@ -1,13 +1,14 @@
 import os
 import requests
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
-from django.views.generic import FormView, DetailView
+from django.views.generic import FormView, DetailView, UpdateView
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, reverse
 from .models import User
-from .forms import loginForm, signupForm
+from .forms import loginForm, signupForm, updateUserForm
 
 
 class LoginView(FormView):
@@ -57,6 +58,19 @@ class signupView(FormView):
 
 class userInfromationView(DetailView):
     model = User
+
+
+class userUpdateView(LoginRequiredMixin, UpdateView):
+    model = User
+    template_name = "users/user_update_form.html"
+    form_class = updateUserForm
+
+    def get_success_url(self):
+        next_arg = self.request.GET.get("next")
+        if next_arg is not None:
+            return next_arg
+        else:
+            return reverse_lazy("user:info", args=(self.request.user.pk,))
 
 
 def kakago_get_token(request):

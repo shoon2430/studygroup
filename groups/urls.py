@@ -38,24 +38,34 @@ urlpatterns_Plan = [
         name="plan-upload",
     ),
     path(
+        "<int:group_pk>/plan/<int:plan_pk>/resultfile/<int:file_pk>/delete/",
+        plan_views.plan_file_delete,
+        name="planfile-delete",
+    ),
+    path(
         "<int:group_pk>/plan/<int:plan_pk>/result_upload/",
         plan_views.result_upload.as_view(),
         name="result-upload",
+    ),
+    path(
+        "<int:group_pk>/plan/<int:plan_pk>/planfile/<int:file_pk>/delete/",
+        plan_views.result_file_delete,
+        name="resultfile-delete",
     ),
     path(
         "<int:group_pk>/plan/<int:plan_pk>/confirm/",
         plan_views.change_plan_status,
         name="plan-change-status",
     ),
+]
+
+
+urlpatterns_Feedback = [
     path(
         "<int:group_pk>/plan/<int:plan_pk>/feedback/",
         plan_views.createFeedback.as_view(),
         name="plan-feedback",
     ),
-]
-
-
-urlpatterns_Feedback = [
     path(
         "<int:group_pk>/plan/<int:plan_pk>/feedbacks/",
         plan_views.FeedbackList.as_view(),

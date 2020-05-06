@@ -61,11 +61,11 @@
 
                 <div class="border border-gray400 p-1 rounded-lg text-gray-100 w-32 text-center h-8 text-sm
                             {%if plan.status == 'ENROLLMENT'%}
-                            bg-custom-brown 
+                            bg-enrollment 
                             {%elif plan.status == 'CONFIRM'%}
                             bg-blue-500 
                             {%elif plan.status == 'COMPLETE'%}
-                            bg-reading
+                            bg-complete
                             {%elif plan.status == 'SUCCESS'%}
                             bg-success
                             {%endif%}
