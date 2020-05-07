@@ -56,10 +56,10 @@ Plan | Detail
         <h2 class="ml-3">진행 계획</h2>
     </div>
     <div class="title border border-gray-400 mx-auto text-xl w-full p-3 mt-1 bg-gray-100">
-        <h2 class="ml-3">{{plan.title_for_plan}}</h2>
+        <p class="ml-3 overflow-hidden">{{plan.title_for_plan}}</p>
     </div>
     <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100" style="height:400px">
-        <h2>{{plan.contents_for_plan|linebreaks }}</h2>
+        <p class="h-full w-full ">{{plan.contents_for_plan|linebreaksbr}}</p>
     </div>
     <div class="mt-6 p-3 text-white text-xl bg-indigo-500">
         <h2 class="ml-3">첨부파일</h2>
@@ -76,8 +76,9 @@ Plan | Detail
 
                 {% if request.user == plan.user %}
                 <button
-                    onclick="plan_file_delete(request_POST, '{%url "groups:planfile-delete" plan.group.pk plan.pk planFile.pk %}')"
-                    class=" p-3 m-2 rounded text-gray-100 text-lg w-32 text-center bg-red-400 hover:bg-red-600">
+                    onclick="plan_file_delete('{%url "groups:planfile-delete" plan.group.pk plan.pk planFile.pk %}')"
+                    class=" p-3 m-2 rounded text-gray-100 text-lg w-32 text-center bg-red-400 hover:bg-red-600"
+                    type="button">
                     삭제
                 </button>
                 {% endif %}
@@ -111,9 +112,17 @@ Plan | Detail
 
         <a href='{{resultFile.file.url}}' download>
             <div class="flex">
-                <div class="bg-gray-300 p-3 m-2 rounded w-full hover:bg-gray-500">
+                <a href='{{resultFile.file.url}}' download class="bg-gray-300 p-3 m-2 rounded w-full hover:bg-gray-500">
                     {{resultFile.caption}}
-                </div>
+                </a>
+                {% if request.user == plan.user %}
+                <button
+                    onclick="result_file_delete('{%url "groups:resultfile-delete" plan.group.pk plan.pk resultFile.pk %}')"
+                    class=" p-3 m-2 rounded text-gray-100 text-lg w-32 text-center bg-red-400 hover:bg-red-600"
+                    type="button">
+                    삭제
+                </button>
+                {% endif %}
             </div>
         </a>
 

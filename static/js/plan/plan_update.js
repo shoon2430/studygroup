@@ -17,9 +17,17 @@ const confirm_complete = () => {
 }
 
 
-const result_file_delete = (func, url) => {
-    massage = "첨부파일을 삭제 하시겠습니까?";
+const result_file_delete = (url) => {
+    massage = "결과의 첨부파일을 삭제 하시겠습니까?";
 
-    func(url, massage);
+    if (confirm(massage)) {
+        opts = set_POST();
+
+        fetch(url, opts)
+            .then(function (response) {
+                alert("삭제되었습니다");
+                window.location.reload(true);
+            });
+    }
 }
 

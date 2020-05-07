@@ -87,10 +87,8 @@ class updatePlan(LoginRequiredMixin, UpdateView):
 @csrf_exempt
 @login_required
 def deletePlan(request, group_pk, plan_pk):
-
     if request.method == "POST":
         try:
-            print("WERWER")
             plan_models.Plan.objects.get(pk=plan_pk).delete()
             return HttpResponseRedirect(reverse("groups:detail", args=(group_pk,)))
 
@@ -174,8 +172,7 @@ def plan_file_delete(request, group_pk, plan_pk, file_pk):
     """
     if request.method == "POST":
         plan_models.PlanFile.objects.get(pk=file_pk).delete()
-
-        return redirect(reverse_lazy("groups:plan-detail", args=(group_pk, plan_pk,)))
+        return HttpResponse(status=200)
 
 
 @csrf_exempt
@@ -187,8 +184,8 @@ def result_file_delete(request, group_pk, plan_pk, file_pk):
     if request.method == "POST":
         plan_models.ResultFile.objects.get(pk=file_pk).delete()
 
-        print(group_pk, plan_pk)
-        return HttpResponse(reverse("groups:plan-detail", args=(group_pk, plan_pk,)))
+        messages.error(request, "삭제되었습니다")
+        return HttpResponse(status=200)
 
 
 class createFeedback(LoginRequiredMixin, FormView):

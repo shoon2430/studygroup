@@ -48,8 +48,9 @@ Plan | Update
                 </a>
                 {% if request.user == plan.user %}
                 <button
-                    onclick="result_file_delete(request_POST, '{%url "groups:resultfile-delete" plan.group.pk plan.pk resultFile.pk %}')"
-                    class=" p-3 m-2 rounded text-gray-100 text-lg w-32 text-center bg-red-400 hover:bg-red-600">
+                    onclick="result_file_delete('{%url "groups:resultfile-delete" plan.group.pk plan.pk resultFile.pk %}')"
+                    class=" p-3 m-2 rounded text-gray-100 text-lg w-32 text-center bg-red-400 hover:bg-red-600"
+                    type="button">
                     삭제
                 </button>
                 {% endif %}
@@ -59,7 +60,7 @@ Plan | Update
             {% endfor %}
         </div>
         {% else%}
-        <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100">
+        <div class=" contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100">
             <span class="p-2 m-2">첨부된 파일이 없습니다.</span>
         </div>
         {% endif %}

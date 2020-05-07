@@ -38,7 +38,9 @@ form{
     .input{
         @apply mb-2;
         &.has_error{
-            input{
+            input,
+            textarea
+            {
                 @apply bg-red-400 border-red-800;
                 &:focus{
                     @apply border-red-800;

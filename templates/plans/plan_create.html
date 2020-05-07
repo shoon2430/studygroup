@@ -14,11 +14,11 @@ Plan | Create
         {% csrf_token %}
         <div class="{{form.title_for_plan.name}} ">
             <div class="explanation"><b>제목</b></div>
-            <span>{{form.title_for_plan}}</span>
+            {% include "mixins/auth/form_input.html" with field=form.title_for_plan  %}
         </div>
         <div class="{{form.contents_for_plan.name}} mt-5">
             <div class="explanation"><b>계획 내용</b></div>
-            <span>{{form.contents_for_plan}}</span>
+            {% include "mixins/auth/form_input.html" with field=form.contents_for_plan  %}
         </div>
 
         <button class="btn bg-indigo-500 mt-8 text-white">계획 등록하기</button>

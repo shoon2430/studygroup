@@ -16,6 +16,18 @@ class createPlanForm(forms.ModelForm):
             "contents_for_plan": forms.Textarea(attrs={"placeholder": "contents"}),
         }
 
+    def clean_title_for_plan(self):
+        if self.cleaned_data.get("title_for_plan") == "":
+            raise forms.ValidationError("필수 입력란 입니다.")
+
+        return self.cleaned_data.get("title_for_plan")
+
+    def clean_contents_for_plan(self):
+        if self.cleaned_data.get("contents_for_plan") == "":
+            raise forms.ValidationError("필수 입력란 입니다.")
+
+        return self.cleaned_data.get("contents_for_plan")
+
     def save(self, *args, **kwargs):
         plan = super().save(commit=False)
 
