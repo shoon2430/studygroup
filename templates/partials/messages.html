@@ -1,22 +1,41 @@
 {% if messages %}
-<ul class="absolute top-0 mx-auto left-0 right-0 flex justify-center">
+<ul class="absolute top-0 mx-auto left-0 right-0 flex justify-center" style="position: sticky; top: 0; ">
     {% for message in messages %}
     <div class="message w-3/12 z-10">
-        <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
-            Danger
+        {% if message.tags %}
+
+        {% if message.tags == "info" %}
+        <div class="bg-blue-500 text-white font-bold rounded-t px-4 py-2">
+            {{message.tags}}
         </div>
-        <div class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+        <div class="border border-t-0 border-blue-400 rounded-b bg-blue-100 px-4 py-3 text-blue-700">
             <p>{{ message }}</p>
         </div>
-    </div>
-    <!-- <li class="w-3/12">
-        <div
-            class="message font-medium bg-gray-700  z-10 rounded-lg text-white py-6 px-6 text-center {% if message.tags %}{{ message.tags }}{% endif %}">
-            <div>
-                {{ message }}
-            </div>
+        {% elif message.tags == "error" %}
+        <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+            {{message.tags}}
         </div>
-    </li> -->
+        <div class="border border-t-0 border-red-400 rounded-b bg-blue-red px-4 py-3 text-red-700">
+            <p>{{ message }}</p>
+        </div>
+        {% elif message.tags == "success" %}
+        <div class="bg-green-500 text-white font-bold rounded-t px-4 py-2">
+            {{message.tags}}
+        </div>
+        <div class="border border-t-0 border-green-400 rounded-b bg-green-100 px-4 py-3 text-green-700">
+            <p>{{ message }}</p>
+        </div>
+        {% elif message.tags == "warning" %}
+        <div class="bg-yellow-500 text-white font-bold rounded-t px-4 py-2">
+            {{message.tags}}
+        </div>
+        <div class="border border-t-0 border-yellow-400 rounded-b bg-yellow-100 px-4 py-3 text-yellow-700">
+            <p>{{ message }}</p>
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+
     {% endfor %}
 </ul>
 {% endif %}

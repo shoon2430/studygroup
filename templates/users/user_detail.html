@@ -13,24 +13,37 @@ User | Detail
 {% block content %}
 <div class="group_detail container lg:w-8/12 md:w-1/2 xl:w-1/4 mx-auto my-10 flex flex-col p-6 mt-32">
 
+    <div class="explanation"><b>프로필 사진</b></div>
+    <div class="border border-gray-400 mx-auto text-xl w-full p-3 mt-1 bg-gray-100 text-center w-64 h-64 p-8 bg-cover bg-center"
+        {% if user.get_avatar %} style="background-image: url({{user.get_avatar}})">
+        {% else%}
+        >
+        <div class=" rounded-full bg-gray-600 w-48 h-48 text-center p-10 m-auto font-semibold text-gray-100 text-6xl">
+            {{user.get_first_nickname}}
+        </div>
+        {% endif %}
+    </div>
     <div class="explanation"><b>ID</b></div>
-    <div class="border border-gray-400 mx-auto text-xl w-full p-3 mt-1 bg-gray-100 text-center">
+    <div class="border border-gray-400 mx-auto text-xl w-full p-3 bg-gray-100 text-center">
         {{user.email}}
     </div>
 
     <div class="explanation"><b>닉네임</b></div>
-    <div class="border border-gray-400 mx-auto text-xl w-full p-3 mt-1 bg-gray-100 text-center">
+    <div class="border border-gray-400 mx-auto text-xl w-full p-3 bg-gray-100 text-center">
         {{user.first_name}}
     </div>
 
-    <div class="explanation"><b>점수( 피드백 점수의 평균 값 입니다. )</b>
+    <div class="explanation"><b>점수</b><b class="text-sm text-gray-600">( 피드백 점수의 평균 값 입니다. )</b>
     </div>
-    <div class="border border-gray-400 mx-auto text-xl w-full p-3 mt-1 bg-gray-100 text-center">
+    <div class="border border-gray-400 mx-auto text-xl w-full p-3 bg-gray-100 text-center">
         {{user.get_rating}}
     </div>
 
     <a href="{% url 'user:update' user.id %}" class="mt-5 btn btn-link">
         정보 수정
+    </a>
+    <a href="{% url 'user:password' user.id %}" class="mt-2 btn btn-link bg-blue-400">
+        비밀번호 변경
     </a>
 </div>
 {% endblock content %}

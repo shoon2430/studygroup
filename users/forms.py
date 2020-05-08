@@ -77,12 +77,32 @@ class signupForm(forms.ModelForm):
         user.save()
 
 
-
 class updateUserForm(forms.ModelForm):
-
     class Meta:
         model = models.User
-        fields = ["first_name"]
+        fields = ["avatar", "first_name"]
         widgets = {
             "first_name": forms.TextInput(attrs={"placeholder": "닉네임"}),
         }
+
+
+class changePasswordForm(forms.Form):
+    old_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": "기존 비밀 번호를 입력 해주세요"})
+    )
+    new_password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": "변경하실 비밀번호를 입력 해주세요"})
+    )
+    new_password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": "변경하실 비밀번호를 입력 해주세요"})
+    )
+
+    def clean_new_password2(self):
+        password1 = self.cleaned_data.get("new_password1")
+        password2 = self.cleaned_data.get("new_password2")
+
+        if password1 == password2:
+            return password1
+
+        else:
+            raise forms.ValidationError("비밀번호가 동일하지 않습니다.")

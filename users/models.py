@@ -1,14 +1,15 @@
-import math
+import os
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from core import managers as core_managers
 from plans import models as plan_model
-from groups import models as group_model
 
 
 class User(AbstractUser):
     """
-        Custom User Model
+    Custom User Model
+    기본으로 제공하는 장고 USER를 커스텀하여 유저 모델 생성
     """
 
     GENDER_MALE = "male"
@@ -53,8 +54,16 @@ class User(AbstractUser):
     def __str__(self):
         return self.first_name
 
-    def get_rating(self):
+    def delete(self, *args, **kargs):
+        if self.avatar:
+            os.remove(os.path.join(settings.MEDIA_ROOT, self.file.path))
+        super(User, self).delete(*args, **kargs)
 
+    def get_rating(self):
+        """
+        사용자가 받은 피드백 점수를 합산하여
+        사용자 정보를 계산한다.
+        """
         rating = 0
         feedback_count = 0
         plans = plan_model.Plan.objects.filter(user=self.pk)
@@ -67,4 +76,18 @@ class User(AbstractUser):
 
             feedback_count += feedbacks.count()
 
+        if feedback_count == 0:
+            return 0
         return round(rating / feedback_count, 1)
+
+    def get_avatar(self):
+        """
+        업로드된 이미지가 있을 경우 이미지 출력
+        """
+        if self.avatar:
+            return self.avatar.url
+        else:
+            None
+
+    def get_first_nickname(self):
+        return self.first_name[0]

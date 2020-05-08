@@ -4,69 +4,17 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, FormView, UpdateView
-from . import models as group_model
-from . import forms as group_form
-from plans import models as plan_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-
 from django.utils.decorators import method_decorator
 from django.http import JsonResponse
-
 from django.template.loader import render_to_string
 
-
-class AjaxJsonGroupList(ListView):
-    """
-    Ajax로 리스트 비동기 처리하려 했으나 일단 보류
-    """
-
-    model = group_model.Group
-    context_object_name = "groups"
-    paginate_by = "2"
-    paginate_orphans = "1"
-    ordering = "-created"
-
-    def get_queryset(self):
-        queryset = super(AjaxJsonGroupList, self).get_queryset()
-        if self.request.is_ajax():
-            if self.request.GET.get("search_text"):
-                search_text = self.request.GET.get("search_text")
-                queryset = queryset.filter(title__contains=search_text)
-
-            if self.request.GET.get("selected_category"):
-                category = self.request.GET.get("selected_category")
-                queryset = queryset.filter(category=category)
-
-        return queryset
-
-    def render_to_response(self, context, **response_kwargs):
-        if self.request.is_ajax():
-            groups = context["object_list"]
-            html = render_to_string(
-                template_name="partials/group_box.html", context={"groups": groups}
-            )
-
-            pg = render_to_string(
-                template_name="partials/paging.html",
-                context={
-                    "page_obj": context["page_obj"],
-                    "paginator": context["paginator"],
-                    "is_paginated": context["is_paginated"],
-                },
-            )
-
-            group_html = {
-                "group_box_html": html,
-                "group_page_html": pg,
-            }
-            return JsonResponse(group_html, safe=False)
-
-        return super(AjaxJsonGroupList, self).render_to_response(
-            context, **response_kwargs
-        )
+from . import models as group_model
+from . import forms as group_form
+from plans import models as plan_model
 
 
 class GroupList(ListView):
@@ -77,6 +25,9 @@ class GroupList(ListView):
     ordering = "-created"
 
     def get_queryset(self):
+        """
+        조회 조건이 존재할 경우 필터링하여 리스트를 조회한다.
+        """
         queryset = super(GroupList, self).get_queryset()
         title = self.request.GET.get("title")
         category = self.request.GET.get("category")
@@ -106,7 +57,7 @@ class GroupDetail(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(GroupDetail, self).get_context_data(**kwargs)
         context["plans"] = plan_model.Plan.objects.filter(group=self.object).order_by(
-            "-deadline", "-created"
+            "-created"
         )
 
         join = False
@@ -189,6 +140,7 @@ def join_or_exit_Group(request, pk):
 class MyGroupList(LoginRequiredMixin, ListView):
     """
     나의 그룹 보기
+    내가 속한 그룹들만 조회하도록 한다.
     """
 
     model = group_model.Group
@@ -205,5 +157,52 @@ class MyGroupList(LoginRequiredMixin, ListView):
         return qs_groups
 
 
-class ManageGroupList(LoginRequiredMixin, ListView):
-    pass
+# class AjaxJsonGroupList(ListView):
+#     """
+#     Ajax로 리스트 비동기 처리하려 했으나 일단 보류
+#     """
+
+#     model = group_model.Group
+#     context_object_name = "groups"
+#     paginate_by = "2"
+#     paginate_orphans = "1"
+#     ordering = "-created"
+
+#     def get_queryset(self):
+#         queryset = super(AjaxJsonGroupList, self).get_queryset()
+#         if self.request.is_ajax():
+#             if self.request.GET.get("search_text"):
+#                 search_text = self.request.GET.get("search_text")
+#                 queryset = queryset.filter(title__contains=search_text)
+
+#             if self.request.GET.get("selected_category"):
+#                 category = self.request.GET.get("selected_category")
+#                 queryset = queryset.filter(category=category)
+
+#         return queryset
+
+#     def render_to_response(self, context, **response_kwargs):
+#         if self.request.is_ajax():
+#             groups = context["object_list"]
+#             html = render_to_string(
+#                 template_name="partials/group_box.html", context={"groups": groups}
+#             )
+
+#             pg = render_to_string(
+#                 template_name="partials/paging.html",
+#                 context={
+#                     "page_obj": context["page_obj"],
+#                     "paginator": context["paginator"],
+#                     "is_paginated": context["is_paginated"],
+#                 },
+#             )
+
+#             group_html = {
+#                 "group_box_html": html,
+#                 "group_page_html": pg,
+#             }
+#             return JsonResponse(group_html, safe=False)
+
+#         return super(AjaxJsonGroupList, self).render_to_response(
+#             context, **response_kwargs
+#         )

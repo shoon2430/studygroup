@@ -9,9 +9,18 @@ Info Update
 <div
     class="container lg:w-5/12 md:w-1/2 xl:w-1/4 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400 mt-32">
 
-    {% csrf_token %}
-    {% include "mixins/auth/auth_form.html" with form=form cta="정보 수정" %}
-
+    <form class="lg:w-11/12 md:w-1/2 xl:w-11/12" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="{{form.avatar.name}} photo">
+            <div class="p-2 text-gray-800 text-lg"><b>프로필 사진</b></div>
+            {% include "mixins/auth/form_input.html" with field=form.avatar  %}
+        </div>
+        <div class="{{form.first_name.name}} ">
+            <div class="p-2 text-gray-800 text-lg"><b>닉네임</b></div>
+            {% include "mixins/auth/form_input.html" with field=form.first_name  %}
+        </div>
+        <button class="btn bg-red-500 mt-8 text-white">정보 수정</button>
+    </form>
 </div>
 
 {% endblock content %}

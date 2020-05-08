@@ -66,19 +66,7 @@ form{
 }
 
 .message{
-    animation: messageFadeIn 4s ease-in-out forwards;
-    &.error{
-        @apply bg-red-600;
-    }
-    &.info{
-        @apply bg-blue-500;
-    }
-    &.success{
-        @apply bg-green-500;
-    }
-    &.warnigg{
-        @apply bg-yellow-500;
-    }
+    animation: messageFadeIn 2s ease-in-out forwards;
 }
 
 .filter{

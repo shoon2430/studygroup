@@ -3,7 +3,12 @@ from django.db import models
 
 class TimeStampModel(models.Model):
 
-    """ Time Stamped Model """
+    """
+    Time Stamped Model
+    기본적으로 모든 모델은 해당 클래스를 상속받아
+    생성일시와 수정일시를 관리하도록 하였음. 
+    
+    """
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
