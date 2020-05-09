@@ -12,6 +12,11 @@ seed_text = "Groups"
 
 
 class Command(BaseCommand):
+    """
+    테스트 데이터를 생성하는 Django커맨드
+    Group에 대한 가짜 데이터를 생성한다.
+    실제 운용전 테스트 해보기 위한 데이터가 필요할때 사용한다.
+    """
 
     help = f"This command creates {seed_text}"
 
@@ -63,4 +68,3 @@ class Command(BaseCommand):
                     add_count += 1
 
         self.stdout.write(self.style.SUCCESS(f"CREATE {seed_text} count : {number}"))
-

@@ -12,7 +12,13 @@ seed_text = "Plans"
 
 
 class Command(BaseCommand):
+    """
+    테스트 데이터를 생성하는 Django커맨드
+    Plan에 대한 가짜 데이터를 생성한다.
+    실제 운용전 테스트 해보기 위한 데이터가 필요할때 사용한다.
 
+    파일에 대한 데이터는 생성하지 않는다.
+    """
     help = f"This command creates {seed_text}"
 
     def add_arguments(self, parser):

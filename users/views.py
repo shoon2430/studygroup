@@ -64,7 +64,7 @@ class signupView(FormView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class userInfromationView(DetailView):
+class userInfromationView(LoginRequiredMixin, DetailView):
     """
     사용자 정보 조회
     """

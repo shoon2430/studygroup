@@ -101,7 +101,10 @@ def deletePlan(request, group_pk, plan_pk):
 def change_plan_status(request, group_pk, plan_pk):
     """
     계획 승인 절차
-    ENROLLMENT -> CONFIRM -> COMPLETE -> SUCCESS
+    1. ENROLLMENT  ( 계획 등록 )
+    2. CONFIRM     ( 계획 확인 )
+    3. COMPLETE    ( 결과 보고 )
+    4. SUCCESS     ( 최종 승인 )
     """
     if request.method == "POST":
         try:
@@ -117,7 +120,7 @@ def change_plan_status(request, group_pk, plan_pk):
             return redirect(reverse("core:home"))
 
 
-class plan_upload(FormView):
+class plan_upload(LoginRequiredMixin, FormView):
     """
     계획 등록시 파일 업로드
     """
@@ -140,7 +143,7 @@ class plan_upload(FormView):
         )
 
 
-class result_upload(FormView):
+class result_upload(LoginRequiredMixin, FormView):
     """
     계획 완료시 파일 업로드
     """
@@ -189,6 +192,14 @@ def result_file_delete(request, group_pk, plan_pk, file_pk):
 
 
 class createFeedback(LoginRequiredMixin, FormView):
+    """
+    계획 최종승인 전
+    -> 계획에 대한 피드백을 생성한 후에 최종승인 처리를 한다.
+
+    계획 최종승인 후
+    -> 계획에 대한 피드백만 생성한다.
+    """
+
     template_name = "feedbacks/feedback_create.html"
     form_class = creatFeedbackForm
 
@@ -198,8 +209,10 @@ class createFeedback(LoginRequiredMixin, FormView):
         group_pk = self.kwargs["group_pk"]
         plan_pk = self.kwargs["plan_pk"]
         plan = plan_models.Plan.objects.get(pk=plan_pk)
-        plan.set_status_change("SUCCESS")
-        plan.save()
+        if plan.status == "COMPLETE":
+            plan.set_status_change("SUCCESS")
+            plan.save()
+
         form.save(user=user, plan=plan)
 
         return HttpResponseRedirect(
