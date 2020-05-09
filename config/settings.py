@@ -31,8 +31,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get("DEBUG"))
-
+# DEBUG = bool(os.environ.get("DEBUG"))
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -100,7 +100,8 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # 배포하기위해 변경
 
-if DEBUG:
+# if DEBUG:
+if False:
     # 개발 환경에서는 sqlite3사용
 
     DATABASES = {
@@ -181,7 +182,8 @@ WEBPACK_LOADER = {
 
 
 # Sentry
-if not DEBUG:
+# if not DEBUG:
+if True:
 
     # django-storages aws S3 설정
     DEFAULT_FILE_STORAGE = "config.custom_storages.UploadStorage"
