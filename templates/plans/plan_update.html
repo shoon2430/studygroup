@@ -19,21 +19,21 @@ Plan | Update
 
         <div class="{{form.title_for_plan.name}}">
             <div class="explanation"><b>제목</b></div>
-            <div>{{form.title_for_plan}}</div>
+            {% include "mixins/auth/form_input.html" with field=form.title_for_plan  %}
         </div>
         <div class="{{form.contents_for_plan.name}} mt-5">
             <div class="explanation"><b>계획 내용</b></div>
-            <div>{{form.contents_for_plan}}</div>
+            {% include "mixins/auth/form_input.html" with field=form.contents_for_plan  %}
         </div>
 
         {% if plan.status != "ENROLLMENT" %}
         <div id="title_for_result" class="{{form.title_for_result.name}} mt-5">
             <div class="explanation"><b>결과 보고 제목</b></div>
-            <div>{{form.title_for_result}}</div>
+            {% include "mixins/auth/form_input.html" with field=form.title_for_result  %}
         </div>
         <div id="contents_for_result" class="{{form.contents_for_result.name}} mt-5">
             <div class="explanation"><b>결과 보고 내용</b></div>
-            <div>{{form.contents_for_result}}</div>
+            {% include "mixins/auth/form_input.html" with field=form.contents_for_result  %}
         </div>
         <div class="mt-6 p-3 text-white text-xl bg-indigo-500">
             <h2 class="ml-3">첨부파일</h2>

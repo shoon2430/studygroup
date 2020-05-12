@@ -13,52 +13,25 @@ Plan | Detail
 {% block content %}
 <div class="group_detail container lg:w-8/12 md:w-1/2 xl:w-2/4 mx-auto my-10 flex flex-col p-6 mt-32">
 
-    <div class="header flex">
+    <b class="text-center text-3xl">
+        {% if plan.check_deadline %}
+        <b class="text-red-600 ">{{plan.user.first_name}} 의 계획 (마감)</b>
+        {%else%}
+        <b class="">{{plan.user.first_name}} 의 계획</b>
+        {% endif %}
+    </b>
 
-        <a href="{% url 'groups:detail' plan.group.pk%}" id="group_title"
-            class="group_title border border-gray-400 text-center w-8/12 p-5 text-2xl bg-gray-100 ">
-
-            {% if plan.check_deadline %}
-            <b class="text-red-600">{{plan.group}} (마감)</b>
-            {%else%}
-            <b class="">{{plan.group}}</b>
-            {% endif %}
-
-        </a>
-
-
-        <span class="user border border-gray-400  w-2/12 p-6  text-center ml-2 text-xl bg-gray-100">
-            {{plan.user.first_name}}
-        </span>
-        <span class="user border border-gray-400  w-2/12 p-1  item-center ml-2">
-
-            <div class="rounded w-full h-full text-center p-3 font-semibold text-white text-l
-            {%if plan.status == 'ENROLLMENT'%}
-            bg-enrollment
-            {%elif plan.status == 'CONFIRM'%}
-            bg-blue-500 
-            {%elif plan.status == 'COMPLETE'%}
-            bg-complete
-            {%elif plan.status == 'SUCCESS'%}
-            bg-success
-            {%endif%}
-            
-            ">
-                <h2 class="mt-3">
-                    {{plan.status}}
-                </h2>
-            </div>
-
-        </span>
+    <div class="flex justify-between mt-5">
+        <div></div>
+        <a href="javascript:history.back()" class=" font-semibold text-lg">뒤로가기</a>
     </div>
-
-    <div class="mt-6 p-3 text-white text-xl bg-indigo-400">
+    <div class="mt-4 p-3 text-white text-xl bg-indigo-400">
         <h2 class="ml-3">진행 계획</h2>
     </div>
-    <div class="title border border-gray-400 mx-auto text-xl w-full p-3 mt-1 bg-gray-100">
+    <div class="title border border-gray-400 mx-auto text-xl w-full p-3 mt-1 bg-white">
         <p class="ml-3 overflow-hidden">{{plan.title_for_plan}}</p>
     </div>
-    <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100" style="height:400px">
+    <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-white" style="height:400px">
         <p class="h-full w-full ">{{plan.contents_for_plan|linebreaksbr}}</p>
     </div>
     <div class="mt-6 p-3 text-white text-xl bg-indigo-500">
@@ -66,7 +39,7 @@ Plan | Detail
     </div>
 
     {% if plan.get_planFiles %}
-    <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100">
+    <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-white">
         {% for planFile in plan.get_planFiles %}
         <div>
             <div class="flex">
@@ -88,7 +61,7 @@ Plan | Detail
         {% endfor %}
     </div>
     {% else%}
-    <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100">
+    <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-white">
         <span class="p-2 m-2">첨부된 파일이 없습니다.</span>
     </div>
     {% endif %}
@@ -97,17 +70,17 @@ Plan | Detail
     <div class="mt-6 p-3 text-white text-xl bg-purple-500">
         <h2 class="ml-3">계획 결과 보고</h2>
     </div>
-    <div class="title border border-gray-400 mx-auto text-xl w-full p-3 mt-1 bg-gray-100">
+    <div class="title border border-gray-400 mx-auto text-xl w-full p-3 mt-1 bg-white">
         <h2 class="ml-3">{{plan.title_for_result}}</h2>
     </div>
-    <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100" style="height:400px">
+    <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-white" style="height:400px">
         <h2>{{plan.contents_for_result}}</h2>
     </div>
     <div class="mt-6 p-3 text-white text-xl bg-purple-600">
         <h2 class="ml-3">첨부파일</h2>
     </div>
     {% if plan.get_resultfiles %}
-    <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100">
+    <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-white">
         {% for resultFile in plan.get_resultfiles %}
 
         <a href='{{resultFile.file.url}}' download>
@@ -129,7 +102,7 @@ Plan | Detail
         {% endfor %}
     </div>
     {% else%}
-    <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-gray-100">
+    <div class="contents border border-gray-400 mx-auto w-full p-6 mt-1 bg-white">
         <span class="p-2 m-2">첨부된 파일이 없습니다.</span>
     </div>
     {% endif %}

@@ -30,10 +30,10 @@ Plan | Create
             <p class="ml-2 p-1">결과에 대한 피드백을 작성하여 주세요.</p>
         </div>
         <div class="{{form.title_for_plan.name}} mt-2 ">
-            <span>{{form.title}}</span>
+            {% include "mixins/auth/form_input.html" with field=form.title  %}
         </div>
         <div class="{{form.contents_for_plan.name}} mt-2">
-            <span>{{form.contents_for_plan}}</span>
+            {% include "mixins/auth/form_input.html" with field=form.contents_for_plan  %}
         </div>
 
         <div class="starRev text-center mt-2">
