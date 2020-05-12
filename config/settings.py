@@ -112,7 +112,7 @@ if DEBUG:
 else:
     # 실제 배포된 환경에서는 postgresql사용
 
-    ALLOWED_HOSTS = [".elasticbeanstalk.com"]
+    ALLOWED_HOSTS = [".elasticbeanstalk.com", ".studygroup.gq"]
 
     DATABASES = {
         "default": {
