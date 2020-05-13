@@ -1,22 +1,23 @@
-<header
-    class="container max-w-full flex items-center justify-between px-4 h-12 border-b fixed bg-white inset-0 bg-gray-800">
-    <a class="p-4 -mt-1 text-center text-l font-semibold text-white text-2xl" href="/">Study Group</a>
+<header class="container
+    max-w-full flex items-center justify-between px-4 h-12 border-b fixed bg-white inset-0 bg-gray-800">
+    <a class="p-4 -mt-1 text-center text-l font-semibold text-white text-2xl sm-text" href="/">Study
+        Group</a>
 
     {% if user.is_authenticated %}
     <div class="float-right">
         <a href="{% url 'groups:my-groups' %}">
             <span class="p-4 rounded text-center text-l ml-2 font-semibold text-gray-400 text-lg hover:text-white">
-                <b class="ml-1">나의 그룹 보기</b>
+                <b class="ml-1 sm-text">나의 그룹 보기</b>
             </span>
         </a>
         <a href="{% url 'user:info' user.pk%}">
             <span class="p-4 rounded text-center text-l ml-2 font-semibold text-gray-400 text-lg hover:text-white">
-                <b class="ml-1">{{user.username}}(님)</b>
+                <b class="ml-1 sm-text">{{user.first_name}}(님)</b>
             </span>
         </a>
         <a href="{% url 'user:logout' %}">
             <span class="p-4 rounded text-center text-l ml-2 font-semibold text-gray-400 text-lg hover:text-white">
-                <b class="ml-1">Logout</b>
+                <b class="ml-1 sm-text">Logout</b>
             </span>
         </a>
     </div>
@@ -24,12 +25,12 @@
     <div>
         <a href="{% url 'users:login' %}">
             <span class="p-5 rounded text-center text-l font-semibold text-gray-400 text-lg hover:text-white">
-                <b class="ml-1">Login</b>
+                <b class="ml-1 sm-text">Login</b>
             </span>
         </a>
         <a href="{% url 'users:signup' %}">
             <span class=" p-5 rounded text-center text-l ml-2 font-semibold text-gray-400 text-lg hover:text-white">
-                <b class="ml-1">Signup</b>
+                <b class="ml-1 sm-text">Signup</b>
             </span>
         </a>
     </div>

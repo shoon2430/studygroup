@@ -78,3 +78,16 @@
 .bg-success {
     background-color:#2f951e;
 }
+
+@media ( max-width: 640px ) {
+    .sm-text{
+        font-size:15px;
+    }
+    .item-show{
+        display:inline;
+    }
+    
+    .item-hide{
+        display:none;
+    }
+}
