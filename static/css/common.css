@@ -79,12 +79,59 @@
     background-color:#2f951e;
 }
 
+
+@media ( min-width: 640px ) {
+    .main-image-height{
+        height: 40vh;
+    }
+
+    .item-show{
+        display:none;
+    }
+
+    .group-width{
+        width: 500px;
+    }
+    
+    .group_persons{
+        width: 8rem;
+    }
+
+    .group_padding{
+    }
+}
+
 @media ( max-width: 640px ) {
     .sm-text{
+        font-size:12px;
+    }
+
+    .m-text{
         font-size:15px;
     }
+
+    .main-image-height{
+        height: 30vh;
+    }
+
+    .group_persons{
+        width: 6rem;
+    }
+
+    .group_padding{
+        padding: 0.5rem;
+    }
+
+    .group-width{
+        width: 280px;
+    }
+
+    .item-hight{
+        height: 30vh;
+    }
+
     .item-show{
-        display:inline;
+        display:block;
     }
     
     .item-hide{

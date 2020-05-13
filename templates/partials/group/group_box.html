@@ -1,6 +1,6 @@
 <div class="{{group_group.pk}}">
     <a class="list-item flex my-4" href="{% url 'groups:detail' group.pk%}">
-        <div class="flex-initial rounded w-56 h-32  bg-red-300 float-left bg-cover bg-center" {% if group.photo %}
+        <div class=" flex-initial rounded w-56 h-32  bg-red-300 float-left bg-cover bg-center" {% if group.photo %}
             style="background-image:url({{group.get_photo}})">
             {%else%}
             style="background-image:url('/static/image/normal_image.jpg')">
@@ -10,19 +10,19 @@
         <div class="group_{{group.id}} flex-initial w-full h-32 ml-8">
             <div class="flex justify-between">
                 <div>
-                    <p class="title font-medium text-2xl hover:text-indigo-500 
+                    <p class="title font-medium text-2xl hover:text-indigo-500 m-text 
                     {% if my %}
-                    ellipsis" style="width:500px;" {% endif %} ">{{group.title}}</p>
+                    ellipsis group-width {% endif %} ">{{group.title}}</p>
                 </div>
-                <div class=" bg-custom-gray w-32 truncate ... text-left">
-                        <p class=" p-1 ml-1 mx-1 text-lg text-gray-700">{{group.leader}}</p>
+                <div class="item-hide bg-custom-gray w-32 truncate ... text-left">
+                    <p class=" p-1 ml-1 mx-1 text-lg text-gray-700">{{group.leader}}</p>
                 </div>
             </div>
             <div class="flex justify-between">
-                <div class="" style="width:500px">
-                    <p class="text-lg text-gray-500 opacity-75 truncate ...">{{group.notice}}</p>
+                <div class=" group-width">
+                    <p class="m-text text-lg text-gray-500 opacity-75 truncate ...">{{group.notice}}</p>
                 </div>
-                <div class="bg-custom-gray mt-2 p-1 w-32 text-left ">
+                <div class="item-hide bg-custom-gray mt-2 p-1 w-32 text-left ">
                     <p class="text-lg text-gray-700">{{group.get_created_kro}}</p>
                 </div>
             </div>
@@ -53,7 +53,7 @@
                 </div>
 
 
-                <div class="float-right count m-1 bg-custom-gray rounded w-32 flex text-left h-8 
+                <div class="float-right count m-1 bg-custom-gray rounded group_persons flex text-left h-8 
                 {%if group.get_user_count == group.max_group_count%}
                 text-red-400
                 {%else%}

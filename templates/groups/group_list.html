@@ -8,6 +8,10 @@ Hoon's StudyGroup
 
 {% block script %}
 <script src="{% static "js/group/main/group_list.js" %}"></script>
+<script>
+
+
+</script>
 {% endblock script %}
 
 
@@ -16,12 +20,13 @@ Hoon's StudyGroup
 
 <div class="container mx-auto pb-10">
     <a href="{% url 'core:home' %}">
-        <div class="rounded-lg bg-gray-800 mt-32 mb-8 bg-cover bg-center"
-            style="height: 40vh; background-image:url('static/image/main_2.jpg')">
+        <div class="rounded-lg bg-gray-800 mt-32 mb-8 bg-cover bg-center main-image-height"
+            style="background-image:url('static/image/main_2.jpg')">
         </div>
     </a>
     <div class="search w-auto -mt-5 flex justify-between">
-        <form class=" flex">
+        <div class="item-show"></div>
+        <form class="flex">
             <select class="filter text-sm" id="group_category" name="category">
                 <option value="" class="">--선택--</option>
                 <option value="S" {% if category == "S" %} selected {% endif %}>Study</option>
@@ -35,7 +40,7 @@ Hoon's StudyGroup
                 <i class="fa fa-search"></i></button>
         </form>
 
-        <div class="flex ">
+        <div class="flex item-hide">
             {% if request.user.is_authenticated %}
             <a href="{% url 'groups:create-group' %}">
                 <div class="w-48 h-10  text-center rounded bg-custom-brown-100 text-gray-100 p-1 text-xl float-right ">
@@ -45,8 +50,17 @@ Hoon's StudyGroup
             {% endif %}
         </div>
     </div>
+    <div class="item-show mt-2">
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'groups:create-group' %}">
+            <div class="w-full h-10  text-center rounded bg-custom-brown-100 text-gray-100 p-1 text-xl float-right ">
+                그룹 등록 하기
+            </div>
+        </a>
+        {% endif %}
+    </div>
 
-    <div id="group_list" class=" mt-16">
+    <div id="group_list" class=" mt-16 group_padding">
         {% for group in groups%}
         {% include 'partials/group/group_box.html' with group=group my=False %}
         {%endfor%}
