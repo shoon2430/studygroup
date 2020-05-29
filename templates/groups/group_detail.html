@@ -21,10 +21,10 @@ Group | Detail
 
                 {% if group.planning_unit == "week" %}
                 마감 요일
-                {{group.deadline_week}}
+                <div class="text-xl">{{group.deadline_week}}</div>
                 {%else%}
                 마감 시간
-                {{group.deadline_day}}:00
+                <div class="text-xl">{{group.deadline_day}}:00</div>
                 {% endif %}
 
             </div>
