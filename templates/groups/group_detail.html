@@ -17,8 +17,16 @@ Group | Detail
             {{group.title}}
         </span>
         <span class="user border border-gray-400  w-2/12 p-1  item-center ml-2 ">
-            <div class="rounded w-full h-full text-center p-6 font-semibold text-white text-lg bg-teal-400  ">
-                {{group.leader}}
+            <div class="rounded w-full h-full text-center p-2 font-semibold text-white text-lg bg-red-400  ">
+
+                {% if group.planning_unit == "week" %}
+                마감 요일
+                {{group.deadline_week}}
+                {%else%}
+                마감 시간
+                {{group.deadline_day}}:00
+                {% endif %}
+
             </div>
 
         </span>

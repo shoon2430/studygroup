@@ -90,24 +90,6 @@ class Plan(core_model.TimeStampModel):
         return self.group.id
 
     def set_status_change(self, next_status):
-        """
-        계획 CONFIRM시 마감일자 계산
-        week 일 경우와 day 일 경우를 나누어 계산한다.
-        """
-        if next_status == "CONFIRM":
-            enrollment_date = self.created
-
-            if self.group.planning_unit == "week":
-                deadline = self.cal_week_deadline(
-                    enrollment_date, self.group.get_weekday_idx()
-                )
-                self.deadline = deadline
-
-            elif self.group.planning_unit == "day":
-                hour = self.group.deadline_day
-                deadline = self.cal_day_deadline(enrollment_date, hour)
-                self.deadline = deadline
-
         self.status = next_status
 
     def cal_week_deadline(self, enrollment_date, std_weekday):
@@ -131,6 +113,7 @@ class Plan(core_model.TimeStampModel):
         """
         일간 계획 마감일자 계산
         """
+        print(f"hour {today.hour} / {hour}")
         if today.hour < int(hour):
             add_day = timedelta(days=(2))
         else:

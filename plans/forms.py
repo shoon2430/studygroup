@@ -38,6 +38,22 @@ class createPlanForm(forms.ModelForm):
 
         plan.user = user
         plan.group = group
+
+        """
+        계획 마감일자 계산
+        계획 생성 시간 기준으로 week 일 경우와 day 일 경우를 나누어 계산한다.
+        """
+        enrollment_date = datetime.now()
+
+        if group.planning_unit == "week":
+            deadline = plan.cal_week_deadline(
+                enrollment_date, plan.group.get_weekday_idx()
+            )
+            plan.deadline = deadline
+        elif group.planning_unit == "day":
+            hour = group.deadline_day
+            deadline = plan.cal_day_deadline(enrollment_date, hour)
+            plan.deadline = deadline
         plan.save()
 
 
