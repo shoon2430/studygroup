@@ -33,9 +33,10 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get("DEBUG"))
 
+SESSION_COOKIE_AGE = 60 * 60 * 2  # 초 / 분 / 시간
+SESSION_SAVE_EVERY_REQUEST = True  # 요청시 세션 갱신
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
