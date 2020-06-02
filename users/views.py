@@ -10,7 +10,14 @@ from django.shortcuts import redirect, reverse
 from django.contrib.auth.hashers import check_password
 from django.contrib import messages
 from .models import User
-from .forms import loginForm, signupForm, updateUserForm, changePasswordForm
+from .forms import (
+    loginForm,
+    signupForm,
+    updateUserForm,
+    changePasswordForm,
+    findUserPasswordForm,
+    getUserNewPasswordForm,
+)
 
 
 class LoginView(FormView):
@@ -113,3 +120,51 @@ class userChangePasswordView(LoginRequiredMixin, FormView):
         else:
             messages.error(self.request, "기존 비밀번호가 동일하지 않습니다.")
             return HttpResponseRedirect(reverse("user:password", args=(user.pk,)))
+
+
+class findUserPasswordView(FormView):
+    model = User
+    template_name = "users/user_find_password.html"
+    form_class = findUserPasswordForm
+    success_url = reverse_lazy("user:findpassword")
+
+    def form_valid(self, form):
+        email = form.cleaned_data.get("email")
+        hint_question = form.cleaned_data.get("hint_question")
+        hint = form.cleaned_data.get("hint")
+
+        user = User.objects.filter(
+            username=email, hint_question=hint_question, hint=hint
+        )[0]
+        if user:
+            self.request.session["auth"] = user.username
+            return redirect(reverse("user:getNewPassword"))
+
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class getUserNewPasswordView(FormView):
+    model = User
+    template_name = "users/user_get_newpassword.html"
+    form_class = getUserNewPasswordForm
+    success_url = reverse_lazy("user:login")
+
+    def form_valid(self, form):
+
+        if not self.request.session.get("auth", False):
+            messages.error(self.request, "인증되지 않았습니다.")
+            return HttpResponseRedirect(self.get_success_url())
+
+        try:
+            user = User.objects.get(username=self.request.session["auth"])
+            new_password = form.cleaned_data.get("new_password1")
+            user.set_password(new_password)
+            user.save()
+
+            messages.success(self.request, "비밀번호가 변경되었습니다. 로그인하세요.")
+            logout(self.request)
+            return HttpResponseRedirect(self.get_success_url())
+
+        except User.DoesNotExist:
+            logout(self.request)
+            return HttpResponseRedirect(self.get_success_url())

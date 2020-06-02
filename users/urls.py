@@ -7,6 +7,12 @@ urlpatterns = [
     path("login/", views.LoginView.as_view(), name="login"),
     path("logout/", views.log_out, name="logout"),
     path("signup/", views.signupView.as_view(), name="signup"),
+    path("find-password/", views.findUserPasswordView.as_view(), name="findpassword"),
+    path(
+        "get-new-password/",
+        views.getUserNewPasswordView.as_view(),
+        name="getNewPassword",
+    ),
     path("<int:pk>/info/", views.userInfromationView.as_view(), name="info"),
     path(
         "<int:pk>/info/password/",

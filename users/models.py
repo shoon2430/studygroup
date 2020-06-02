@@ -47,6 +47,8 @@ class User(AbstractUser):
         null=False,
     )
 
+    hint_question = models.IntegerField(blank=False, default=1)
+    hint = models.CharField(blank=False, max_length=200, default="")
     rating = models.IntegerField(default=10)
 
     objects = core_managers.CustomUserManager()

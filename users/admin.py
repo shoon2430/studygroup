@@ -8,7 +8,19 @@ class UserAdmin(admin.ModelAdmin):
 
     USERADMIN_FIELDS = UserAdmin.fieldsets
     COSTOM_FIELDS = (
-        ("CostomFields", {"fields": ("avatar", "gender", "rating", "login_method",)},),
+        (
+            "CostomFields",
+            {
+                "fields": (
+                    "avatar",
+                    "gender",
+                    "rating",
+                    "login_method",
+                    "hint_question",
+                    "hint",
+                )
+            },
+        ),
     )
 
     fieldsets = USERADMIN_FIELDS + COSTOM_FIELDS

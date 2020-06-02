@@ -48,6 +48,13 @@ class signupForm(forms.ModelForm):
         widget=forms.PasswordInput(attrs={"placeholder": "비밀번호 확인"})
     )
 
+    hint_question = forms.CharField(
+        widget=forms.Select(
+            choices=[(1, "당신의 고향은?"), (2, "어렸을때 별명은?"), (3, "현재 살고 있는 동네이름은?"),]
+        )
+    )
+    hint = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "비밀번호 힌트"}))
+
     def clean_email(self):
         email = self.cleaned_data.get("email")
 
@@ -71,9 +78,13 @@ class signupForm(forms.ModelForm):
         user = super().save(commit=False)
         email = self.cleaned_data.get("email")
         password = self.cleaned_data.get("password1")
+        hint_question = self.cleaned_data.get("hint_question")
+        hint = self.cleaned_data.get("hint")
 
         user.username = email
         user.set_password(password)
+        user.hint_question = hint_question
+        user.hint = hint
         user.save()
 
 
@@ -103,6 +114,60 @@ class changePasswordForm(forms.Form):
 
         if password1 == password2:
             return password1
+
+        else:
+            raise forms.ValidationError("비밀번호가 동일하지 않습니다.")
+
+
+class findUserPasswordForm(forms.ModelForm):
+    class Meta:
+        model = models.User
+        fields = ["email", "hint_question", "hint"]
+        widgets = {
+            "email": forms.TextInput(attrs={"placeholder": "ID"}),
+            "hint_question": forms.Select(
+                choices=[(1, "당신의 고향은?"), (2, "어렸을때 별명은?"), (3, "현재 살고 있는 동네이름은?")]
+            ),
+            "hint": forms.TextInput(attrs={"placeholder": "비밀번호 힌트"}),
+        }
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        try:
+            user = models.User.objects.get(username=email)
+            return email
+        except models.User.DoesNotExist:
+            self.add_error("email", forms.ValidationError("ID가 존재하지 않습니다."))
+
+    def clean_hint(self):
+        email = self.cleaned_data.get("email")
+        hint_question = self.cleaned_data.get("hint_question")
+        hint = self.cleaned_data.get("hint")
+
+        try:
+            user = models.User.objects.get(
+                username=email, hint_question=hint_question, hint=hint
+            )
+            return hint
+        except models.User.DoesNotExist:
+            self.add_error("hint", forms.ValidationError("비밀번호 힌트가 틀렸습니다."))
+
+
+class getUserNewPasswordForm(forms.Form):
+
+    new_password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": "변경하실 비밀번호를 입력 해주세요"})
+    )
+    new_password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": "변경하실 비밀번호를 입력 해주세요"})
+    )
+
+    def clean_new_password2(self):
+        new_password1 = self.cleaned_data.get("new_password1")
+        new_password2 = self.cleaned_data.get("new_password2")
+
+        if new_password1 == new_password2:
+            return new_password1
 
         else:
             raise forms.ValidationError("비밀번호가 동일하지 않습니다.")

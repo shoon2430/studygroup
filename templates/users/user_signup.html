@@ -1,8 +1,14 @@
 {% extends "partials/base.html" %}
+{% load static %}
 
 {% block page_name %}
 Signup
 {% endblock page_name %}
+
+{% block script %}
+<script src="{% static "js/user/user_signup.js" %}"></script>
+{% endblock script %}
+
 
 {% block content %}
 
