@@ -1,8 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
-
-from django.shortcuts import redirect, reverse
+from django.shortcuts import reverse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, FormView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin

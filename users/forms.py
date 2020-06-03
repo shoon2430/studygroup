@@ -106,7 +106,6 @@ class updateUserForm(forms.ModelForm):
         return nickname
 
 
-
 class changePasswordForm(forms.Form):
     old_password = forms.CharField(
         widget=forms.PasswordInput(attrs={"placeholder": "기존 비밀 번호를 입력 해주세요"})

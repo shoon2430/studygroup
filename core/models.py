@@ -18,10 +18,16 @@ class TimeStampModel(models.Model):
         abstract = True
 
     def get_created(self):
+        """
+        생성일자 조회 
+        """
         return self.created.strftime("%Y %m %d %H %M %p")
 
     def get_updated(self):
+        """
+        수정일자 조회
+        """
         return self.updated.strftime("%Y %m %d %H %M %p")
 
-    def get_created_kro(self):
+    def get_created_ymd(self):
         return self.created.strftime("%Y-%m-%d")

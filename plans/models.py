@@ -95,6 +95,9 @@ class Plan(core_model.TimeStampModel):
     def cal_week_deadline(self, enrollment_date, std_weekday):
         """
         주간 계획 마감일자 계산
+        
+        마감일까지 일주일보다 적게 걸리는 경우
+        마감날짜 = 마감일까지의 기간 + 일주일
         """
         weekday = enrollment_date.weekday()
         if std_weekday > weekday:
@@ -112,8 +115,11 @@ class Plan(core_model.TimeStampModel):
     def cal_day_deadline(self, today, hour):
         """
         일간 계획 마감일자 계산
+
+        마감시간까지 24시간 보다 적게 걸리는 경우
+        마감시간 = 다음날 마감시간까지
         """
-        print(f"hour {today.hour} / {hour}")
+
         if today.hour < int(hour):
             add_day = timedelta(days=(2))
         else:
@@ -142,7 +148,7 @@ class Plan(core_model.TimeStampModel):
 
     def check_deadline(self):
         """
-        마감일보다 이후면 마감 
+        마감기간이 마감 되었는지 확인
         """
         if self.deadline:
             now = datetime.now()

@@ -1,17 +1,12 @@
-import os
 import json
-from django.conf import settings
-from django.utils.encoding import smart_str
-from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.http import HttpResponseRedirect, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render, reverse, redirect, get_object_or_404
+from django.shortcuts import reverse, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import (
     ListView,
     DetailView,
     FormView,
-    CreateView,
-    DeleteView,
     UpdateView,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
