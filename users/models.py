@@ -47,11 +47,11 @@ class User(AbstractUser):
         null=False,
     )
 
+    rating = models.IntegerField(default=10)
+    objects = core_managers.CustomUserManager()
+
     hint_question = models.IntegerField(blank=False, default=1)
     hint = models.CharField(blank=False, max_length=200, default="")
-    rating = models.IntegerField(default=10)
-
-    objects = core_managers.CustomUserManager()
 
     def __str__(self):
         return self.first_name
