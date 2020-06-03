@@ -1,7 +1,4 @@
-import os
-import requests
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
 from django.views.generic import FormView, DetailView, UpdateView
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -18,6 +15,7 @@ from .forms import (
     findUserPasswordForm,
     getUserNewPasswordForm,
 )
+
 
 class LoginView(FormView):
     """
@@ -81,6 +79,7 @@ class userInfromationView(LoginRequiredMixin, DetailView):
 class userUpdateView(LoginRequiredMixin, UpdateView):
     """
     사용자 정보 변경
+    사용자 정보는 프로필 사진과 닉네임을 변경 할 수 있다.
     """
 
     model = User
@@ -122,6 +121,11 @@ class userChangePasswordView(LoginRequiredMixin, FormView):
 
 
 class findUserPasswordView(FormView):
+    """
+    사용자 비밀번호 찾기
+    비밀번호 찾기는 회원가입시에 입력한 힌트를 이용해서 찾을 수 있다.
+    """
+
     model = User
     template_name = "users/user_find_password.html"
     form_class = findUserPasswordForm
@@ -132,10 +136,12 @@ class findUserPasswordView(FormView):
         hint_question = form.cleaned_data.get("hint_question")
         hint = form.cleaned_data.get("hint")
 
+        # 비밀번호 찾기 힌트가 맞는지 확인
         user = User.objects.filter(
             username=email, hint_question=hint_question, hint=hint
         )[0]
         if user:
+            # 힌트가 맞을경우 세션에 추가하여 인증 유지
             self.request.session["auth"] = user.username
             return redirect(reverse("user:getNewPassword"))
 
@@ -143,6 +149,10 @@ class findUserPasswordView(FormView):
 
 
 class getUserNewPasswordView(FormView):
+    """
+    비밀번호 찾기 인증 성공시 새로운 비밀번호를 발급받는 화면 호출
+    """
+
     model = User
     template_name = "users/user_get_newpassword.html"
     form_class = getUserNewPasswordForm
@@ -155,6 +165,7 @@ class getUserNewPasswordView(FormView):
             return HttpResponseRedirect(self.get_success_url())
 
         try:
+            # 인증된 유저정보를 가지고와서 비밀번호 변경 시작
             user = User.objects.get(username=self.request.session["auth"])
             new_password = form.cleaned_data.get("new_password1")
             user.set_password(new_password)

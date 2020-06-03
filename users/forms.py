@@ -94,6 +94,18 @@ class updateUserForm(forms.ModelForm):
             "first_name": forms.TextInput(attrs={"placeholder": "닉네임"}),
         }
 
+    def clean_first_name(self):
+        """
+        닉네임 중복확인
+        """
+        nickname = self.cleaned_data.get("first_name")
+        
+        if models.User.objects.filter(first_name=nickname):
+            raise forms.ValidationError("사용중인 닉네임 입니다. 다른 이름으로 변경해주세요.")
+
+        return nickname
+
+
 
 class changePasswordForm(forms.Form):
     old_password = forms.CharField(
@@ -120,6 +132,7 @@ class changePasswordForm(forms.Form):
         if old_password == password1:
             raise forms.ValidationError("기존 비밀번호와 동일합니다.")
         return old_password
+
 
 class findUserPasswordForm(forms.ModelForm):
     class Meta:

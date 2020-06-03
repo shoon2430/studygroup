@@ -1,17 +1,12 @@
-from django.http import Http404, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import redirect, reverse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, FormView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-
-from django.utils.decorators import method_decorator
-from django.http import JsonResponse
-from django.template.loader import render_to_string
 
 from . import models as group_model
 from . import forms as group_form
@@ -21,7 +16,7 @@ from plans import models as plan_model
 class GroupList(ListView):
     model = group_model.Group
     context_object_name = "groups"
-    paginate_by = "5"
+    paginate_by = "6"
     paginate_orphans = "2"
     ordering = "-created"
 
@@ -69,7 +64,7 @@ class GroupDetail(LoginRequiredMixin, DetailView):
         plans = paginator.get_page(page)
         context["paginator"] = paginator
         context["plans"] = plans
-        context["url"] = self.request.path
+        context["url"] = self.request.path + "?"
 
         # 그룹 참여 여부
         join = False

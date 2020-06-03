@@ -101,10 +101,10 @@ def deletePlan(request, group_pk, plan_pk):
 def change_plan_status(request, group_pk, plan_pk):
     """
     계획 승인 절차
-    1. ENROLLMENT  ( 계획 등록 )
-    2. CONFIRM     ( 계획 확인 )
-    3. COMPLETE    ( 결과 보고 )
-    4. SUCCESS     ( 최종 승인 )
+    1. ENROLLMENT  ( 계획 등록 ) 나
+    2. CONFIRM     ( 계획 확인 ) 그룹원
+    3. COMPLETE    ( 결과 보고 ) 나
+    4. SUCCESS     ( 최종 승인 ) 그룹원
     """
     if request.method == "POST":
         try:
@@ -223,12 +223,12 @@ class createFeedback(LoginRequiredMixin, FormView):
 class PlanList(LoginRequiredMixin, ListView):
     """
     나의 그룹 보기에서 선택 가능한 그룹리스트 보기
-    내가 속한 그룹에서 내가 작성한 계획 전부를 조회한다.
+    => 내가 속한 그룹에서 내가 작성한 계획 전부를 조회한다.
     """
 
     model = plan_models.Plan
     context_object_name = "plans"
-    paginate_by = "4"
+    paginate_by = "6"
     paginate_orphans = "2"
     ordering = ["-created"]
     template_name = "plans/plan_list.html"
@@ -243,21 +243,25 @@ class PlanList(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(PlanList, self).get_context_data(**kwargs)
-        group = group_models.Group.objects.get(pk=self.request.GET.get("group"))
+
+        group_pk = self.request.GET.get("group")
+        group = group_models.Group.objects.get(pk=group_pk)
         context["group"] = group
+        context["url"] = self.request.path + f"?group={group_pk}&"
+
         return context
 
 
 class FeedbackList(PlanUserCheckMixin, ListView):
     """
     그룹 정보화면에서 선택 할 수 있는 피드백 리스트
-    내가 작성한 하나의 계획에 대한 모든 피드백을 조회한다.
+    => 내가 작성한 하나의 계획에 대한 모든 피드백을 조회한다.
     """
 
     model = plan_models.Feedback
     context_object_name = "feedbacks"
-    paginate_by = "5"
-    paginate_orphans = "8"
+    paginate_by = "6"
+    paginate_orphans = "2"
     ordering = ["-plan__created", "-created"]
     template_name = "feedbacks/feedback_list.html"
 
@@ -271,22 +275,24 @@ class FeedbackList(PlanUserCheckMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(FeedbackList, self).get_context_data(**kwargs)
+
         plan_pk = self.kwargs["plan_pk"]
         plan = plan_models.Plan.objects.get(pk=plan_pk)
         context["plan"] = plan
+        context["url"] = self.request.path + "?"
         return context
 
 
 class MyFeedbackList(LoginRequiredMixin, ListView):
     """
     나의 그룹 보기 에서 선택 할 수 있는 피드백 리스트
-    내가 속한 그룹에서 작성한 모든 계획에 대한 피드백을 조회한다. 
+    => 내가 속한 그룹에서 작성한 모든 계획에 대한 피드백을 조회한다. 
     """
 
     model = plan_models.Feedback
     context_object_name = "feedbacks"
-    paginate_by = "5"
-    paginate_orphans = "3"
+    paginate_by = "6"
+    paginate_orphans = "2"
     ordering = ["-plan__created", "-created"]
     template_name = "feedbacks/myfeedback_list.html"
 
