@@ -19,7 +19,6 @@ from .forms import (
     getUserNewPasswordForm,
 )
 
-
 class LoginView(FormView):
     """
     사용자 로그인
@@ -115,7 +114,7 @@ class userChangePasswordView(LoginRequiredMixin, FormView):
             user.set_password(new_password)
             user.save()
 
-            messages.info(self.request, "비밀번호가 변경되었습니다. 변경된 비밀번호로 로그인해주세요")
+            messages.success(self.request, "비밀번호가 변경되었습니다. 변경된 비밀번호로 로그인해주세요")
             return HttpResponseRedirect(self.get_success_url())
         else:
             messages.error(self.request, "기존 비밀번호가 동일하지 않습니다.")

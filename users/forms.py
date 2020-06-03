@@ -1,6 +1,7 @@
+
 from django import forms
-from django.contrib import messages
 from . import models
+from .helper import check_password
 
 
 class loginForm(forms.Form):
@@ -68,11 +69,8 @@ class signupForm(forms.ModelForm):
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
 
-        if password1 == password2:
-            return password1
-
-        else:
-            raise forms.ValidationError("비밀번호가 동일하지 않습니다.")
+        check_password(password1, password2, forms)
+        return password1
 
     def save(self, *args, **kwargs):
         user = super().save(commit=False)
@@ -112,12 +110,16 @@ class changePasswordForm(forms.Form):
         password1 = self.cleaned_data.get("new_password1")
         password2 = self.cleaned_data.get("new_password2")
 
-        if password1 == password2:
-            return password1
+        check_password(password1, password2, forms)
+        return password1
 
-        else:
-            raise forms.ValidationError("비밀번호가 동일하지 않습니다.")
+    def clean_old_password(self):
+        old_password = self.cleaned_data.get("old_password")
+        password1 = self.cleaned_data.get("new_password1")
 
+        if old_password == password1:
+            raise forms.ValidationError("기존 비밀번호와 동일합니다.")
+        return old_password
 
 class findUserPasswordForm(forms.ModelForm):
     class Meta:
@@ -163,11 +165,8 @@ class getUserNewPasswordForm(forms.Form):
     )
 
     def clean_new_password2(self):
-        new_password1 = self.cleaned_data.get("new_password1")
-        new_password2 = self.cleaned_data.get("new_password2")
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
 
-        if new_password1 == new_password2:
-            return new_password1
-
-        else:
-            raise forms.ValidationError("비밀번호가 동일하지 않습니다.")
+        check_password(password1, password2, forms)
+        return password1

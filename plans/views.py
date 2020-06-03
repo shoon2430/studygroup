@@ -228,8 +228,8 @@ class PlanList(LoginRequiredMixin, ListView):
 
     model = plan_models.Plan
     context_object_name = "plans"
-    paginate_by = "10"
-    paginate_orphans = "5"
+    paginate_by = "4"
+    paginate_orphans = "2"
     ordering = ["-created"]
     template_name = "plans/plan_list.html"
 
@@ -256,8 +256,8 @@ class FeedbackList(PlanUserCheckMixin, ListView):
 
     model = plan_models.Feedback
     context_object_name = "feedbacks"
-    paginate_by = "10"
-    paginate_orphans = "5"
+    paginate_by = "5"
+    paginate_orphans = "8"
     ordering = ["-plan__created", "-created"]
     template_name = "feedbacks/feedback_list.html"
 
@@ -285,8 +285,8 @@ class MyFeedbackList(LoginRequiredMixin, ListView):
 
     model = plan_models.Feedback
     context_object_name = "feedbacks"
-    paginate_by = "10"
-    paginate_orphans = "5"
+    paginate_by = "5"
+    paginate_orphans = "3"
     ordering = ["-plan__created", "-created"]
     template_name = "feedbacks/myfeedback_list.html"
 

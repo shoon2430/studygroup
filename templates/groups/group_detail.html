@@ -84,6 +84,9 @@ Group | Detail
     <div class="plan_list mt-4">
         {% include 'partials/plan/plan_box.html' with plans=plans %}
     </div>
+    <div >
+        {% include 'partials/paging.html' with page_obj=plans paginator=paginator url=url %}
+    </div>
 
 </div>
 

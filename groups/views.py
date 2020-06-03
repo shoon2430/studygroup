@@ -1,5 +1,6 @@
 from django.http import Http404, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator
 
 from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
@@ -20,7 +21,7 @@ from plans import models as plan_model
 class GroupList(ListView):
     model = group_model.Group
     context_object_name = "groups"
-    paginate_by = "10"
+    paginate_by = "5"
     paginate_orphans = "2"
     ordering = "-created"
 
@@ -56,10 +57,21 @@ class GroupDetail(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(GroupDetail, self).get_context_data(**kwargs)
-        context["plans"] = plan_model.Plan.objects.filter(group=self.object).order_by(
-            "-created"
-        )
 
+        paginator_by = 8
+        plans = plan_model.Plan.objects.filter(group=self.object).order_by("-created")
+
+        if len(plans) > paginator_by:
+            context["is_paginated"] = True
+
+        page = self.request.GET.get("page")
+        paginator = Paginator(plans, paginator_by)
+        plans = paginator.get_page(page)
+        context["paginator"] = paginator
+        context["plans"] = plans
+        context["url"] = self.request.path
+
+        # 그룹 참여 여부
         join = False
 
         for user in self.object.users.all():
@@ -146,8 +158,8 @@ class MyGroupList(LoginRequiredMixin, ListView):
     model = group_model.Group
     template_name = "groups/mygroup_list.html"
     context_object_name = "groups"
-    paginate_by = "10"
-    paginate_orphans = "5"
+    paginate_by = "5"
+    paginate_orphans = "3"
     ordering = "-created"
 
     def get_queryset(self):
